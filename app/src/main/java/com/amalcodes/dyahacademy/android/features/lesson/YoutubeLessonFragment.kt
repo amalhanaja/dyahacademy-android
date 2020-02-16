@@ -25,8 +25,6 @@ import timber.log.Timber
 
 class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
 
-    private lateinit var viewModel: YoutubeLessonViewModel
-
     private val videoPlayerManager: VideoPlayerManager by lazy {
         VideoPlayerManager.getInstance(requireContext())
     }
