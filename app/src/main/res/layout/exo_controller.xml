@@ -102,6 +102,8 @@
             app:bar_height="2dp"
             app:buffered_color="@color/colorPrimary"
             app:played_color="@color/colorPrimaryDark"
+            android:layout_marginStart="@dimen/spacing_2"
+            android:layout_marginEnd="@dimen/spacing_2"
             app:scrubber_color="@color/colorPrimaryDark" />
 
     </LinearLayout>
