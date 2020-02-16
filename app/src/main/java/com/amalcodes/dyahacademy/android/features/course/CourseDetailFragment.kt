@@ -3,6 +3,7 @@ package com.amalcodes.dyahacademy.android.features.course
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -55,6 +56,7 @@ class CourseDetailFragment : Fragment() {
     }
 
     private fun setupView() {
+        setHasOptionsMenu(true)
         rv_course_detail?.adapter = adapter
         rv_course_detail?.addItemDecoration(
             ItemOffsetDecoration { viewHolder, count ->
@@ -113,5 +115,13 @@ class CourseDetailFragment : Fragment() {
     private fun onInitialState() {
         viewModel.fetch(args.courseId)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
 }

@@ -1,7 +1,9 @@
 package com.amalcodes.dyahacademy.android.features.lesson
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.Injector
@@ -19,6 +21,15 @@ class MarkdownLessonFragment : Fragment(R.layout.fragment_markdown_lesson) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
         Injector.markwon.setMarkdown(actv_markdown_lesson, args.markdown)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }

@@ -69,4 +69,3 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
     compileOnly("org.jetbrains:annotations:16.0.1")
 }
-

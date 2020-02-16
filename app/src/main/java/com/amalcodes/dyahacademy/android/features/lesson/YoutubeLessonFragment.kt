@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.SparseArray
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -56,6 +57,7 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
     }
 
     private fun setupView() {
+        setHasOptionsMenu(true)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             when (requireActivity().requestedOrientation) {
                 ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> changeScreenOrientation()
@@ -131,6 +133,13 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
     override fun onDestroy() {
         super.onDestroy()
         videoPlayerManager.destroyPlayer()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private class YoutubeExtractor(
