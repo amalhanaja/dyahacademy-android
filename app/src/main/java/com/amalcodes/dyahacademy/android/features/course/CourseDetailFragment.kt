@@ -88,7 +88,10 @@ class CourseDetailFragment : Fragment() {
                     val directions = when (item) {
                         is LessonViewEntity.Youtube ->
                             CourseDetailFragmentDirections
-                                .actionCourseDetailFragmentToYoutubeLessonFragment(item.youtubeUrl)
+                                .actionCourseDetailFragmentToYoutubeLessonFragment(
+                                    item.youtubeUrl,
+                                    item.title
+                                )
                         else -> throw IllegalStateException("Unsupported Lesson: $item")
                     }
                     findNavController().navigate(directions)

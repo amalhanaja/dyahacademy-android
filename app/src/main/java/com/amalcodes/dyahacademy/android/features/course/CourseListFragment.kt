@@ -64,7 +64,11 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
                 R.id.cl_item_course_wrapper -> {
                     require(item is CourseViewEntity)
                     val direction = CourseListFragmentDirections
-                        .actionCourseListFragmentToCourseDetailFragment(item.id)
+                        .actionCourseListFragmentToCourseDetailFragment(
+                            item.id,
+                            item.title,
+                            item.createdBy
+                        )
                     findNavController().navigate(direction)
                 }
             }

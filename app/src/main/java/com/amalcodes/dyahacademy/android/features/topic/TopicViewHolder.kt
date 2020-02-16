@@ -2,6 +2,7 @@ package com.amalcodes.dyahacademy.android.features.topic
 
 import android.graphics.Rect
 import android.view.View
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
@@ -49,6 +50,7 @@ class TopicViewHolder(view: View) : BaseViewHolder<TopicViewEntity>(view) {
         }
         tv_item_topic_title?.text = entity.title
         tv_item_topic_description?.text = entity.description
+        tv_item_topic_description?.isGone = entity.description.isEmpty()
         adapter.submitList(entity.lessons)
     }
 
