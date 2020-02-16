@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_graph"
+    app:startDestination="@id/courseListFragment">
+
+    <fragment
+        android:id="@+id/courseListFragment"
+        android:name="com.amalcodes.dyahacademy.android.features.course.CourseListFragment"
+        android:label="fragment_course_list"
+        tools:layout="@layout/fragment_course_list">
+        <action
+            android:id="@+id/action_courseListFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailFragment"
+        android:name="com.amalcodes.dyahacademy.android.features.course.CourseDetailFragment"
+        android:label="fragment_course_detail"
+        tools:layout="@layout/fragment_course_detail">
+        <action
+            android:id="@+id/action_courseDetailFragment_to_youtubeLessonFragment"
+            app:destination="@id/youtubeLessonFragment" />
+        <argument
+            android:name="courseId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/youtubeLessonFragment"
+        android:name="com.amalcodes.dyahacademy.android.features.lesson.YoutubeLessonFragment"
+        android:label="fragment_youtube_lesson"
+        tools:layout="@layout/fragment_youtube_lesson">
+        <argument
+            android:name="youtubeUrl"
+            app:argType="string" />
+    </fragment>
+</navigation>

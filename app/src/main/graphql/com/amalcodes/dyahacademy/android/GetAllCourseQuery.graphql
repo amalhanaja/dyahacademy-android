@@ -1,0 +1,8 @@
+query GetAllCoursesQuery {
+    courses(where: { isPublished: true }) {
+        id
+        title
+        createdBy
+        isPublished
+    }
+}

@@ -1,0 +1,17 @@
+query GetTopicById($id: ID!){
+    topic(id: $id) {
+        id
+        title
+        lessons {
+            title
+            id
+            youtubeUrl
+            document {
+                url
+                ext
+            }
+            markdown
+            lessonType
+        }
+    }
+}

@@ -1,0 +1,12 @@
+# Write your query or mutation here
+query GetCourseById($id: ID!){
+    course(id: $id) {
+        id
+        title
+        topics {
+            id
+            title
+            description
+        }
+    }
+}
