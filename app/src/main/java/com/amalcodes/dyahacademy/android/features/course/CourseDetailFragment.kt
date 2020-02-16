@@ -92,6 +92,11 @@ class CourseDetailFragment : Fragment() {
                                     item.youtubeUrl,
                                     item.title
                                 )
+                        is LessonViewEntity.Markdown ->
+                            CourseDetailFragmentDirections.actionCourseDetailFragmentToMarkdownLessonFragment(
+                                item.title,
+                                item.content
+                            )
                         else -> throw IllegalStateException("Unsupported Lesson: $item")
                     }
                     findNavController().navigate(directions)

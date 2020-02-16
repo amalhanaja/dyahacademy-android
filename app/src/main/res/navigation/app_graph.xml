@@ -31,6 +31,9 @@
         <argument
             android:name="subtitle"
             app:argType="string" />
+        <action
+            android:id="@+id/action_courseDetailFragment_to_markdownLessonFragment"
+            app:destination="@id/markdownLessonFragment" />
     </fragment>
     <fragment
         android:id="@+id/youtubeLessonFragment"
@@ -42,6 +45,18 @@
             app:argType="string" />
         <argument
             android:name="label"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/markdownLessonFragment"
+        android:name="com.amalcodes.dyahacademy.android.features.lesson.MarkdownLessonFragment"
+        android:label="MarkdownLessonFragment"
+        tools:layout="@layout/fragment_markdown_lesson">
+        <argument
+            android:name="label"
+            app:argType="string" />
+        <argument
+            android:name="markdown"
             app:argType="string" />
     </fragment>
 </navigation>

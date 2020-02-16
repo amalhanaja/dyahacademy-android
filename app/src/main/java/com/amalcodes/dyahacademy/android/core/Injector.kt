@@ -1,6 +1,7 @@
 package com.amalcodes.dyahacademy.android.core
 
 import com.apollographql.apollo.ApolloClient
+import io.noties.markwon.Markwon
 import timber.log.Timber
 
 /**
@@ -10,6 +11,7 @@ import timber.log.Timber
 
 object Injector {
 
+    lateinit var markwon: Markwon
 
     val apolloClient: ApolloClient = ApolloClient.builder()
         .serverUrl("http://192.168.0.6:1337/graphql")
