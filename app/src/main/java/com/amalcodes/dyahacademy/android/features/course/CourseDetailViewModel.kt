@@ -72,6 +72,10 @@ class CourseDetailViewModel : ViewModel() {
                 title = title(),
                 content = markdown().orEmpty()
             )
+            ENUM_LESSON_LESSONTYPE.QUIZ -> LessonViewEntity.Quiz(
+                id = id(),
+                title = title()
+            )
             else -> throw IllegalStateException("unsupported Lesson Type ${lessonType()}")
         }
     }

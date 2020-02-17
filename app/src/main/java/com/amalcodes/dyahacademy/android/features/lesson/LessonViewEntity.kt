@@ -41,4 +41,12 @@ sealed class LessonViewEntity : ItemEntity {
         override val prevLesson: LessonViewEntity? = null,
         val url: String
     ) : LessonViewEntity()
+
+    data class Quiz(
+        override val id: String,
+        override val title: String,
+        override val nextLesson: LessonViewEntity? = null,
+        override val prevLesson: LessonViewEntity? = null
+    ) : LessonViewEntity()
+
 }

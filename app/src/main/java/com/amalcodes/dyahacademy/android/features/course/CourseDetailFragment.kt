@@ -99,6 +99,12 @@ class CourseDetailFragment : Fragment() {
                                 item.title,
                                 item.content
                             )
+                        is LessonViewEntity.Quiz ->
+                            CourseDetailFragmentDirections
+                                .actionCourseDetailFragmentToQuizFragment(
+                                    label = item.title,
+                                    lessonId = item.id
+                                )
                         else -> throw IllegalStateException("Unsupported Lesson: $item")
                     }
                     findNavController().navigate(directions)

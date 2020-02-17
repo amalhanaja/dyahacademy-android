@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.application")
     kotlin("android") version "1.3.61"
@@ -34,10 +32,14 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        if (this is KotlinJvmOptions) {
-            jvmTarget = "1.8"
-        }
+        jvmTarget = "1.8"
     }
+}
+
+apollo {
+    customTypeMapping.put(
+        "JSON", "org.json.JSONObject"
+    )
 }
 
 dependencies {

@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_courseDetailFragment_to_markdownLessonFragment"
             app:destination="@id/markdownLessonFragment" />
+        <action
+            android:id="@+id/action_courseDetailFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
     </fragment>
     <fragment
         android:id="@+id/youtubeLessonFragment"
@@ -57,6 +60,18 @@
             app:argType="string" />
         <argument
             android:name="markdown"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="com.amalcodes.dyahacademy.android.features.quiz.QuizFragment"
+        android:label="fragment_quiz"
+        tools:layout="@layout/fragment_quiz">
+        <argument
+            android:name="label"
+            app:argType="string" />
+        <argument
+            android:name="lessonId"
             app:argType="string" />
     </fragment>
 </navigation>
