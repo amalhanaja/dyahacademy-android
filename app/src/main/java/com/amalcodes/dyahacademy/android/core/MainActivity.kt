@@ -3,6 +3,7 @@ package com.amalcodes.dyahacademy.android.core
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import coil.util.CoilLogger
 import com.amalcodes.dyahacademy.android.BuildConfig
 import com.amalcodes.dyahacademy.android.R
 import io.noties.markwon.Markwon
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun setupDebugTools() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            CoilLogger.setEnabled(BuildConfig.DEBUG)
         }
     }
 }
