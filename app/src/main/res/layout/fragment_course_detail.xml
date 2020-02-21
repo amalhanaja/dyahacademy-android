@@ -6,53 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".features.course.CourseDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_course_detail_appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_round_bottom_coral_xl"
-        android:elevation="@dimen/elevation_1"
-        android:padding="@dimen/spacing_4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtv_course_detail_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size_2xl"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/iv_back"
-            tools:text="IPA Kelas 9" />
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_arrow_left" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="40dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="40dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <include
+        android:id="@+id/toolbar_course_detail"
+        layout="@layout/component_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_course_detail"
@@ -64,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_course_detail_appbar"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_course_detail"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_topic" />
 

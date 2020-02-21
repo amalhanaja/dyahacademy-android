@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
+import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -40,6 +41,7 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
     }
 
     private fun setupView() {
+        toolbar_course_list?.mtv_toolbar_title?.text = getString(R.string.app_name)
         rv_course_list?.adapter = adapter
         rv_course_list?.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
             val position = viewHolder.adapterPosition

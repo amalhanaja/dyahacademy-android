@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -14,6 +15,7 @@ import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
 import com.amalcodes.dyahacademy.android.features.topic.TopicViewHolder
+import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_course_detail.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -54,10 +56,11 @@ class CourseDetailFragment : Fragment() {
     }
 
     private fun setupView() {
-        iv_back?.setOnClickListener {
+        toolbar_course_detail?.iv_back?.isVisible = true
+        toolbar_course_detail?.iv_back?.setOnClickListener {
             findNavController().navigateUp()
         }
-        mtv_course_detail_title?.text = args.label
+        toolbar_course_detail?.mtv_toolbar_title?.text = args.label
         rv_course_detail?.adapter = adapter
         rv_course_detail?.addItemDecoration(
             ItemOffsetDecoration { viewHolder, count ->

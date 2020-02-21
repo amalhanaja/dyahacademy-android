@@ -6,26 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.amalcodes.dyahacademy.android.features.course.CourseListFragment">
 
-    <FrameLayout
-        android:id="@+id/fl_course_list_top_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_round_bottom_coral_xl"
-        android:elevation="@dimen/elevation_1"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size_3xl"
-            android:textStyle="bold" />
-    </FrameLayout>
+    <include
+        android:id="@+id/toolbar_course_list"
+        layout="@layout/component_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_course_list"
@@ -36,7 +19,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fl_course_list_top_app_bar"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_course_list"
         tools:listitem="@layout/item_course" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
