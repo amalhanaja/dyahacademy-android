@@ -16,14 +16,21 @@ object Injector {
 
     lateinit var markwon: Markwon
 
-    private val jsonCustomTypeAdapter = object : CustomTypeAdapter<Map<String, Any>> {
-        override fun decode(value: CustomTypeValue<*>): Map<String, Any> {
-            require(value is CustomTypeValue.GraphQLJsonObject)
-            return value.value
+    private val jsonCustomTypeAdapter = object : CustomTypeAdapter<Any> {
+        override fun decode(value: CustomTypeValue<*>): Any {
+            return when (value) {
+                is CustomTypeValue.GraphQLJsonList -> value.value
+                is CustomTypeValue.GraphQLJsonObject -> value.value
+                else -> throw IllegalStateException()
+            }
         }
 
-        override fun encode(value: Map<String, Any>): CustomTypeValue<*> {
-            return CustomTypeValue.GraphQLJsonObject(value)
+        override fun encode(value: Any): CustomTypeValue<*> {
+            return when (value) {
+                is List<*> -> CustomTypeValue.GraphQLJsonList(value)
+                is Map<*, *> -> CustomTypeValue.GraphQLJsonObject(value as Map<String, Any>)
+                else -> throw IllegalStateException("")
+            }
         }
     }
 

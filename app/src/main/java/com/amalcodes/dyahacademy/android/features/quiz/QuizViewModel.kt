@@ -41,7 +41,7 @@ class QuizViewModel : ViewModel() {
                 .catch { _uiState.postValue(QuizUIState.Error(it)) }
                 .collect { lesson ->
                     quizzes.addAll(lesson.quizzes().orEmpty().mapIndexed { index, quiz ->
-                        val answerData = (quiz.answers() as Map<*, *>)["data"] as List<*>
+                        val answerData = quiz.answers() as List<*>
                         val answers = answerData.map { answer ->
                             require(answer is Map<*, *>)
                             AnswerViewEntity(
