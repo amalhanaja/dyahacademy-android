@@ -9,6 +9,8 @@
         <item name="android:navigationBarColor">@color/coral</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:fontFamily">@font/nunito_sans</item>
+        <item name="android:font" tools:targetApi="o">@font/nunito_sans</item>
     </style>
 
 </resources>
