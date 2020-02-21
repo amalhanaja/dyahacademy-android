@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:letterSpacing=".0125"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/jet"
             android:textSize="@dimen/font_size_xl"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
