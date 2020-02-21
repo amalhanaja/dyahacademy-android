@@ -76,7 +76,7 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
     }
 
     private fun onErrorState(throwable: Throwable) {
-        TODO()
+        Timber.e(throwable)
     }
 
     private fun onHasDataState(data: List<CourseViewEntity>) {
