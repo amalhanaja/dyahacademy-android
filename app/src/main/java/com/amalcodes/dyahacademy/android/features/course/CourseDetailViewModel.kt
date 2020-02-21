@@ -3,11 +3,12 @@ package com.amalcodes.dyahacademy.android.features.course
 import androidx.lifecycle.*
 import com.amalcodes.dyahacademy.android.GetTopicByIdQuery
 import com.amalcodes.dyahacademy.android.features.lesson.LessonViewEntity
-import com.amalcodes.dyahacademy.android.features.topic.TopicRepository
 import com.amalcodes.dyahacademy.android.features.topic.TopicViewEntity
 import com.amalcodes.dyahacademy.android.type.ENUM_LESSON_LESSONTYPE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class CourseDetailViewModel : ViewModel() {
@@ -20,6 +21,7 @@ class CourseDetailViewModel : ViewModel() {
 
     @ExperimentalCoroutinesApi
     fun fetch(courseId: String) {
+
         viewModelScope.launch {
             CourseRepository.getDetail(courseId)
                 .map { course ->
@@ -34,18 +36,6 @@ class CourseDetailViewModel : ViewModel() {
                             )
                         }
                     )
-                }
-                .flatMapLatest {
-                    var data = it.copy(topics = emptyList())
-                    it.topics.forEach { topic ->
-                        val lessons = TopicRepository.getTopicById(topic.id)
-                            .singleOrNull()?.lessons().orEmpty().map { lesson ->
-                                lesson.toLessonViewEntity()
-                            }
-                        data =
-                            data.copy(topics = data.topics + listOf(topic.copy(lessons = lessons)))
-                    }
-                    flowOf(data)
                 }
                 .map { CourseDetailUIState.HasData(it) }
                 .catch { _uiState.postValue(CourseDetailUIState.Error(it)) }
