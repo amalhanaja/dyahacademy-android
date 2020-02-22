@@ -85,6 +85,11 @@ class TopicDetailFragment : Fragment(R.layout.fragment_topic_detail) {
                                 youtubeUrl = requireNotNull(item.youtubeUrl),
                                 label = item.title
                             )
+                        LessonType.QUIZ -> TopicDetailFragmentDirections
+                            .actionTopicDetailFragmentToQuizFragment(
+                                label = item.title,
+                                lessonId = item.id
+                            )
                         else -> throw IllegalStateException("unexpected LessonType: ${item.type}")
                     }
                     findNavController().navigate(direction)
