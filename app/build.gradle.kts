@@ -57,7 +57,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.2.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.2.1")
-    implementation("com.google.android.material:material:1.2.0-alpha04")
+    implementation("com.google.android.material:material:1.2.0-alpha05")
     implementation("com.jakewharton.timber:timber:4.7.1")
     implementation("com.apollographql.apollo:apollo-runtime:1.3.2")
     implementation("com.apollographql.apollo:apollo-coroutines-support:1.3.2")
