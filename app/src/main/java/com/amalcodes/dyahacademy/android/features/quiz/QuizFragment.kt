@@ -80,6 +80,14 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
         }
+        answerAdapter.setOnViewHolderClickListener { view, item ->
+            when (view.id) {
+                R.id.ll_answer -> {
+                    require(item is AnswerViewEntity)
+                    viewModel.setCurrentIndex(answers.indexOf(item))
+                }
+            }
+        }
     }
 
     private fun onErrorState(throwable: Throwable) {

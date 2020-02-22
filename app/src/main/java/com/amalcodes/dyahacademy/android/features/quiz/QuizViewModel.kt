@@ -24,7 +24,12 @@ class QuizViewModel : ViewModel() {
                 _uiState.postValue(
                     QuizUIState.HasData(
                         quizzes[it],
-                        quizzes.map { quiz -> AnswerViewEntity(quiz.answer) })
+                        quizzes.mapIndexed { index, quiz ->
+                            AnswerViewEntity(
+                                id = index,
+                                answer = quiz.answer
+                            )
+                        })
                 )
             }
         }
@@ -34,8 +39,17 @@ class QuizViewModel : ViewModel() {
         val currentIndexValue = currentIndex.value ?: 0
         quizzes[currentIndexValue].answer = answerMark
         _uiState.postValue(
-            QuizUIState.AnswerFilled(quizzes.map { quiz -> AnswerViewEntity(quiz.answer) })
+            QuizUIState.AnswerFilled(quizzes.mapIndexed { index, quiz ->
+                AnswerViewEntity(
+                    id = index,
+                    answer = quiz.answer
+                )
+            })
         )
+    }
+
+    fun setCurrentIndex(index: Int) {
+        currentIndex.postValue(index)
     }
 
     fun next() {
