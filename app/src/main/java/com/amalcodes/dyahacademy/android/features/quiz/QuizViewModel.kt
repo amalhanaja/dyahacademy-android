@@ -21,9 +21,21 @@ class QuizViewModel : ViewModel() {
         _uiState.value = QuizUIState.Initial
         _uiState.addSource(currentIndex) {
             if (quizzes.isNotEmpty()) {
-                _uiState.postValue(QuizUIState.HasData(quizzes[it]))
+                _uiState.postValue(
+                    QuizUIState.HasData(
+                        quizzes[it],
+                        quizzes.map { quiz -> AnswerViewEntity(quiz.answer) })
+                )
             }
         }
+    }
+
+    fun fillAnswer(answerMark: String) {
+        val currentIndexValue = currentIndex.value ?: 0
+        quizzes[currentIndexValue].answer = answerMark
+        _uiState.postValue(
+            QuizUIState.AnswerFilled(quizzes.map { quiz -> AnswerViewEntity(quiz.answer) })
+        )
     }
 
     fun next() {
@@ -42,18 +54,21 @@ class QuizViewModel : ViewModel() {
                 .collect { lesson ->
                     quizzes.addAll(lesson.quizzes().orEmpty().mapIndexed { index, quiz ->
                         val answerData = quiz.answers() as List<*>
-                        val answers = answerData.map { answer ->
+                        val answers = answerData.mapIndexed { indexAnswer, answer ->
                             require(answer is Map<*, *>)
-                            AnswerViewEntity(
+                            AnswerSelectionViewEntity(
                                 text = answer["text"] as String,
-                                isCorrect = answer["isCorrect"] as Boolean
+                                isCorrect = answer["isCorrect"] as Boolean,
+                                answerMark = 65.plus(indexAnswer).toChar()
                             )
                         }
                         QuizViewEntity(
                             question = quiz.question(),
-                            answers = answers,
+                            answerSelections = answers,
                             current = index + 1,
-                            count = lesson.quizzes().orEmpty().count()
+                            count = lesson.quizzes().orEmpty().count(),
+                            questionImageUrl = quiz.questionImageUrl(),
+                            answer = ""
                         )
                     })
                     next()

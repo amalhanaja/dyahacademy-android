@@ -7,22 +7,24 @@ import kotlinx.android.synthetic.main.item_answer.view.*
 
 /**
  * @author: AMAL
- * Created On : 2020-02-17
+ * Created On : 2020-02-22
  */
 
 
 class AnswerViewHolder(view: View) : BaseViewHolder<AnswerViewEntity>(view) {
     override fun onBind(entity: AnswerViewEntity) = itemView.run {
-        mrb_item_answer?.text = entity.text
-        mrb_item_answer?.isChecked = entity.isSelected
+        val number = adapterPosition + 1
+        mtv_item_answer_mark?.text = entity.answer
+        mtv_item_answer_number?.text = number.toString()
+        Unit
     }
 
     override fun onBindListener(
         entity: AnswerViewEntity,
         listener: ViewHolderClickListener
     ) = itemView.run {
-        mrb_item_answer?.setOnClickListener { buttonView ->
-            listener.onClick(buttonView, entity)
+        ll_answer?.setOnClickListener {
+            listener.onClick(it, entity)
         }
         Unit
     }

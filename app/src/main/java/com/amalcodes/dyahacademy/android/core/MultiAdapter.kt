@@ -6,6 +6,7 @@ import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.features.course.CourseViewHolder
 import com.amalcodes.dyahacademy.android.features.lesson.LessonGroupTitleViewHolder
 import com.amalcodes.dyahacademy.android.features.lesson.LessonViewHolder
+import com.amalcodes.dyahacademy.android.features.quiz.AnswerSelectionViewHolder
 import com.amalcodes.dyahacademy.android.features.quiz.AnswerViewHolder
 import com.amalcodes.dyahacademy.android.features.topic.TopicViewHolder
 import com.amalcodes.ezrecyclerview.adapter.BaseAdapter
@@ -24,8 +25,9 @@ class MultiAdapter(data: MutableList<ItemEntity> = mutableListOf()) :
             R.layout.item_course -> CourseViewHolder(view)
             R.layout.item_topic -> TopicViewHolder(view)
             R.layout.item_lesson -> LessonViewHolder(view)
-            R.layout.item_answer -> AnswerViewHolder(view)
+            R.layout.item_answer_selection -> AnswerSelectionViewHolder(view)
             R.layout.item_lesson_group_title -> LessonGroupTitleViewHolder(view)
+            R.layout.item_answer -> AnswerViewHolder(view)
             else -> throw IllegalStateException("unexpected View Holder for layoutRes: $layoutRes")
         }
     }

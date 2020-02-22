@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_answer"
+    android:layout_width="48dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_round_coral"
+    android:backgroundTint="@color/white"
+    android:elevation="@dimen/elevation_1"
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_item_answer_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/spacing_2"
-        android:paddingEnd="@dimen/spacing_2">
+        android:background="@drawable/shape_round_top_coral"
+        android:paddingTop="@dimen/spacing_1"
+        android:paddingBottom="@dimen/spacing_1"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_sm"
+        android:textStyle="normal"
+        tools:text="1" />
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/mrb_item_answer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Answer 1" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_item_answer_mark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_1"
+        android:paddingBottom="@dimen/spacing_1"
+        android:textAlignment="center"
+        android:textSize="@dimen/font_size_xl"
+        android:textStyle="bold"
+        tools:text="A" />
 
-</com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

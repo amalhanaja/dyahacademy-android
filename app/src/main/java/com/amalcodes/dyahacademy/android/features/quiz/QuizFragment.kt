@@ -2,15 +2,19 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.api.load
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.Injector
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
+import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_quiz.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -25,7 +29,11 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     )
 
 
-    private val adapter by lazy {
+    private val answerSelectionAdapter by lazy {
+        MultiAdapter()
+    }
+
+    private val answerAdapter by lazy {
         MultiAdapter()
     }
 
@@ -39,36 +47,39 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             when (it) {
                 is QuizUIState.Initial -> onInitialState()
                 is QuizUIState.Error -> onErrorState(it.throwable)
-                is QuizUIState.HasData -> onHasDataState(it.data)
+                is QuizUIState.HasData -> onHasDataState(it.data, it.answers)
+                is QuizUIState.AnswerFilled -> onAnswerFilledState(it.answers)
             }
         }
     }
 
-    private fun onHasDataState(data: QuizViewEntity) {
-        Injector.markwon.setMarkdown(actv_question, data.question)
-        adapter.submitList(data.answers)
-        adapter.setOnViewHolderClickListener { view, item ->
+    private fun onAnswerFilledState(answers: List<AnswerViewEntity>) {
+        answerAdapter.submitList(answers)
+    }
+
+    private fun onHasDataState(
+        data: QuizViewEntity,
+        answers: List<AnswerViewEntity>
+    ) {
+        Injector.markwon.setMarkdown(mtv_quiz_question, data.question)
+        iv_quiz_question?.isGone = data.questionImageUrl == null
+        data.questionImageUrl?.let { iv_quiz_question?.load(it) }
+        answerAdapter.submitList(answers)
+        answerSelectionAdapter.submitList(data.answerSelections)
+        answerSelectionAdapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
-                R.id.mrb_item_answer -> {
-                    require(item is AnswerViewEntity)
-                    val newAnswer = data.answers.map {
+                R.id.cl_item_answer -> {
+                    require(item is AnswerSelectionViewEntity)
+                    val newAnswer = data.answerSelections.map {
                         it.copy(isSelected = item == it)
                     }
-                    btn_check?.isEnabled = newAnswer.any { it.isSelected }
-                    btn_check?.setOnClickListener {
-                        if (item.isCorrect) {
-                            Toast.makeText(requireContext(), "BENAR", Toast.LENGTH_SHORT).show()
-                            viewModel.next()
-                        } else {
-                            Toast.makeText(requireContext(), "TET TOOOTT", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                    adapter.submitList(newAnswer)
+                    viewModel.fillAnswer(newAnswer.find {
+                        it.isSelected
+                    }?.answerMark?.toString().orEmpty())
+                    answerSelectionAdapter.submitList(newAnswer)
                 }
             }
         }
-        tv_current_per_count?.text = "${data.current}/${data.count}"
     }
 
     private fun onErrorState(throwable: Throwable) {
@@ -81,13 +92,12 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     }
 
     private fun setupView() {
-        rv_answer?.adapter = adapter
-        rv_answer?.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
+        val itemOffsetDecoration = ItemOffsetDecoration { viewHolder, count ->
             val position = viewHolder.adapterPosition
-            if (viewHolder is AnswerViewHolder) {
-                return@ItemOffsetDecoration Rect().apply {
-                    left = resources.getDimensionPixelSize(R.dimen.spacing_4)
-                    right = resources.getDimensionPixelSize(R.dimen.spacing_4)
+            when (viewHolder) {
+                is AnswerSelectionViewHolder -> Rect().apply {
+                    left = resources.getDimensionPixelSize(R.dimen.spacing_6)
+                    right = resources.getDimensionPixelSize(R.dimen.spacing_6)
                     top = when (position) {
                         0 -> resources.getDimensionPixelSize(R.dimen.spacing_4)
                         else -> resources.getDimensionPixelSize(R.dimen.spacing_1)
@@ -97,9 +107,25 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                         else -> resources.getDimensionPixelSize(R.dimen.spacing_1)
                     }
                 }
+                is AnswerViewHolder -> Rect().apply {
+                    top = resources.getDimensionPixelSize(R.dimen.spacing_4)
+                    right = resources.getDimensionPixelSize(R.dimen.spacing_0_5)
+                    left = resources.getDimensionPixelSize(R.dimen.spacing_0_5)
+                    bottom = resources.getDimensionPixelSize(R.dimen.spacing_4)
+                }
+                else -> Rect()
             }
-            return@ItemOffsetDecoration Rect()
-        })
+        }
+        toolbar_quiz?.iv_back?.isVisible = true
+        toolbar_quiz?.iv_back?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        toolbar_quiz?.mtv_toolbar_title?.text = args.label
+        rv_answer_selection?.isNestedScrollingEnabled = false
+        rv_answer_selection?.adapter = answerSelectionAdapter
+        rv_answer_selection?.addItemDecoration(itemOffsetDecoration)
+        rv_answers?.adapter = answerAdapter
+        rv_answers?.addItemDecoration(itemOffsetDecoration)
     }
 
 }

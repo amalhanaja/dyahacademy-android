@@ -8,7 +8,9 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 data class QuizViewEntity(
     val question: String,
-    val answers: List<AnswerViewEntity>,
+    val questionImageUrl: String?,
+    val answerSelections: List<AnswerSelectionViewEntity>,
+    var answer: String = "",
     val current: Int = 0,
     val count: Int
 )

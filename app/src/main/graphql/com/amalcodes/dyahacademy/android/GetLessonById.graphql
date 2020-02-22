@@ -9,6 +9,7 @@ query GetLessonById($id: ID!){
         quizzes {
             id
             question
+            questionImageUrl
             answers
         }
     }
