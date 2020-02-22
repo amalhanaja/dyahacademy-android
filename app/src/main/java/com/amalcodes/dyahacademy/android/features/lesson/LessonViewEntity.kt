@@ -1,5 +1,7 @@
 package com.amalcodes.dyahacademy.android.features.lesson
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 
@@ -9,44 +11,31 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
  */
 
 
-sealed class LessonViewEntity : ItemEntity {
-    abstract val id: String
-    abstract val title: String
-    abstract val nextLesson: LessonViewEntity?
-    abstract val prevLesson: LessonViewEntity?
-
+data class LessonViewEntity(
+    val id: String,
+    val title: String,
+    val type: LessonType
+) : ItemEntity {
     override val layoutRes: Int
-        get() = R.layout.item_lesson_default
+        get() = when (type) {
+            LessonType.GROUP -> R.layout.item_lesson_group_title
+            else -> R.layout.item_lesson
+        }
 
-    data class Youtube(
-        override val id: String,
-        override val title: String,
-        override val nextLesson: LessonViewEntity? = null,
-        override val prevLesson: LessonViewEntity? = null,
-        val youtubeUrl: String
-    ) : LessonViewEntity()
+    val typeIconRes: Int
+        @DrawableRes
+        get() = when (type) {
+            LessonType.YOUTUBE -> R.drawable.ic_youtube
+            LessonType.QUIZ -> R.drawable.ic_help_circle
+            else -> throw IllegalStateException("Unexpected LessonType: $type")
+        }
 
-    data class Markdown(
-        override val id: String,
-        override val title: String,
-        override val nextLesson: LessonViewEntity? = null,
-        override val prevLesson: LessonViewEntity? = null,
-        val content: String
-    ) : LessonViewEntity()
-
-    data class Document(
-        override val id: String,
-        override val title: String,
-        override val nextLesson: LessonViewEntity? = null,
-        override val prevLesson: LessonViewEntity? = null,
-        val url: String
-    ) : LessonViewEntity()
-
-    data class Quiz(
-        override val id: String,
-        override val title: String,
-        override val nextLesson: LessonViewEntity? = null,
-        override val prevLesson: LessonViewEntity? = null
-    ) : LessonViewEntity()
+    val typeNameStringRes: Int
+        @StringRes
+        get() = when (type) {
+            LessonType.QUIZ -> R.string.text_Quiz
+            LessonType.YOUTUBE -> R.string.text_Video
+            else -> throw IllegalStateException("Unexpected LessonType: $type")
+        }
 
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_item_lesson"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_round_white_xl"
+    android:elevation="@dimen/elevation_1">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_4"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:background="@drawable/shape_round_top_coral_xl"
+        android:padding="@dimen/spacing_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_item_lesson_type"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/text_Lesson_Type"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/actv_item_lesson_type"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_youtube" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/actv_item_lesson_type"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_marginStart="@dimen/spacing_2"
+            android:gravity="center"
+            android:maxWidth="56dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_xl"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="@dimen/font_size_xl"
+            app:autoSizeMinTextSize="2sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_item_lesson_type"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Video" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actv_item_lesson_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_2"
+        android:layout_marginEnd="@dimen/spacing_4"
+        android:layout_marginBottom="@dimen/spacing_4"
+        android:ellipsize="end"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="@color/jet"
+        android:textSize="@dimen/font_size_base"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout2"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Sistem Perkembangbiakan Tumbuhan dan
+Hewan" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

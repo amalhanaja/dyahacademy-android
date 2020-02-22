@@ -1,10 +1,7 @@
 package com.amalcodes.dyahacademy.android.features.course
 
 import androidx.lifecycle.*
-import com.amalcodes.dyahacademy.android.GetTopicByIdQuery
-import com.amalcodes.dyahacademy.android.features.lesson.LessonViewEntity
 import com.amalcodes.dyahacademy.android.features.topic.TopicViewEntity
-import com.amalcodes.dyahacademy.android.type.ENUM_LESSON_LESSONTYPE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -42,31 +39,6 @@ class CourseDetailViewModel : ViewModel() {
                 .collect {
                     _uiState.postValue(it)
                 }
-        }
-    }
-
-    private fun GetTopicByIdQuery.Lesson.toLessonViewEntity(): LessonViewEntity {
-        return when (lessonType()) {
-            ENUM_LESSON_LESSONTYPE.YOUTUBE -> LessonViewEntity.Youtube(
-                id = id(),
-                title = title(),
-                youtubeUrl = requireNotNull(youtubeUrl())
-            )
-            ENUM_LESSON_LESSONTYPE.DOCUMENT -> LessonViewEntity.Document(
-                id = id(),
-                title = title(),
-                url = requireNotNull(document()?.url())
-            )
-            ENUM_LESSON_LESSONTYPE.MARKDOWN -> LessonViewEntity.Markdown(
-                id = id(),
-                title = title(),
-                content = markdown().orEmpty()
-            )
-            ENUM_LESSON_LESSONTYPE.QUIZ -> LessonViewEntity.Quiz(
-                id = id(),
-                title = title()
-            )
-            else -> throw IllegalStateException("unsupported Lesson Type ${lessonType()}")
         }
     }
 

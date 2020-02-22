@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">DyahAcademy</string>
     <string name="text_Back">Back</string>
+    <string name="text_Lesson_Type">Lesson Type</string>
+    <string name="text_Quiz">Quiz</string>
+    <string name="text_Video">Video</string>
+    <string name="text_By_colon">By : %1$s</string>
 </resources>

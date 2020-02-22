@@ -9,11 +9,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
+import com.amalcodes.dyahacademy.android.features.topic.TopicViewEntity
 import com.amalcodes.dyahacademy.android.features.topic.TopicViewHolder
 import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_course_detail.*
@@ -71,17 +73,30 @@ class CourseDetailFragment : Fragment() {
                         right = resources.getDimensionPixelSize(R.dimen.spacing_4)
                         top = when (position) {
                             0 -> resources.getDimensionPixelSize(R.dimen.spacing_6)
-                            else -> resources.getDimensionPixelSize(R.dimen.spacing_1)
+                            else -> resources.getDimensionPixelSize(R.dimen.spacing_2)
                         }
                         bottom = when (position) {
                             count - 1 -> resources.getDimensionPixelSize(R.dimen.spacing_6)
-                            else -> resources.getDimensionPixelSize(R.dimen.spacing_1)
+                            else -> resources.getDimensionPixelSize(R.dimen.spacing_2)
                         }
                     }
                 }
                 return@ItemOffsetDecoration Rect()
             }
         )
+        adapter.setOnViewHolderClickListener { view, item ->
+            when (view.id) {
+                R.id.fl_item_topic -> {
+                    require(item is TopicViewEntity)
+                    val direction: NavDirections = CourseDetailFragmentDirections
+                        .actionCourseDetailFragmentToTopicDetailFragment(
+                            label = item.title,
+                            topicId = item.id
+                        )
+                    findNavController().navigate(direction)
+                }
+            }
+        }
     }
 
     private fun onHasDataState(data: CourseDetailViewEntity) {

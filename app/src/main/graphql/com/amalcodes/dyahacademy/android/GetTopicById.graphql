@@ -5,13 +5,12 @@ query GetTopicById($id: ID!){
         lessons {
             title
             id
-            youtubeUrl
-            document {
-                url
-                ext
-            }
-            markdown
             lessonType
+            lessons {
+                title
+                id
+                lessonType
+            }
         }
     }
 }

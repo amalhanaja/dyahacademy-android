@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/actv_item_lesson_group_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAlignment="center"
+    android:textColor="@color/outerSpace"
+    android:textSize="@dimen/font_size_xl"
+    android:textStyle="bold"
+    tools:text="Struktur dan Fungsi Sistem Reproduksi pada Manusia">
+
+</androidx.appcompat.widget.AppCompatTextView>

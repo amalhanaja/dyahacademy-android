@@ -51,11 +51,11 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
                     right = resources.getDimensionPixelSize(R.dimen.spacing_4)
                     top = when (position) {
                         0 -> resources.getDimensionPixelSize(R.dimen.spacing_6)
-                        else -> resources.getDimensionPixelSize(R.dimen.spacing_1)
+                        else -> resources.getDimensionPixelSize(R.dimen.spacing_2)
                     }
                     bottom = when (position) {
                         count - 1 -> resources.getDimensionPixelSize(R.dimen.spacing_6)
-                        else -> resources.getDimensionPixelSize(R.dimen.spacing_1)
+                        else -> resources.getDimensionPixelSize(R.dimen.spacing_2)
                     }
                 }
             }
