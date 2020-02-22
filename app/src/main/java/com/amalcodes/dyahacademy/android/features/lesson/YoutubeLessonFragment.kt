@@ -4,12 +4,9 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.SparseArray
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -47,9 +44,14 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
             }
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                pb_exo_controller?.isVisible = playbackState == Player.STATE_BUFFERING
-                exo_play?.isGone = true
-                exo_pause?.isGone = true
+                when (playbackState) {
+                    Player.STATE_BUFFERING -> {
+                        video_view?.hideController()
+                    }
+                    else -> {
+
+                    }
+                }
             }
         })
         setupView()
@@ -57,13 +59,11 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
     }
 
     private fun setupView() {
-        setHasOptionsMenu(true)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            when (requireActivity().requestedOrientation) {
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> changeScreenOrientation()
-                else -> findNavController().navigateUp()
-            }
+        actv_youtube_lesson_title?.text = args.label
+        iv_back?.setOnClickListener {
+            onBackPress()
         }
+        requireActivity().onBackPressedDispatcher.addCallback(this) { onBackPress() }
         when (requireActivity().requestedOrientation) {
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> enterFullScreen()
             else -> exitFullScreen()
@@ -85,12 +85,19 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
         }
     }
 
+    private fun onBackPress() {
+        when (requireActivity().requestedOrientation) {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> changeScreenOrientation()
+            else -> findNavController().navigateUp()
+        }
+    }
+
     private fun exitFullScreen() {
         val params = video_view.layoutParams as ConstraintLayout.LayoutParams
         params.width = ConstraintLayout.LayoutParams.MATCH_PARENT
-        params.height = (resources.displayMetrics.density * 216 + 0.5f).toInt()
-        requireActivity().actionBar?.show()
+        params.height = resources.getDimensionPixelSize(R.dimen.video_size)
         video_view.layoutParams = params
+        btn_full?.setImageResource(R.drawable.ic_maximize)
     }
 
     private fun enterFullScreen() {
@@ -98,7 +105,7 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
         params.width = ConstraintLayout.LayoutParams.MATCH_PARENT
         params.height = ConstraintLayout.LayoutParams.MATCH_PARENT
         video_view.layoutParams = params
-        requireActivity().actionBar?.hide()
+        btn_full?.setImageResource(R.drawable.ic_minimize)
         hideSystemUI()
     }
 
@@ -130,16 +137,20 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
         }.extract(url, true, true)
     }
 
+    override fun onStart() {
+        super.onStart()
+        videoPlayerManager.player.playWhenReady = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        videoPlayerManager.player.playWhenReady = false
+
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         videoPlayerManager.destroyPlayer()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> findNavController().navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private class YoutubeExtractor(

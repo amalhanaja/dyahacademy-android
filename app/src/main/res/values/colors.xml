@@ -6,5 +6,6 @@
     <color name="mediumSeaGreen">#3BB273</color>
     <color name="radicalRed">#FF3366</color>
     <color name="jet">#333333</color>
+    <color name="jet50">#32333333</color>
     <color name="outerSpace">#494949</color>
 </resources>

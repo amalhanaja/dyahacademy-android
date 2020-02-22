@@ -6,10 +6,12 @@ query GetTopicById($id: ID!){
             title
             id
             lessonType
+            youtubeUrl
             lessons {
                 title
                 id
                 lessonType
+                youtubeUrl
             }
         }
     }

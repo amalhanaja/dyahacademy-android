@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.amalcodes.dyahacademy.android.R
-import com.amalcodes.dyahacademy.android.core.Injector
-import kotlinx.android.synthetic.main.fragment_markdown_lesson.*
 
 /**
  * @author: AMAL
@@ -17,12 +14,12 @@ import kotlinx.android.synthetic.main.fragment_markdown_lesson.*
 
 class MarkdownLessonFragment : Fragment(R.layout.fragment_markdown_lesson) {
 
-    private val args: MarkdownLessonFragmentArgs by navArgs()
+//    private val args: MarkdownLessonFragmentArgs by navArgs()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-        Injector.markwon.setMarkdown(actv_markdown_lesson, args.markdown)
+//        Injector.markwon.setMarkdown(actv_markdown_lesson, args.markdown)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

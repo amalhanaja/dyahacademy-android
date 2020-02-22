@@ -14,7 +14,8 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 data class LessonViewEntity(
     val id: String,
     val title: String,
-    val type: LessonType
+    val type: LessonType,
+    val youtubeUrl: String? = null
 ) : ItemEntity {
     override val layoutRes: Int
         get() = when (type) {

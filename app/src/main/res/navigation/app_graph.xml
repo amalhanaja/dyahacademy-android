@@ -19,9 +19,6 @@
         android:name="com.amalcodes.dyahacademy.android.features.course.CourseDetailFragment"
         android:label="fragment_course_detail"
         tools:layout="@layout/fragment_course_detail">
-        <action
-            android:id="@+id/action_courseDetailFragment_to_youtubeLessonFragment"
-            app:destination="@id/youtubeLessonFragment" />
         <argument
             android:name="courseId"
             app:argType="string" />
@@ -31,12 +28,6 @@
         <argument
             android:name="subtitle"
             app:argType="string" />
-        <action
-            android:id="@+id/action_courseDetailFragment_to_markdownLessonFragment"
-            app:destination="@id/markdownLessonFragment" />
-        <action
-            android:id="@+id/action_courseDetailFragment_to_quizFragment"
-            app:destination="@id/quizFragment" />
         <action
             android:id="@+id/action_courseDetailFragment_to_topicDetailFragment"
             app:destination="@id/topicDetailFragment" />
@@ -51,18 +42,6 @@
             app:argType="string" />
         <argument
             android:name="label"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/markdownLessonFragment"
-        android:name="com.amalcodes.dyahacademy.android.features.lesson.MarkdownLessonFragment"
-        android:label="MarkdownLessonFragment"
-        tools:layout="@layout/fragment_markdown_lesson">
-        <argument
-            android:name="label"
-            app:argType="string" />
-        <argument
-            android:name="markdown"
             app:argType="string" />
     </fragment>
     <fragment
@@ -88,5 +67,11 @@
         <argument
             android:name="topicId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_topicDetailFragment_to_youtubeLessonFragment"
+            app:destination="@id/youtubeLessonFragment" />
+        <action
+            android:id="@+id/action_topicDetailFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
     </fragment>
 </navigation>

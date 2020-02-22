@@ -46,7 +46,8 @@ class TopicDetailViewModel : ViewModel() {
             ENUM_LESSON_LESSONTYPE.YOUTUBE -> LessonViewEntity(
                 id = id(),
                 title = title(),
-                type = LessonType.YOUTUBE
+                type = LessonType.YOUTUBE,
+                youtubeUrl = youtubeUrl()
             )
             ENUM_LESSON_LESSONTYPE.LESSON_GROUP -> LessonViewEntity(
                 id = id(),
@@ -67,7 +68,8 @@ class TopicDetailViewModel : ViewModel() {
             ENUM_LESSON_LESSONTYPE.YOUTUBE -> LessonViewEntity(
                 id = id(),
                 title = title(),
-                type = LessonType.YOUTUBE
+                type = LessonType.YOUTUBE,
+                youtubeUrl = youtubeUrl()
             )
             ENUM_LESSON_LESSONTYPE.LESSON_GROUP -> LessonViewEntity(
                 id = id(),

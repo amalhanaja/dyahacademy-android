@@ -9,11 +9,41 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        app:show_buffering="always"
         android:background="@android:color/black"
+        app:show_timeout="1200"
         app:controller_layout_id="@layout/exo_controller"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:use_artwork="true"
+        app:use_controller="true"
         app:resize_mode="fit" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actv_youtube_lesson_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:layout_marginEnd="@dimen/spacing_6"
+        android:textColor="@color/jet"
+        android:textSize="@dimen/font_size_lg"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/video_view"
+        tools:text="Oogenesis" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actv_youtube_lesson_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6"
+        android:layout_marginTop="@dimen/spacing_2"
+        android:layout_marginEnd="@dimen/spacing_6"
+        android:textColor="@color/outerSpace"
+        android:textSize="@dimen/font_size_base"
+        app:layout_constraintTop_toBottomOf="@id/actv_youtube_lesson_title"
+        tools:text="Oogenesis atau oögenesis (pengucapan bahasa Inggris: [ˌoʊ.əˈdʒɛnɨsɪs][1]) adalah penciptaan ovum (sel telur) merupakan proses dari bentuk betina gametogenesis yang setara dengan jantan yakni spermatogenesis. Oogenesis berlangsung melibatkan pengembangan berbagai tahap reproduksi telur sel betina
+yang belum matang." />
 </androidx.constraintlayout.widget.ConstraintLayout>

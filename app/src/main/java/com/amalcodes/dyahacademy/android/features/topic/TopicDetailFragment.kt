@@ -12,6 +12,8 @@ import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
 import com.amalcodes.dyahacademy.android.features.lesson.LessonGroupTitleViewHolder
+import com.amalcodes.dyahacademy.android.features.lesson.LessonType
+import com.amalcodes.dyahacademy.android.features.lesson.LessonViewEntity
 import com.amalcodes.dyahacademy.android.features.lesson.LessonViewHolder
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 import kotlinx.android.synthetic.main.component_toolbar.view.*
@@ -73,6 +75,22 @@ class TopicDetailFragment : Fragment(R.layout.fragment_topic_detail) {
                     else -> Rect()
                 }
             })
+        adapter.setOnViewHolderClickListener { view, item ->
+            when (view.id) {
+                R.id.cl_item_lesson -> {
+                    require(item is LessonViewEntity)
+                    val direction = when (item.type) {
+                        LessonType.YOUTUBE -> TopicDetailFragmentDirections
+                            .actionTopicDetailFragmentToYoutubeLessonFragment(
+                                youtubeUrl = requireNotNull(item.youtubeUrl),
+                                label = item.title
+                            )
+                        else -> throw IllegalStateException("unexpected LessonType: ${item.type}")
+                    }
+                    findNavController().navigate(direction)
+                }
+            }
+        }
     }
 
     @ExperimentalCoroutinesApi
