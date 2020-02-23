@@ -6,4 +6,8 @@
     <string name="text_Video">Video</string>
     <string name="text_By_colon">By : %1$s</string>
     <string name="text_Confirmation_Icon">Confirmation Icon</string>
+    <string name="text_finish_quiz_confirmation_dialog_title">Are you sure it\'s finished?</string>
+    <string name="text_No">No</string>
+    <string name="text_Sure">Sure</string>
+    <string name="text_finish_quiz_confirmation_dialog_description_blank_answer">Questions have not been answered</string>
 </resources>

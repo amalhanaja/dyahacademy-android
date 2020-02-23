@@ -2,7 +2,11 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.bold
+import androidx.core.text.color
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -62,12 +66,18 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        confirmationDialogViewModel.viewEntity = null
+    }
+
     private fun onQuizFinishedState(data: QuizUIState.QuizFinished) {
         toolbar_quiz?.iv_menu?.isGone = true
         Toast.makeText(requireContext(), "${data.score}", Toast.LENGTH_SHORT).show()
     }
 
     private fun onAnswerFilledState(answers: List<AnswerViewEntity>) {
+        updateConfirmationDialogViewEntity(answers)
         answerAdapter.submitList(answers)
     }
 
@@ -107,6 +117,22 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
         }
+        updateConfirmationDialogViewEntity(answers)
+    }
+
+    private fun updateConfirmationDialogViewEntity(answers: List<AnswerViewEntity>) {
+        val blankAnswerCount = answers.count { it.answer.isEmpty() }
+        confirmationDialogViewModel.viewEntity = ConfirmationDialogViewEntity(
+            title = getString(R.string.text_finish_quiz_confirmation_dialog_title),
+            description = SpannableStringBuilder().bold {
+                color(ResourcesCompat.getColor(resources, R.color.coral, null)) {
+                    append(blankAnswerCount.toString())
+                }
+            }.append(" ").append(getString(R.string.text_finish_quiz_confirmation_dialog_description_blank_answer)),
+            cancelButton = getString(R.string.text_No) to { _ -> Unit },
+            confirmButton = getString(R.string.text_Sure) to { _ -> viewModel.finishQuiz() },
+            drawableRes = R.drawable.ic_check_circle
+        )
     }
 
     private fun onErrorState(throwable: Throwable) {
@@ -115,16 +141,6 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        confirmationDialogViewModel.viewEntity = ConfirmationDialogViewEntity(
-            title = "Yakin nih sudah Selesai ?",
-            description = "5 soal belum dijawab",
-            cancelButton = "Tidak" to { _ ->
-            },
-            confirmButton = "Yakin" to { _ ->
-                viewModel.finishQuiz()
-            },
-            drawableRes = R.drawable.ic_check_circle
-        )
         viewModel.fetch(args.lessonId)
     }
 

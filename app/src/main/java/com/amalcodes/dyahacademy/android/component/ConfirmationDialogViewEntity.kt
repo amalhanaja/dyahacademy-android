@@ -5,11 +5,11 @@ import android.view.View
 import androidx.annotation.DrawableRes
 
 class ConfirmationDialogViewEntity(
-    val title: String,
-    val description: String,
+    val title: CharSequence,
+    val description: CharSequence,
     @DrawableRes
     val drawableRes: Int = 0,
     val drawableTint: ColorStateList? = null,
-    val cancelButton: Pair<String, (View) -> Unit>,
-    val confirmButton: Pair<String, (View) -> Unit>
+    val cancelButton: Pair<CharSequence, (View) -> Unit>,
+    val confirmButton: Pair<CharSequence, (View) -> Unit>
 )
