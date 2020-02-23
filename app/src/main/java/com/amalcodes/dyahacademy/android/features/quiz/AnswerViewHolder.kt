@@ -2,7 +2,7 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.content.res.ColorStateList
 import android.view.View
-import com.amalcodes.dyahacademy.android.R
+import androidx.core.content.res.ResourcesCompat
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
 import kotlinx.android.synthetic.main.item_answer.view.*
@@ -19,16 +19,13 @@ class AnswerViewHolder(view: View) : BaseViewHolder<AnswerViewEntity>(view) {
         mtv_item_answer_mark?.text = entity.answer
         mtv_item_answer_number?.text = number.toString()
         mtv_item_answer_number?.backgroundTintList = ColorStateList.valueOf(
-            when {
-                entity.isCurrent -> context.resources.getColor(R.color.coral)
-                else -> context.resources.getColor(R.color.white)
-            }
+            ResourcesCompat.getColor(context.resources, entity.numberBackgroundTint, null)
         )
         mtv_item_answer_number?.setTextColor(
-            when {
-                entity.isCurrent -> context.resources.getColor(R.color.white)
-                else -> context.resources.getColor(R.color.coral)
-            }
+            ResourcesCompat.getColor(context.resources, entity.numberTextColor, null)
+        )
+        mtv_item_answer_mark?.setTextColor(
+            ResourcesCompat.getColor(context.resources, entity.answerTextColor, null)
         )
         Unit
     }

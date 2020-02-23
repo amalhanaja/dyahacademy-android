@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".features.quiz.QuizSummaryFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_quiz_summary_score_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6"
+        android:layout_marginEnd="@dimen/spacing_6"
+        android:background="@drawable/bg_scoreboard"
+        app:layout_constraintBottom_toTopOf="@id/mb_quiz_summary_show_answer"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtv_quiz_summary_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_6"
+            android:layout_marginTop="@dimen/spacing_6"
+            android:layout_marginEnd="@dimen/spacing_6"
+            android:textAlignment="center"
+            android:textColor="@color/outerSpace"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nih!. aku kasih nilai buat kamu karena sudah menyelesaikan PAS Semester 1 Paket A" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtv_quiz_summary_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_4"
+            android:textAlignment="center"
+            android:textColor="@color/dodgerBlue"
+            android:textSize="72sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/mtv_quiz_summary_description"
+            tools:text="80" />
+
+        <LinearLayout
+            android:id="@+id/ll_quiz_summary_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_6"
+            android:layout_marginTop="@dimen/spacing_4"
+            android:layout_marginEnd="@dimen/spacing_6"
+            android:layout_marginBottom="@dimen/spacing_6"
+            android:divider="@color/pewterBlue"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/spacing_4"
+            android:paddingBottom="@dimen/spacing_4"
+            android:showDividers="middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mtv_quiz_summary_score">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_quiz_summary_correct_answer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/mediumSeaGreen"
+                android:textSize="@dimen/font_size_lg"
+                tools:text="1\nBenar" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_quiz_summary_wrong_answer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/radicalRed"
+                android:textSize="@dimen/font_size_lg"
+                tools:text="1\nSalah" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_quiz_summary_blank_answer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/pewterBlue"
+                android:textSize="@dimen/font_size_lg"
+                tools:text="1\nKosong" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_quiz_summary_show_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6"
+        android:layout_marginEnd="@dimen/spacing_6"
+        android:text="@string/text_btnShowAnswer"
+        app:layout_constraintBottom_toTopOf="@id/mb_quiz_summary_continue_learning"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_quiz_summary_continue_learning"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6"
+        android:layout_marginEnd="@dimen/spacing_6"
+        android:layout_marginBottom="@dimen/spacing_4"
+        android:text="@string/text_btnContinueLearning"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

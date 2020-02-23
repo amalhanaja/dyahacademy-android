@@ -15,23 +15,20 @@ class QuizViewModel : ViewModel() {
 
     private val currentIndex: MediatorLiveData<Int> = MediatorLiveData()
 
+    private var isCorrection: Boolean = false
+
     val uiState: LiveData<QuizUIState> = _uiState
 
     init {
         _uiState.value = QuizUIState.Initial
         _uiState.addSource(currentIndex) {
             if (quizzes.isNotEmpty()) {
-                _uiState.postValue(
-                    QuizUIState.HasData(
-                        quizzes[it],
-                        quizzes.mapIndexed { index, quiz ->
-                            AnswerViewEntity(
-                                id = index,
-                                answer = quiz.answer,
-                                isCurrent = it == index
-                            )
-                        })
-                )
+                val state = if (isCorrection) {
+                    QuizUIState.AnswersChecked(quizzes[it], quizzes.toListOfAnswerViewEntity())
+                } else {
+                    QuizUIState.HasData(quizzes[it], quizzes.toListOfAnswerViewEntity())
+                }
+                _uiState.postValue(state)
             }
         }
     }
@@ -39,15 +36,7 @@ class QuizViewModel : ViewModel() {
     fun fillAnswer(answerMark: String) {
         val currentIndexValue = currentIndex.value ?: 0
         quizzes[currentIndexValue].answer = answerMark
-        _uiState.postValue(
-            QuizUIState.AnswerFilled(quizzes.mapIndexed { index, quiz ->
-                AnswerViewEntity(
-                    id = index,
-                    answer = quiz.answer,
-                    isCurrent = currentIndexValue == index
-                )
-            })
-        )
+        _uiState.postValue(QuizUIState.AnswerFilled(quizzes.toListOfAnswerViewEntity()))
     }
 
     fun setCurrentIndex(index: Int) {
@@ -55,17 +44,17 @@ class QuizViewModel : ViewModel() {
     }
 
     fun finishQuiz() {
-        fun QuizViewEntity.isCorrectAnswer(): Boolean = answerSelections.find {
-            it.answerMark.toString() == answer
-        }?.isCorrect ?: false
-
         val correctAnswer = quizzes.count { it.isCorrectAnswer() }
+        val blankAnswer = quizzes.count { it.answer.isEmpty() }
         val score = (correctAnswer.toFloat() / quizzes.count().toFloat()) * 100
         val state = QuizUIState.QuizFinished(
-            correctAnswer = correctAnswer,
-            incorrectAnswer = quizzes.count { it.isCorrectAnswer() },
-            blankAnswer = quizzes.count { it.answer.isEmpty() },
-            score = score.toInt()
+            summary = QuizSummaryViewEntity(
+                correctAnswer = correctAnswer,
+                wrongAnswer = quizzes.count() - correctAnswer - blankAnswer,
+                blankAnswer = quizzes.count { it.answer.isEmpty() },
+                score = score.toInt()
+            ),
+            answers = quizzes.toListOfAnswerViewEntity()
         )
         _uiState.postValue(state)
     }
@@ -78,8 +67,26 @@ class QuizViewModel : ViewModel() {
         currentIndex.postValue(currentIndex.value ?: 0 - 1)
     }
 
+    private fun List<QuizViewEntity>.toListOfAnswerViewEntity(): List<AnswerViewEntity> {
+        val currentIndexValue = currentIndex.value ?: 0
+        return mapIndexed { index, quiz ->
+            AnswerViewEntity(
+                id = index,
+                answer = quiz.answer,
+                isCurrent = currentIndexValue == index,
+                isCorrect = quiz.isCorrectAnswer(),
+                isCorrectionEnabled = isCorrection
+            )
+        }
+    }
+
+    private fun QuizViewEntity.isCorrectAnswer(): Boolean = answerSelections.find {
+        it.answerMark.toString() == answer
+    }?.isCorrect ?: false
+
     @ExperimentalCoroutinesApi
-    fun fetch(lessonId: String) {
+    fun fetch(lessonId: String, initialAnswers: List<AnswerViewEntity>? = null) {
+        isCorrection = !initialAnswers.isNullOrEmpty()
         viewModelScope.launch {
             LessonRepository.getLessonById(lessonId)
                 .catch { _uiState.postValue(QuizUIState.Error(it)) }
@@ -91,7 +98,8 @@ class QuizViewModel : ViewModel() {
                             AnswerSelectionViewEntity(
                                 text = answer["text"] as String,
                                 isCorrect = answer["isCorrect"] as Boolean,
-                                answerMark = 65.plus(indexAnswer).toChar()
+                                answerMark = 65.plus(indexAnswer).toChar(),
+                                isCorrectionEnabled = isCorrection
                             )
                         }
                         QuizViewEntity(
@@ -100,7 +108,7 @@ class QuizViewModel : ViewModel() {
                             currentIndex = index,
                             count = lesson.quizzes().orEmpty().count(),
                             questionImageUrl = quiz.questionImageUrl(),
-                            answer = ""
+                            answer = initialAnswers?.getOrNull(index)?.answer.orEmpty()
                         )
                     })
                     next()

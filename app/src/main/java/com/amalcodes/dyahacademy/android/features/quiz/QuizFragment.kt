@@ -3,7 +3,6 @@ package com.amalcodes.dyahacademy.android.features.quiz
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.bold
 import androidx.core.text.color
@@ -59,9 +58,10 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             when (it) {
                 is QuizUIState.Initial -> onInitialState()
                 is QuizUIState.Error -> onErrorState(it.throwable)
-                is QuizUIState.HasData -> onHasDataState(it.data, it.answers)
+                is QuizUIState.HasData -> onHasDataState(it.quiz, it.answers)
                 is QuizUIState.AnswerFilled -> onAnswerFilledState(it.answers)
                 is QuizUIState.QuizFinished -> onQuizFinishedState(it)
+                is QuizUIState.AnswersChecked -> onAnswerCheckedState(it.quiz, it.answers)
             }
         }
     }
@@ -71,9 +71,15 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         confirmationDialogViewModel.viewEntity = null
     }
 
-    private fun onQuizFinishedState(data: QuizUIState.QuizFinished) {
+    private fun onQuizFinishedState(uiState: QuizUIState.QuizFinished) {
         toolbar_quiz?.iv_menu?.isGone = true
-        Toast.makeText(requireContext(), "${data.score}", Toast.LENGTH_SHORT).show()
+        val direction = QuizFragmentDirections.actionQuizFragmentToQuizSummaryFragment(
+            lessonId = args.lessonId,
+            quizSummary = uiState.summary,
+            answers = uiState.answers.toTypedArray(),
+            lessonTitle = args.label
+        )
+        findNavController().navigate(direction)
     }
 
     private fun onAnswerFilledState(answers: List<AnswerViewEntity>) {
@@ -81,25 +87,28 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         answerAdapter.submitList(answers)
     }
 
+    private fun onAnswerCheckedState(
+        quiz: QuizViewEntity,
+        answers: List<AnswerViewEntity>
+    ) {
+        toolbar_quiz?.iv_menu?.isGone = true
+        showQuizAndAnswersHolder(quiz, answers)
+    }
+
     private fun onHasDataState(
-        data: QuizViewEntity,
+        quiz: QuizViewEntity,
         answers: List<AnswerViewEntity>
     ) {
         toolbar_quiz?.iv_menu?.isVisible = true
-        Injector.markwon.setMarkdown(mtv_quiz_question, data.question)
-        iv_quiz_question?.isGone = data.questionImageUrl.isNullOrEmpty()
-        if (!data.questionImageUrl.isNullOrEmpty()) {
-            iv_quiz_question?.load(requireNotNull(data.questionImageUrl))
-        }
-        answerAdapter.submitList(answers)
-        answerSelectionAdapter.submitList(data.answerSelections.map {
-            it.copy(isSelected = it.answerMark.toString() == answers[data.currentIndex].answer)
+        showQuizAndAnswersHolder(quiz, answers)
+        answerSelectionAdapter.submitList(quiz.answerSelections.map {
+            it.copy(isSelected = it.answerMark.toString() == answers[quiz.currentIndex].answer)
         })
         answerSelectionAdapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
                 R.id.cl_item_answer -> {
                     require(item is AnswerSelectionViewEntity)
-                    val newAnswer = data.answerSelections.map {
+                    val newAnswer = quiz.answerSelections.map {
                         it.copy(isSelected = item == it)
                     }
                     viewModel.fillAnswer(newAnswer.find {
@@ -109,6 +118,22 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
         }
+        updateConfirmationDialogViewEntity(answers)
+    }
+
+    private fun showQuizAndAnswersHolder(
+        quiz: QuizViewEntity,
+        answers: List<AnswerViewEntity>
+    ) {
+        Injector.markwon.setMarkdown(mtv_quiz_question, quiz.question)
+        iv_quiz_question?.isGone = quiz.questionImageUrl.isNullOrEmpty()
+        answerSelectionAdapter.submitList(quiz.answerSelections.map {
+            it.copy(isSelected = it.answerMark.toString() == answers[quiz.currentIndex].answer)
+        })
+        if (!quiz.questionImageUrl.isNullOrEmpty()) {
+            iv_quiz_question?.load(requireNotNull(quiz.questionImageUrl))
+        }
+        answerAdapter.submitList(answers)
         answerAdapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
                 R.id.ll_answer -> {
@@ -117,7 +142,6 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
         }
-        updateConfirmationDialogViewEntity(answers)
     }
 
     private fun updateConfirmationDialogViewEntity(answers: List<AnswerViewEntity>) {
@@ -141,7 +165,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        viewModel.fetch(args.lessonId)
+        viewModel.fetch(args.lessonId, args.answers?.toList())
     }
 
     private fun setupView() {

@@ -10,4 +10,10 @@
     <string name="text_No">No</string>
     <string name="text_Sure">Sure</string>
     <string name="text_finish_quiz_confirmation_dialog_description_blank_answer">Questions have not been answered</string>
+    <string name="text_blankAnswerCount">%1$d\nBlank</string>
+    <string name="text_correctAnswerCount">%1$d\nCorrect</string>
+    <string name="text_correctWrongCount">%1$d\nWrong</string>
+    <string name="text_quizSummaryDescription">Here is your score for completing $1%s</string>
+    <string name="text_btnShowAnswer">Show me the Answers!</string>
+    <string name="text_btnContinueLearning">Continue Learning</string>
 </resources>

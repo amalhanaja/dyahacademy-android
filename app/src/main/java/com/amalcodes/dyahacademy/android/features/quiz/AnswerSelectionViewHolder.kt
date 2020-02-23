@@ -2,6 +2,7 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.content.res.ColorStateList
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
 import kotlinx.android.synthetic.main.item_answer_selection.view.*
@@ -18,9 +19,17 @@ class AnswerSelectionViewHolder(view: View) : BaseViewHolder<AnswerSelectionView
         mtv_item_answer_selection_mark?.text = entity.answerMark.toString()
         mtv_item_answer_selection_mark?.setBackgroundResource(entity.markerBackgroundRes)
         mtv_item_answer_selection_mark?.backgroundTintList = entity.markerBackgroundTint?.let {
-            ColorStateList.valueOf(context.resources.getColor(it))
+            ColorStateList.valueOf(ResourcesCompat.getColor(context.resources, it, null))
         }
-        mtv_item_answer_selection_mark?.setTextColor(context.resources.getColor(entity.markerTextColor))
+        cl_item_answer?.backgroundTintList = ColorStateList.valueOf(
+            ResourcesCompat.getColor(context.resources, entity.backgroundTint, null)
+        )
+        mtv_item_answer_selection_text?.setTextColor(
+            ResourcesCompat.getColor(context.resources, entity.textColor, null)
+        )
+        mtv_item_answer_selection_mark?.setTextColor(
+            ResourcesCompat.getColor(context.resources, entity.markerTextColor, null)
+        )
         Unit
     }
 
