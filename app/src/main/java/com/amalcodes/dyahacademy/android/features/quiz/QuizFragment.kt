@@ -77,8 +77,10 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     ) {
         toolbar_quiz?.iv_menu?.isVisible = true
         Injector.markwon.setMarkdown(mtv_quiz_question, data.question)
-        iv_quiz_question?.isGone = data.questionImageUrl == null
-        data.questionImageUrl?.let { iv_quiz_question?.load(it) }
+        iv_quiz_question?.isGone = data.questionImageUrl.isNullOrEmpty()
+        if (!data.questionImageUrl.isNullOrEmpty()) {
+            iv_quiz_question?.load(requireNotNull(data.questionImageUrl))
+        }
         answerAdapter.submitList(answers)
         answerSelectionAdapter.submitList(data.answerSelections.map {
             it.copy(isSelected = it.answerMark.toString() == answers[data.currentIndex].answer)
