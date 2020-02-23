@@ -27,7 +27,8 @@ class QuizViewModel : ViewModel() {
                         quizzes.mapIndexed { index, quiz ->
                             AnswerViewEntity(
                                 id = index,
-                                answer = quiz.answer
+                                answer = quiz.answer,
+                                isCurrent = it == index
                             )
                         })
                 )
@@ -42,7 +43,8 @@ class QuizViewModel : ViewModel() {
             QuizUIState.AnswerFilled(quizzes.mapIndexed { index, quiz ->
                 AnswerViewEntity(
                     id = index,
-                    answer = quiz.answer
+                    answer = quiz.answer,
+                    isCurrent = currentIndexValue == index
                 )
             })
         )

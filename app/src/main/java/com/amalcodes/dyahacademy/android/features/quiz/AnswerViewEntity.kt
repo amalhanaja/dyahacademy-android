@@ -11,7 +11,8 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 
 data class AnswerViewEntity(
     val id: Int,
-    val answer: String
+    val answer: String,
+    val isCurrent: Boolean
 ) : ItemEntity {
     override val layoutRes: Int
         get() = R.layout.item_answer

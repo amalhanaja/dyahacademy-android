@@ -119,7 +119,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                     top = resources.getDimensionPixelSize(R.dimen.spacing_4)
                     right = resources.getDimensionPixelSize(R.dimen.spacing_0_5)
                     left = resources.getDimensionPixelSize(R.dimen.spacing_0_5)
-                    bottom = resources.getDimensionPixelSize(R.dimen.spacing_4)
+                    bottom = resources.getDimensionPixelSize(R.dimen.spacing_2)
                 }
                 else -> Rect()
             }

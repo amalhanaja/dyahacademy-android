@@ -50,6 +50,7 @@
                 android:elevation="@dimen/elevation_1"
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_4"
+                android:layout_marginTop="@dimen/spacing_2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -63,6 +64,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="@dimen/spacing_2"
                     tools:srcCompat="@tools:sample/backgrounds/scenic"
                     tools:visibility="visible" />
 
@@ -70,7 +72,6 @@
                     android:id="@+id/mtv_quiz_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_2"
                     android:textColor="@color/jet"
                     android:textSize="@dimen/font_size_base"
                     app:layout_constraintEnd_toEndOf="parent"
