@@ -6,12 +6,15 @@ import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.api.load
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewEntity
+import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewModel
 import com.amalcodes.dyahacademy.android.core.Injector
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
@@ -28,6 +31,10 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             QuizViewModel.Factory
         }
     )
+
+    private val confirmationDialogViewModel: ConfirmationDialogViewModel by activityViewModels {
+        ConfirmationDialogViewModel.Factory
+    }
 
 
     private val answerSelectionAdapter by lazy {
@@ -68,6 +75,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         data: QuizViewEntity,
         answers: List<AnswerViewEntity>
     ) {
+        toolbar_quiz?.iv_menu?.isVisible = true
         Injector.markwon.setMarkdown(mtv_quiz_question, data.question)
         iv_quiz_question?.isGone = data.questionImageUrl == null
         data.questionImageUrl?.let { iv_quiz_question?.load(it) }
@@ -105,6 +113,16 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
+        confirmationDialogViewModel.viewEntity = ConfirmationDialogViewEntity(
+            title = "Yakin nih sudah Selesai ?",
+            description = "5 soal belum dijawab",
+            cancelButton = "Tidak" to { _ ->
+            },
+            confirmButton = "Yakin" to { _ ->
+                viewModel.finishQuiz()
+            },
+            drawableRes = R.drawable.ic_check_circle
+        )
         viewModel.fetch(args.lessonId)
     }
 
@@ -134,13 +152,14 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             }
         }
         toolbar_quiz?.iv_back?.isVisible = true
-        toolbar_quiz?.iv_menu?.isVisible = true
         toolbar_quiz?.iv_menu?.setImageResource(R.drawable.ic_check)
         toolbar_quiz?.iv_back?.setOnClickListener {
             findNavController().navigateUp()
         }
         toolbar_quiz?.iv_menu?.setOnClickListener {
-            viewModel.finishQuiz()
+            val direction = QuizFragmentDirections
+                .actionGlobalConfirmationDialogFragment()
+            findNavController().navigate(direction)
         }
         toolbar_quiz?.mtv_toolbar_title?.text = args.label
         rv_answer_selection?.isNestedScrollingEnabled = false

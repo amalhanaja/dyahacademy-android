@@ -74,4 +74,12 @@
             android:id="@+id/action_topicDetailFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/confirmationDialogFragment"
+        android:name="com.amalcodes.dyahacademy.android.component.ConfirmationDialogFragment"
+        android:label="dialog_finish_quiz_confirmation"
+        tools:layout="@layout/dialog_finish_quiz_confirmation" />
+    <action
+        android:id="@+id/action_global_confirmationDialogFragment"
+        app:destination="@id/confirmationDialogFragment" />
 </navigation>
