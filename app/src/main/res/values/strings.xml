@@ -5,4 +5,5 @@
     <string name="text_Quiz">Quiz</string>
     <string name="text_Video">Video</string>
     <string name="text_By_colon">By : %1$s</string>
+    <string name="text_Confirmation_Icon">Confirmation Icon</string>
 </resources>

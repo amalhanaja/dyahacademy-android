@@ -78,7 +78,7 @@
         android:id="@+id/confirmationDialogFragment"
         android:name="com.amalcodes.dyahacademy.android.component.ConfirmationDialogFragment"
         android:label="dialog_finish_quiz_confirmation"
-        tools:layout="@layout/dialog_finish_quiz_confirmation" />
+        tools:layout="@layout/dialog_confirmation" />
     <action
         android:id="@+id/action_global_confirmationDialogFragment"
         app:destination="@id/confirmationDialogFragment" />

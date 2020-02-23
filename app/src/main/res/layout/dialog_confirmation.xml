@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:srcCompat="@drawable/ic_check_circle"
+        android:contentDescription="@string/text_Confirmation_Icon"
         tools:tint="@color/dodgerBlue" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -60,10 +61,6 @@
         android:layout_marginStart="@dimen/spacing_6"
         android:layout_marginTop="@dimen/spacing_6"
         android:layout_marginEnd="@dimen/spacing_6"
-        android:textSize="@dimen/font_size_lg"
-        android:textStyle="bold"
-        app:backgroundTint="@color/dodgerBlue"
-        app:cornerRadius="@dimen/radius_lg"
         app:layout_constraintBottom_toTopOf="@+id/mb_confirmation_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,10 +75,6 @@
         android:layout_marginStart="@dimen/spacing_6"
         android:layout_marginEnd="@dimen/spacing_6"
         android:layout_marginBottom="@dimen/spacing_6"
-        android:textColor="@color/outerSpace"
-        android:textSize="@dimen/font_size_lg"
-        android:textStyle="bold"
-        app:cornerRadius="@dimen/radius_lg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

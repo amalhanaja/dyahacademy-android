@@ -38,4 +38,10 @@
     <dimen name="elevation_3">8dp</dimen>
     <dimen name="video_size">204dp</dimen>
     <!-- Elevation -->
+
+
+    <item name="ripple_default_alpha" format="float" type="dimen">0.00</item>
+    <item name="ripple_focused_alpha" format="float" type="dimen">0.12</item>
+    <item name="ripple_hovered_alpha" format="float" type="dimen">0.04</item>
+    <item name="ripple_pressed_alpha" format="float" type="dimen">0.12</item>
 </resources>

@@ -11,6 +11,22 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:fontFamily">@font/nunito_sans</item>
         <item name="android:font" tools:targetApi="o">@font/nunito_sans</item>
+        <item name="android:windowBackground">@color/snow</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="materialButtonStyle">@style/AppTheme.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/AppTheme.Button.OutlinedButton</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/selector_btn_bg_color</item>
+        <item name="cornerRadius">@dimen/radius_lg</item>
+    </style>
+
+    <style name="AppTheme.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/radius_lg</item>
+        <item name="strokeColor">@color/selector_btn_stroke_color</item>
+        <item name="android:textColor">@color/pewterBlue</item>
+        <item name="rippleColor">@color/selector_btn_outlined_ripple_color</item>
     </style>
 
 </resources>
