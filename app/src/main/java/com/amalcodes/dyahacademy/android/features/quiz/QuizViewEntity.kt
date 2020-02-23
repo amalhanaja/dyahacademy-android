@@ -11,6 +11,6 @@ data class QuizViewEntity(
     val questionImageUrl: String?,
     val answerSelections: List<AnswerSelectionViewEntity>,
     var answer: String = "",
-    val current: Int = 0,
+    val currentIndex: Int = 0,
     val count: Int
 )

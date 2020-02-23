@@ -2,6 +2,7 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -49,8 +50,14 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 is QuizUIState.Error -> onErrorState(it.throwable)
                 is QuizUIState.HasData -> onHasDataState(it.data, it.answers)
                 is QuizUIState.AnswerFilled -> onAnswerFilledState(it.answers)
+                is QuizUIState.QuizFinished -> onQuizFinishedState(it)
             }
         }
+    }
+
+    private fun onQuizFinishedState(data: QuizUIState.QuizFinished) {
+        toolbar_quiz?.iv_menu?.isGone = true
+        Toast.makeText(requireContext(), "${data.score}", Toast.LENGTH_SHORT).show()
     }
 
     private fun onAnswerFilledState(answers: List<AnswerViewEntity>) {
@@ -65,7 +72,9 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         iv_quiz_question?.isGone = data.questionImageUrl == null
         data.questionImageUrl?.let { iv_quiz_question?.load(it) }
         answerAdapter.submitList(answers)
-        answerSelectionAdapter.submitList(data.answerSelections)
+        answerSelectionAdapter.submitList(data.answerSelections.map {
+            it.copy(isSelected = it.answerMark.toString() == answers[data.currentIndex].answer)
+        })
         answerSelectionAdapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
                 R.id.cl_item_answer -> {
@@ -125,8 +134,13 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             }
         }
         toolbar_quiz?.iv_back?.isVisible = true
+        toolbar_quiz?.iv_menu?.isVisible = true
+        toolbar_quiz?.iv_menu?.setImageResource(R.drawable.ic_check)
         toolbar_quiz?.iv_back?.setOnClickListener {
             findNavController().navigateUp()
+        }
+        toolbar_quiz?.iv_menu?.setOnClickListener {
+            viewModel.finishQuiz()
         }
         toolbar_quiz?.mtv_toolbar_title?.text = args.label
         rv_answer_selection?.isNestedScrollingEnabled = false

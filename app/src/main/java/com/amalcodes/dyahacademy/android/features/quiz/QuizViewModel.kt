@@ -54,6 +54,22 @@ class QuizViewModel : ViewModel() {
         currentIndex.postValue(index)
     }
 
+    fun finishQuiz() {
+        fun QuizViewEntity.isCorrectAnswer(): Boolean = answerSelections.find {
+            it.answerMark.toString() == answer
+        }?.isCorrect ?: false
+
+        val correctAnswer = quizzes.count { it.isCorrectAnswer() }
+        val score = (correctAnswer.toFloat() / quizzes.count().toFloat()) * 100
+        val state = QuizUIState.QuizFinished(
+            correctAnswer = correctAnswer,
+            incorrectAnswer = quizzes.count { it.isCorrectAnswer() },
+            blankAnswer = quizzes.count { it.answer.isEmpty() },
+            score = score.toInt()
+        )
+        _uiState.postValue(state)
+    }
+
     fun next() {
         currentIndex.postValue((currentIndex.value ?: -1) + 1)
     }
@@ -81,7 +97,7 @@ class QuizViewModel : ViewModel() {
                         QuizViewEntity(
                             question = quiz.question(),
                             answerSelections = answers,
-                            current = index + 1,
+                            currentIndex = index,
                             count = lesson.quizzes().orEmpty().count(),
                             questionImageUrl = quiz.questionImageUrl(),
                             answer = ""
