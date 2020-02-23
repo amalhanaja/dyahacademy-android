@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 
 import com.amalcodes.dyahacademy.android.R
-import kotlinx.android.synthetic.main.dialog_finish_quiz_confirmation.*
+import kotlinx.android.synthetic.main.dialog_confirmation.*
 
 class ConfirmationDialogFragment : DialogFragment() {
 
@@ -18,7 +18,7 @@ class ConfirmationDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_finish_quiz_confirmation, container, false)
+        return inflater.inflate(R.layout.dialog_confirmation, container, false)
     }
 
     private val viewModel: ConfirmationDialogViewModel by activityViewModels {
