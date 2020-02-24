@@ -58,13 +58,13 @@
                 <ImageView
                     android:id="@+id/iv_quiz_question"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:scaleType="centerInside"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_2"
+                    android:adjustViewBounds="true"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginBottom="@dimen/spacing_2"
                     tools:srcCompat="@tools:sample/backgrounds/scenic"
                     tools:visibility="visible" />
 
@@ -87,12 +87,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:scrollIndicators="bottom"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll_quiz_question"
                 tools:itemCount="4"
-                tools:listitem="@layout/item_answer_selection" />
+                tools:listitem="@layout/item_answer_selection"
+                tools:targetApi="m" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
