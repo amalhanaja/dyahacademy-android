@@ -3,8 +3,8 @@ package com.amalcodes.dyahacademy.android.features.course
 import com.amalcodes.dyahacademy.android.GetAllCoursesQuery
 import com.amalcodes.dyahacademy.android.GetCourseByIdQuery
 import com.amalcodes.dyahacademy.android.core.Injector
+import com.amalcodes.dyahacademy.android.core.asFlow
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.coroutines.toFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,7 +26,7 @@ object CourseRepository {
         val query: GetAllCoursesQuery = GetAllCoursesQuery.builder()
             .build()
         return apolloClient.query(query)
-            .toFlow()
+            .asFlow()
             .map {
                 requireNotNull(it.data()?.courses())
             }
@@ -38,7 +38,7 @@ object CourseRepository {
             .id(courseId)
             .build()
         return apolloClient.query(query)
-            .toFlow()
+            .asFlow()
             .map { requireNotNull(it.data()?.course()) }
     }
 }

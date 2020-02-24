@@ -2,8 +2,8 @@ package com.amalcodes.dyahacademy.android.features.topic
 
 import com.amalcodes.dyahacademy.android.GetTopicByIdQuery
 import com.amalcodes.dyahacademy.android.core.Injector
+import com.amalcodes.dyahacademy.android.core.asFlow
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.coroutines.toFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,7 +26,7 @@ object TopicRepository {
             .id(topicId)
             .build()
         return apolloClient.query(query)
-            .toFlow()
+            .asFlow()
             .map { requireNotNull(it.data()?.topic()) }
     }
 }

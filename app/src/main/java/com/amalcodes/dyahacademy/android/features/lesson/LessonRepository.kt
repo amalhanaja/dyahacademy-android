@@ -2,8 +2,8 @@ package com.amalcodes.dyahacademy.android.features.lesson
 
 import com.amalcodes.dyahacademy.android.GetLessonByIdQuery
 import com.amalcodes.dyahacademy.android.core.Injector
+import com.amalcodes.dyahacademy.android.core.asFlow
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.coroutines.toFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +25,7 @@ object LessonRepository {
             .id(lessonId)
             .build()
         return apolloClient.query(query)
-            .toFlow()
+            .asFlow()
             .map { requireNotNull(it.data()?.lesson()) }
     }
 }
