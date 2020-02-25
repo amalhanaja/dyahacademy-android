@@ -16,4 +16,7 @@
     <string name="text_quizSummaryDescription">Here is your score for completing $1%s</string>
     <string name="text_btnShowAnswer">Show me the Answers!</string>
     <string name="text_btnContinueLearning">Continue Learning</string>
+    <string name="text_Next">next</string>
+    <string name="text_Previous">Previous</string>
+    <string name="cd_quiz_question">Quiz Question</string>
 </resources>

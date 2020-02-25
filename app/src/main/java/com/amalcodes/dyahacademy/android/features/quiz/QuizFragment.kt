@@ -118,6 +118,8 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
         }
+        iv_quiz_next?.setOnClickListener { viewModel.next() }
+        iv_quiz_prev?.setOnClickListener { viewModel.prev() }
         updateConfirmationDialogViewEntity(answers)
     }
 
@@ -134,6 +136,8 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             iv_quiz_question?.load(requireNotNull(quiz.questionImageUrl))
         }
         answerAdapter.submitList(answers)
+        val index = answers.indexOfFirst { it.isCurrent }
+        rv_answers?.scrollToPosition(index)
         answerAdapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
                 R.id.ll_answer -> {

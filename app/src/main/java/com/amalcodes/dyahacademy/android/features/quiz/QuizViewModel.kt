@@ -60,11 +60,17 @@ class QuizViewModel : ViewModel() {
     }
 
     fun next() {
-        currentIndex.postValue((currentIndex.value ?: -1) + 1)
+        when (val currentIndexValue = currentIndex.value ?: 0) {
+            quizzes.count() - 1 -> return
+            else -> currentIndex.postValue(currentIndexValue + 1)
+        }
     }
 
     fun prev() {
-        currentIndex.postValue(currentIndex.value ?: 0 - 1)
+        when (val currentIndexValue = currentIndex.value ?: 0) {
+            0 -> return
+            else -> currentIndex.postValue(currentIndexValue - 1)
+        }
     }
 
     private fun List<QuizViewEntity>.toListOfAnswerViewEntity(): List<AnswerViewEntity> {
@@ -108,7 +114,7 @@ class QuizViewModel : ViewModel() {
                         answer = initialAnswers?.getOrNull(index)?.answer.orEmpty()
                     )
                 })
-                next()
+                currentIndex.postValue(0)
             }.launchIn(viewModelScope)
     }
 
