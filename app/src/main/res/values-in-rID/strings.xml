@@ -20,4 +20,6 @@
     <string name="text_Next">Selanjutnya</string>
     <string name="text_Previous">Sebelumnya</string>
     <string name="cd_quiz_question">Gambar Pertanyaan</string>
+    <string name="text_error_general">Aduhh.. Error</string>
+    <string name="text_Try_Again">Coba Lagi</string>
 </resources>

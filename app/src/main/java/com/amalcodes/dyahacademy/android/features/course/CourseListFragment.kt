@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -79,8 +80,12 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
         }
     }
 
+    @ExperimentalCoroutinesApi
     private fun onErrorState(throwable: Throwable) {
         Timber.e(throwable)
+        Snackbar.make(parent, R.string.text_error_general, Snackbar.LENGTH_LONG)
+            .setAction(R.string.text_Try_Again) { viewModel.fetch() }
+            .show()
     }
 
     private fun onHasDataState(data: List<CourseViewEntity>) {

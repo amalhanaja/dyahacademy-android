@@ -21,6 +21,7 @@ import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewModel
 import com.amalcodes.dyahacademy.android.core.Injector
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_quiz.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -165,8 +166,17 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         )
     }
 
+    @ExperimentalCoroutinesApi
     private fun onErrorState(throwable: Throwable) {
         Timber.e(throwable)
+        Snackbar.make(parent, R.string.text_error_general, Snackbar.LENGTH_LONG)
+            .setAction(R.string.text_Try_Again) {
+                viewModel.fetch(
+                    args.lessonId,
+                    args.answers?.toList()
+                )
+            }
+            .show()
     }
 
     @ExperimentalCoroutinesApi

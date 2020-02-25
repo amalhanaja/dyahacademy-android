@@ -16,6 +16,7 @@ import com.amalcodes.dyahacademy.android.features.lesson.LessonType
 import com.amalcodes.dyahacademy.android.features.lesson.LessonViewEntity
 import com.amalcodes.dyahacademy.android.features.lesson.LessonViewHolder
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.component_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_topic_detail.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -104,8 +105,12 @@ class TopicDetailFragment : Fragment(R.layout.fragment_topic_detail) {
         viewModel.fetch(args.topicId)
     }
 
+    @ExperimentalCoroutinesApi
     private fun onErrorState(throwable: Throwable) {
         Timber.e(throwable)
+        Snackbar.make(parent, R.string.text_error_general, Snackbar.LENGTH_LONG)
+            .setAction(R.string.text_Try_Again) { viewModel.fetch(args.topicId) }
+            .show()
     }
 
     private fun onHasDataState(data: List<ItemEntity>) {

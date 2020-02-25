@@ -19,4 +19,6 @@
     <string name="text_Next">Next</string>
     <string name="text_Previous">Previous</string>
     <string name="cd_quiz_question">Question Image</string>
+    <string name="text_error_general">Something Bad Happened</string>
+    <string name="text_Try_Again">Try Again</string>
 </resources>
