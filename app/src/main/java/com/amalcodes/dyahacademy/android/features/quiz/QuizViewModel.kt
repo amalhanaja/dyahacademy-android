@@ -4,8 +4,8 @@ import androidx.lifecycle.*
 import com.amalcodes.dyahacademy.android.features.lesson.LessonRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class QuizViewModel : ViewModel() {
 
@@ -87,33 +87,29 @@ class QuizViewModel : ViewModel() {
     @ExperimentalCoroutinesApi
     fun fetch(lessonId: String, initialAnswers: List<AnswerViewEntity>? = null) {
         isCorrection = !initialAnswers.isNullOrEmpty()
-        viewModelScope.launch {
-            LessonRepository.getLessonById(lessonId)
-                .catch { _uiState.postValue(QuizUIState.Error(it)) }
-                .collect { lesson ->
-                    quizzes.addAll(lesson.quizzes().orEmpty().mapIndexed { index, quiz ->
-                        val answerData = quiz.answers() as List<*>
-                        val answers = answerData.mapIndexed { indexAnswer, answer ->
-                            require(answer is Map<*, *>)
-                            AnswerSelectionViewEntity(
-                                text = answer["text"] as String,
-                                isCorrect = answer["isCorrect"] as Boolean,
-                                answerMark = 65.plus(indexAnswer).toChar(),
-                                isCorrectionEnabled = isCorrection
-                            )
-                        }
-                        QuizViewEntity(
-                            question = quiz.question(),
-                            answerSelections = answers,
-                            currentIndex = index,
-                            count = lesson.quizzes().orEmpty().count(),
-                            questionImageUrl = quiz.questionImageUrl(),
-                            answer = initialAnswers?.getOrNull(index)?.answer.orEmpty()
+        LessonRepository.getLessonById(lessonId)
+            .catch { _uiState.postValue(QuizUIState.Error(it)) }
+            .onEach { lesson ->
+                quizzes.addAll(lesson.quizzes.orEmpty().mapIndexed { index, quiz ->
+                    val answers = quiz.answers.orEmpty().mapIndexed { indexAnswer, answer ->
+                        AnswerSelectionViewEntity(
+                            text = answer.text.orEmpty(),
+                            isCorrect = requireNotNull(answer.isCorrect),
+                            answerMark = 65.plus(indexAnswer).toChar(),
+                            isCorrectionEnabled = isCorrection
                         )
-                    })
-                    next()
-                }
-        }
+                    }
+                    QuizViewEntity(
+                        question = requireNotNull(quiz.question),
+                        answerSelections = answers,
+                        currentIndex = index,
+                        count = lesson.quizzes.orEmpty().count(),
+                        questionImageUrl = quiz.questionImageUrl.orEmpty(),
+                        answer = initialAnswers?.getOrNull(index)?.answer.orEmpty()
+                    )
+                })
+                next()
+            }.launchIn(viewModelScope)
     }
 
 

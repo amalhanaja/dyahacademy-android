@@ -21,17 +21,14 @@ fun <T> ApolloCall<T>.asFlow() = flow<Response<T>> {
             clone().enqueue(
                 object : ApolloCall.Callback<T>() {
                     override fun onResponse(response: Response<T>) {
-                        Timber.d(response.toString())
                         continuation.resume(response)
                     }
 
                     override fun onFailure(e: ApolloException) {
-                        Timber.e(e)
                         continuation.resumeWithException(e)
                     }
 
                     override fun onStatusEvent(event: ApolloCall.StatusEvent) {
-                        Timber.d(event.name)
                         if (event == ApolloCall.StatusEvent.COMPLETED) {
                             continuation.cancel()
                         }

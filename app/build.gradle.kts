@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android") version "1.3.61"
     kotlin("android.extensions") version "1.3.61"
+    kotlin("kapt") version "1.3.61"
     id("androidx.navigation.safeargs.kotlin")
     id("com.apollographql.apollo") version "1.3.2"
 }
@@ -63,6 +64,12 @@ dependencies {
     implementation("com.apollographql.apollo:apollo-coroutines-support:1.3.2")
     implementation("com.google.android.exoplayer:exoplayer:2.11.2")
     implementation("com.github.HaarigerHarald:android-youtubeExtractor:2.0.0")
+    implementation("com.squareup.retrofit2:retrofit:2.7.2")
+    implementation("com.squareup.retrofit2:converter-moshi:2.7.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+    implementation("com.squareup.moshi:moshi:1.9.2")
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     implementation("io.noties.markwon:core:4.2.1")
     implementation("io.noties.markwon:image-coil:4.2.1")
     implementation("io.coil-kt:coil:0.9.5")

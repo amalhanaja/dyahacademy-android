@@ -19,7 +19,7 @@ data class LessonViewEntity(
 ) : ItemEntity {
     override val layoutRes: Int
         get() = when (type) {
-            LessonType.GROUP -> R.layout.item_lesson_group_title
+            LessonType.LESSON_GROUP -> R.layout.item_lesson_group_title
             else -> R.layout.item_lesson
         }
 

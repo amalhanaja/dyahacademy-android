@@ -1,10 +1,14 @@
 package com.amalcodes.dyahacademy.android.core
 
-import com.amalcodes.dyahacademy.android.type.CustomType
+import com.amalcodes.dyahacademy.android.data.FlowCallAdapterFactory
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.response.CustomTypeAdapter
-import com.apollographql.apollo.response.CustomTypeValue
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.noties.markwon.Markwon
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 
 /**
@@ -16,26 +20,27 @@ object Injector {
 
     lateinit var markwon: Markwon
 
-    private val jsonCustomTypeAdapter = object : CustomTypeAdapter<Any> {
-        override fun decode(value: CustomTypeValue<*>): Any {
-            return when (value) {
-                is CustomTypeValue.GraphQLJsonList -> value.value
-                is CustomTypeValue.GraphQLJsonObject -> value.value
-                else -> throw IllegalStateException()
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                Timber.tag("OkHTTP").d(message)
             }
-        }
+        }).setLevel(HttpLoggingInterceptor.Level.BODY))
+        .build()
 
-        override fun encode(value: Any): CustomTypeValue<*> {
-            return when (value) {
-                is List<*> -> CustomTypeValue.GraphQLJsonList(value)
-                is Map<*, *> -> CustomTypeValue.GraphQLJsonObject(value as Map<String, Any>)
-                else -> throw IllegalStateException("")
-            }
-        }
-    }
+    val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
+    val retrofit: Retrofit = Retrofit.Builder()
+        .client(okHttpClient)
+        .baseUrl("http://192.168.0.6:1339/")
+        .addCallAdapterFactory(FlowCallAdapterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
 
     val apolloClient: ApolloClient = ApolloClient.builder()
-        .serverUrl("http://192.168.0.6:1337/graphql")
+        .serverUrl("http://192.168.0.6:1339/graphql")
         .logger { priority, message, t, args ->
             if (t.isPresent) {
                 Timber.log(priority, t.get(), message, args)
@@ -43,6 +48,5 @@ object Injector {
                 Timber.log(priority, message, args)
             }
         }
-        .addCustomTypeAdapter(CustomType.JSON, jsonCustomTypeAdapter)
         .build()
 }

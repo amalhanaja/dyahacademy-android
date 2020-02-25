@@ -9,5 +9,5 @@ package com.amalcodes.dyahacademy.android.features.lesson
 enum class LessonType {
     YOUTUBE,
     QUIZ,
-    GROUP
+    LESSON_GROUP
 }

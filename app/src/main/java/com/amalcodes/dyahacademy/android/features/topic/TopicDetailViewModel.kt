@@ -52,7 +52,7 @@ class TopicDetailViewModel : ViewModel() {
             ENUM_LESSON_LESSONTYPE.LESSON_GROUP -> LessonViewEntity(
                 id = id(),
                 title = title(),
-                type = LessonType.GROUP
+                type = LessonType.LESSON_GROUP
             )
             ENUM_LESSON_LESSONTYPE.QUIZ -> LessonViewEntity(
                 id = id(),
@@ -74,7 +74,7 @@ class TopicDetailViewModel : ViewModel() {
             ENUM_LESSON_LESSONTYPE.LESSON_GROUP -> LessonViewEntity(
                 id = id(),
                 title = title(),
-                type = LessonType.GROUP
+                type = LessonType.LESSON_GROUP
             )
             ENUM_LESSON_LESSONTYPE.QUIZ -> LessonViewEntity(
                 id = id(),
