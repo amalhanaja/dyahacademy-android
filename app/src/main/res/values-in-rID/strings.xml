@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DyahAcademy</string>
+    <string name="text_Back">Kembali</string>
+    <string name="text_Lesson_Type">Tipe Pelajaran</string>
+    <string name="text_Quiz">Soal</string>
+    <string name="text_Video">Video</string>
+    <string name="text_By_colon">Oleh : %1$s</string>
+    <string name="text_Confirmation_Icon">Icon Konfirmasi</string>
+    <string name="text_finish_quiz_confirmation_dialog_title">Yakin nih sudah Selesai ?</string>
+    <string name="text_No">Tidak</string>
+    <string name="text_Sure">Yakin</string>
+    <string name="text_blankAnswerCount">%1$d\nKosong</string>
+    <string name="text_correctAnswerCount">%1$d\nBenar</string>
+    <string name="text_correctWrongCount">%1$d\nSalah</string>
+    <string name="text_finish_quiz_confirmation_dialog_description_blank_answer">Soal belum dijawab</string>
+    <string name="text_quizSummaryDescription">Nih!. aku kasih nilai buat kamu karena sudah menyelesaikan $1%s</string>
+    <string name="text_btnShowAnswer">Kasih tahu Jawabannya!</string>
+    <string name="text_btnContinueLearning">Lanjut Belajar aja deh</string>
+    <string name="text_Next">Selanjutnya</string>
+    <string name="text_Previous">Sebelumnya</string>
+    <string name="cd_quiz_question">Gambar Pertanyaan</string>
+</resources>
