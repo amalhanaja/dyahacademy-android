@@ -30,6 +30,8 @@ class QuizViewModel : ViewModel() {
                     QuizUIState.HasData(quizzes[it], quizzes.toListOfAnswerViewEntity())
                 }
                 _uiState.postValue(state)
+            } else {
+                _uiState.postValue(QuizUIState.Error(Error("No Data")))
             }
         }
     }
