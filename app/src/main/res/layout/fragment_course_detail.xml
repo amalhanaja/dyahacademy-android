@@ -24,4 +24,15 @@
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_topic" />
 
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_course_detail"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

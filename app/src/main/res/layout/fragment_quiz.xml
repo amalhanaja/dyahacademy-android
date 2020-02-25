@@ -9,9 +9,9 @@
     <include
         android:id="@+id/toolbar_quiz"
         layout="@layout/component_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_answers"
@@ -54,10 +54,10 @@
         android:id="@+id/nsv_quiz"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_answers">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,12 +69,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_6"
+                android:layout_marginTop="@dimen/spacing_2"
                 android:layout_marginEnd="@dimen/spacing_6"
                 android:background="@drawable/shape_round_white_xl"
                 android:elevation="@dimen/elevation_1"
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_4"
-                android:layout_marginTop="@dimen/spacing_2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -85,8 +85,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_2"
                     android:adjustViewBounds="true"
-                    android:visibility="gone"
                     android:contentDescription="@string/cd_quiz_question"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -123,5 +123,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_quiz"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/cg_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="nsv_quiz, rv_answers,iv_quiz_prev,iv_quiz_next"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

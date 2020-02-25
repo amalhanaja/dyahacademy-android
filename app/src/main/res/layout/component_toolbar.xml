@@ -7,10 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_round_bottom_coral_xl"
     android:elevation="@dimen/elevation_1"
-    android:padding="@dimen/spacing_4"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:padding="@dimen/spacing_4">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtv_toolbar_title"

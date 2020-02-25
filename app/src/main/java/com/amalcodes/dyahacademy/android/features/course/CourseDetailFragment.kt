@@ -49,6 +49,7 @@ class CourseDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
+            pb?.isVisible = it is CourseDetailUIState.Loading
             when (it) {
                 is CourseDetailUIState.Initial -> onInitialState()
                 is CourseDetailUIState.Error -> onErrorState(it.throwable)

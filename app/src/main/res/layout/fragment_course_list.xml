@@ -8,7 +8,10 @@
 
     <include
         android:id="@+id/toolbar_course_list"
-        layout="@layout/component_toolbar" />
+        layout="@layout/component_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_course_list"
@@ -21,5 +24,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_course_list"
         tools:listitem="@layout/item_course" />
+
+    <ProgressBar
+        android:id="@+id/pb_course_list"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_course_list"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

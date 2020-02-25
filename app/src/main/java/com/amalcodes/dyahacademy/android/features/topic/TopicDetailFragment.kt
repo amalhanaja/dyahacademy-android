@@ -39,6 +39,7 @@ class TopicDetailFragment : Fragment(R.layout.fragment_topic_detail) {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
+            pb?.isVisible = it is TopicDetailUIState.Loading
             when (it) {
                 is TopicDetailUIState.Initial -> onInitialState()
                 is TopicDetailUIState.Error -> onErrorState(it.throwable)

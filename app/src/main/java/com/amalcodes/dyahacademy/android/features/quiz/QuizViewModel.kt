@@ -6,6 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 class QuizViewModel : ViewModel() {
 
@@ -94,6 +95,7 @@ class QuizViewModel : ViewModel() {
     fun fetch(lessonId: String, initialAnswers: List<AnswerViewEntity>? = null) {
         isCorrection = !initialAnswers.isNullOrEmpty()
         LessonRepository.getLessonById(lessonId)
+            .onStart { _uiState.postValue(QuizUIState.Loading) }
             .catch { _uiState.postValue(QuizUIState.Error(it)) }
             .onEach { lesson ->
                 quizzes.addAll(lesson.quizzes.orEmpty().mapIndexed { index, quiz ->

@@ -55,6 +55,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
+            pb?.isVisible = it is QuizUIState.Loading
             when (it) {
                 is QuizUIState.Initial -> onInitialState()
                 is QuizUIState.Error -> onErrorState(it.throwable)
@@ -99,6 +100,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         quiz: QuizViewEntity,
         answers: List<AnswerViewEntity>
     ) {
+        cg_content?.isVisible = true
         toolbar_quiz?.iv_menu?.isVisible = true
         showQuizAndAnswersHolder(quiz, answers)
         answerSelectionAdapter.submitList(quiz.answerSelections.map {

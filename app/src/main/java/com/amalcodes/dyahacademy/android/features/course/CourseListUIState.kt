@@ -8,6 +8,7 @@ package com.amalcodes.dyahacademy.android.features.course
 
 sealed class CourseListUIState {
     object Initial : CourseListUIState()
+    object Loading : CourseListUIState()
     data class HasData(val data: List<CourseViewEntity>) : CourseListUIState()
     data class Error(val throwable: Throwable) : CourseListUIState()
 }

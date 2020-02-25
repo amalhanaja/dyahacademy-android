@@ -2,10 +2,7 @@ package com.amalcodes.dyahacademy.android.features.course
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 
 class CourseListViewModel : ViewModel() {
 
@@ -17,19 +14,17 @@ class CourseListViewModel : ViewModel() {
 
     @ExperimentalCoroutinesApi
     fun fetch() {
-        viewModelScope.launch {
-            CourseRepository.findAllCourse()
-                .map { list ->
-                    list.map {
-                        CourseViewEntity(it.id(), it.title(), it.createdBy())
-                    }
+        CourseRepository.findAllCourse()
+            .map { list ->
+                list.map {
+                    CourseViewEntity(it.id(), it.title(), it.createdBy())
                 }
-                .map { CourseListUIState.HasData(it) }
-                .catch { _uiState.postValue(CourseListUIState.Error(it)) }
-                .collect {
-                    _uiState.postValue(it)
-                }
-        }
+            }
+            .map { CourseListUIState.HasData(it) }
+            .onStart { _uiState.postValue(CourseListUIState.Loading) }
+            .catch { _uiState.postValue(CourseListUIState.Error(it)) }
+            .onEach { _uiState.postValue(it) }
+            .launchIn(viewModelScope)
     }
 
     object Factory : ViewModelProvider.Factory {

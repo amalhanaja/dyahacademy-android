@@ -2,6 +2,7 @@ package com.amalcodes.dyahacademy.android.features.course
 
 import android.graphics.Rect
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -32,6 +33,7 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
+            pb_course_list?.isVisible = it is CourseListUIState.Loading
             when (it) {
                 is CourseListUIState.Initial -> onInitialState()
                 is CourseListUIState.HasData -> onHasDataState(it.data)

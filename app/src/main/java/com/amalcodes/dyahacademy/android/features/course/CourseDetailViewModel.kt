@@ -3,10 +3,7 @@ package com.amalcodes.dyahacademy.android.features.course
 import androidx.lifecycle.*
 import com.amalcodes.dyahacademy.android.features.topic.TopicViewEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 
 class CourseDetailViewModel : ViewModel() {
 
@@ -18,28 +15,26 @@ class CourseDetailViewModel : ViewModel() {
 
     @ExperimentalCoroutinesApi
     fun fetch(courseId: String) {
-
-        viewModelScope.launch {
-            CourseRepository.getDetail(courseId)
-                .map { course ->
-                    CourseDetailViewEntity(
-                        title = requireNotNull(course.title()),
-                        description = "",
-                        topics = course.topics().orEmpty().map { topic ->
-                            TopicViewEntity(
-                                id = requireNotNull(topic.id()),
-                                title = requireNotNull(topic.title()),
-                                description = topic.description().orEmpty()
-                            )
-                        }
-                    )
-                }
-                .map { CourseDetailUIState.HasData(it) }
-                .catch { _uiState.postValue(CourseDetailUIState.Error(it)) }
-                .collect {
-                    _uiState.postValue(it)
-                }
-        }
+        CourseRepository.getDetail(courseId)
+            .map { course ->
+                CourseDetailViewEntity(
+                    title = requireNotNull(course.title()),
+                    description = "",
+                    topics = course.topics().orEmpty().map { topic ->
+                        TopicViewEntity(
+                            id = requireNotNull(topic.id()),
+                            title = requireNotNull(topic.title()),
+                            description = topic.description().orEmpty()
+                        )
+                    }
+                )
+            }
+            .map { CourseDetailUIState.HasData(it) }
+            .onStart { _uiState.postValue(CourseDetailUIState.Loading) }
+            .catch { _uiState.postValue(CourseDetailUIState.Error(it)) }
+            .onEach {
+                _uiState.postValue(it)
+            }.launchIn(viewModelScope)
     }
 
     object Factory : ViewModelProvider.Factory {

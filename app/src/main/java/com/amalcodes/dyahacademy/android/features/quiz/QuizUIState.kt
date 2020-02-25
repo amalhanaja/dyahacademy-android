@@ -8,6 +8,7 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 sealed class QuizUIState {
     object Initial : QuizUIState()
+    object Loading : QuizUIState()
     data class HasData(
         val quiz: QuizViewEntity,
         val answers: List<AnswerViewEntity>

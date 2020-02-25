@@ -10,6 +10,7 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 
 sealed class TopicDetailUIState {
     object Initial : TopicDetailUIState()
+    object Loading : TopicDetailUIState()
     data class Error(val throwable: Throwable) : TopicDetailUIState()
     data class HasData(val data: List<ItemEntity>) : TopicDetailUIState()
 }
