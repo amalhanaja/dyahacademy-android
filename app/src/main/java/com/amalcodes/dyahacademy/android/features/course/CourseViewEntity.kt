@@ -12,6 +12,7 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 data class CourseViewEntity(
     val id: String,
     val title: String,
+    val thumbnailUrl: String,
     val createdBy: String
 ) : ItemEntity {
     override val layoutRes: Int

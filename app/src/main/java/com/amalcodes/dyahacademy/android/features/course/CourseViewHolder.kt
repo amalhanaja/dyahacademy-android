@@ -18,9 +18,7 @@ class CourseViewHolder(view: View) : BaseViewHolder<CourseViewEntity>(view) {
     override fun onBind(entity: CourseViewEntity) = itemView.run {
         actv_item_course_title?.text = entity.title
         actv_item_course_owner?.text = context.getString(R.string.text_By_colon, entity.createdBy)
-        val url =
-            "http://sim.labschoolcibubur.sch.id/web/image/labschool.matapelajaran/523/image"
-        siv_item_course?.load(url) {
+        siv_item_course?.load(entity.thumbnailUrl) {
             transformations(CircleCropTransformation())
         }
         Unit

@@ -17,7 +17,12 @@ class CourseListViewModel : ViewModel() {
         CourseRepository.findAllCourse()
             .map { list ->
                 list.map {
-                    CourseViewEntity(it.id(), it.title(), it.createdBy())
+                    CourseViewEntity(
+                        id = it.id(),
+                        title = it.title(),
+                        createdBy = it.createdBy(),
+                        thumbnailUrl = it.thumbnailUrl()
+                    )
                 }
             }
             .map { CourseListUIState.HasData(it) }

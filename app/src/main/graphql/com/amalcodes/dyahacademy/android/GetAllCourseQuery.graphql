@@ -3,6 +3,7 @@ query GetAllCoursesQuery {
         id
         title
         createdBy
+        thumbnailUrl
         isPublished
     }
 }
