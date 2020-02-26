@@ -13,3 +13,11 @@ fun Project.stringProperty(name: String): String {
 fun Project.intProperty(name: String): Int {
     return stringProperty(name).toInt()
 }
+
+fun env(name: String): String? {
+    return System.getenv(name)
+}
+
+fun mustEnv(name: String): String {
+    return requireNotNull(env(name))
+}

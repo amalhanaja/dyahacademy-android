@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 plugins {
     id("com.android.application")
     kotlin("android") version "1.3.61"
@@ -11,24 +13,45 @@ android {
     compileSdkVersion(29)
     flavorDimensions("default")
     buildToolsVersion = "29.0.2"
+
     defaultConfig {
         applicationId = "com.amalcodes.dyahacademy.android"
         minSdkVersion(21)
         targetSdkVersion(29)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(stringProperty("${name}.storeFile"))
+            storePassword = stringProperty("${name}.storePassword")
+            keyAlias = stringProperty("${name}.keyAlias")
+            keyPassword = stringProperty("${name}.keyPassword")
+        }
+        create("release") {
+            if (!env("RELEASE_STORE_FILE").isNullOrEmpty()) {
+                storeFile = file(mustEnv("RELEASE_STORE_FILE"))
+                storePassword = mustEnv("RELEASE_STORE_PASSWORD")
+                keyAlias = mustEnv("RELEASE_KEY_ALIAS")
+                keyPassword = mustEnv("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isCrunchPngs = true
             isZipAlignEnabled = true
-            isShrinkResources = false
-            isMinifyEnabled = false
+            isShrinkResources = true
+            isMinifyEnabled = true
+            isDebuggable = false
         }
         getByName("debug") {
             isCrunchPngs = true
             isZipAlignEnabled = false
             isShrinkResources = false
             isMinifyEnabled = false
+            isDebuggable = true
         }
     }
 
@@ -49,10 +72,24 @@ android {
         }
     }
 
+    applicationVariants.all variant@{
+        outputs.all {
+            val outputImpl = this as BaseVariantOutputImpl
+            val versionName = this@variant.versionName
+            val versionCode = this@variant.versionCode
+            val flavorName = this@variant.flavorName
+            val buildType = this@variant.buildType.name
+            val appName = stringProperty("${flavorName}.appName")
+            val fileName = "$appName-$versionName-$versionCode-$buildType"
+            outputImpl.outputFileName = fileName + ".${outputFile.extension}"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
