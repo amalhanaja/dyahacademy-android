@@ -13,7 +13,7 @@
     <string name="text_correctAnswerCount">%1$d\nBenar</string>
     <string name="text_correctWrongCount">%1$d\nSalah</string>
     <string name="text_finish_quiz_confirmation_dialog_description_blank_answer">Soal belum dijawab</string>
-    <string name="text_quizSummaryDescription">Nih!. aku kasih nilai buat kamu karena sudah menyelesaikan $1%s</string>
+    <string name="text_quizSummaryDescription">Nih!. aku kasih nilai buat kamu karena sudah menyelesaikan %1$s</string>
     <string name="text_btnShowAnswer">Kasih tahu Jawabannya!</string>
     <string name="text_btnContinueLearning">Lanjut Belajar aja deh</string>
     <string name="text_Next">Selanjutnya</string>
