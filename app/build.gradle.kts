@@ -9,22 +9,43 @@ plugins {
 
 android {
     compileSdkVersion(29)
+    flavorDimensions("default")
     buildToolsVersion = "29.0.2"
     defaultConfig {
         applicationId = "com.amalcodes.dyahacademy.android"
         minSdkVersion(21)
         targetSdkVersion(29)
-        versionCode = 1
-        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         getByName("release") {
+            isCrunchPngs = true
+            isZipAlignEnabled = false
+            isShrinkResources = false
             isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        }
+        getByName("debug") {
+            isCrunchPngs = true
+            isZipAlignEnabled = false
+            isShrinkResources = false
+            isMinifyEnabled = false
+        }
+    }
+
+    productFlavors {
+        create("development") {
+            versionCode = 1
+            versionName = "1.0"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-DEV"
+            resValue("string", "app_name", property("${name}.appName") as String)
+            buildConfigField("String", "BASE_URL", property("${name}.baseUrl") as String)
+        }
+        create("production") {
+            versionCode = 1
+            versionName = "1.0"
+            resValue("string", "app_name", property("${name}.appName") as String)
+            buildConfigField("String", "BASE_URL", property("${name}.baseUrl") as String)
         }
     }
 

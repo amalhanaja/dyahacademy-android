@@ -1,5 +1,6 @@
 package com.amalcodes.dyahacademy.android.core
 
+import com.amalcodes.dyahacademy.android.BuildConfig
 import com.amalcodes.dyahacademy.android.data.FlowCallAdapterFactory
 import com.apollographql.apollo.ApolloClient
 import com.squareup.moshi.Moshi
@@ -34,13 +35,13 @@ object Injector {
 
     val retrofit: Retrofit = Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl("http://192.168.0.6:1339/")
+        .baseUrl(BuildConfig.BASE_URL)
         .addCallAdapterFactory(FlowCallAdapterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
     val apolloClient: ApolloClient = ApolloClient.builder()
-        .serverUrl("http://192.168.0.6:1339/graphql")
+        .serverUrl("${BuildConfig.BASE_URL}graphql")
         .logger { priority, message, t, args ->
             if (t.isPresent) {
                 Timber.log(priority, t.get(), message, args)
