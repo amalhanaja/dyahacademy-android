@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1046004944475",
+    "firebase_url": "https://dyahacademy.firebaseio.com",
+    "project_id": "dyahacademy",
+    "storage_bucket": "dyahacademy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046004944475:android:d3474585b0ad8045ca797e",
+        "android_client_info": {
+          "package_name": "com.amalcodes.dyahacademy.android.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046004944475-hffr7rb3mipno0h3ls0ksr3gsfftjbov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amalcodes.dyahacademy.android.dev",
+            "certificate_hash": "3cb87504fe7d1981d1e64924547fe07976f64a86"
+          }
+        },
+        {
+          "client_id": "1046004944475-2h9g8gnnon1tbcjimp9nqub5enl50g0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0RsqUDUnLz7w1r7nGEbmZQxGHgOESqrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046004944475-2h9g8gnnon1tbcjimp9nqub5enl50g0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

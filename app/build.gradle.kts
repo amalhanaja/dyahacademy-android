@@ -7,6 +7,8 @@ plugins {
     kotlin("kapt") version "1.3.61"
     id("androidx.navigation.safeargs.kotlin")
     id("com.apollographql.apollo") version "1.3.2"
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -127,6 +129,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
     implementation("com.squareup.moshi:moshi:1.9.2")
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    implementation("com.google.firebase:firebase-analytics:17.2.2")
+    implementation("com.google.firebase:firebase-crashlytics:17.0.0-beta01")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     implementation("io.noties.markwon:core:4.2.1")
     implementation("io.noties.markwon:image-coil:4.2.1")
