@@ -20,9 +20,9 @@ android {
     buildTypes {
         getByName("release") {
             isCrunchPngs = true
-            isZipAlignEnabled = false
+            isZipAlignEnabled = true
             isShrinkResources = false
-            isMinifyEnabled = true
+            isMinifyEnabled = false
         }
         getByName("debug") {
             isCrunchPngs = true
