@@ -122,8 +122,6 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
         }
-        iv_quiz_next?.setOnClickListener { viewModel.next() }
-        iv_quiz_prev?.setOnClickListener { viewModel.prev() }
         updateConfirmationDialogViewEntity(answers)
     }
 
@@ -226,6 +224,8 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         rv_answer_selection?.addItemDecoration(itemOffsetDecoration)
         rv_answers?.adapter = answerAdapter
         rv_answers?.addItemDecoration(itemOffsetDecoration)
+        iv_quiz_next?.setOnClickListener { viewModel.next() }
+        iv_quiz_prev?.setOnClickListener { viewModel.prev() }
     }
 
 }
