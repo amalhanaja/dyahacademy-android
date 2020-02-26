@@ -94,6 +94,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         answers: List<AnswerViewEntity>
     ) {
         toolbar_quiz?.iv_menu?.isGone = true
+        cg_content?.isVisible = true
         showQuizAndAnswersHolder(quiz, answers)
     }
 
