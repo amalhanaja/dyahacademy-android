@@ -2,6 +2,7 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.os.Parcelable
 import androidx.annotation.ColorRes
+import androidx.annotation.Keep
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 import kotlinx.android.parcel.Parcelize
@@ -12,6 +13,7 @@ import kotlinx.android.parcel.Parcelize
  */
 
 
+@Keep
 @Parcelize
 data class AnswerViewEntity(
     val id: Int,

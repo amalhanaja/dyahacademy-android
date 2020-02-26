@@ -10,3 +10,4 @@
 /.idea
 .graphqlconfig
 **/release
+mapping.txt

@@ -1,6 +1,7 @@
 package com.amalcodes.dyahacademy.android.features.quiz
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -8,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  * Created On : 2020-02-24
  */
 
-
+@Keep
 @Parcelize
 data class QuizSummaryViewEntity(
     val score: Int,
