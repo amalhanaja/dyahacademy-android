@@ -38,14 +38,14 @@ android {
             versionName = "1.0"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-DEV"
-            resValue("string", "app_name", property("${name}.appName") as String)
-            buildConfigField("String", "BASE_URL", property("${name}.baseUrl") as String)
+            resValue("string", "app_name", stringProperty("${name}.appName"))
+            buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
         create("production") {
             versionCode = 1
             versionName = "1.0"
-            resValue("string", "app_name", property("${name}.appName") as String)
-            buildConfigField("String", "BASE_URL", property("${name}.baseUrl") as String)
+            resValue("string", "app_name", stringProperty("${name}.appName"))
+            buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
     }
 
