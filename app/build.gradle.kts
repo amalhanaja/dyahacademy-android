@@ -60,16 +60,16 @@ android {
 
     productFlavors {
         create("development") {
-            versionCode = 1
-            versionName = "1.0"
+            versionCode = 2
+            versionName = "1.0.2"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-DEV"
             resValue("string", "app_name", stringProperty("${name}.appName"))
             buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
         create("production") {
-            versionCode = 1
-            versionName = "1.0"
+            versionCode = 2
+            versionName = "1.0.2"
             resValue("string", "app_name", stringProperty("${name}.appName"))
             buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
