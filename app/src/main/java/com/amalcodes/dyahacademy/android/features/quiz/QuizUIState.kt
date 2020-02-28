@@ -14,7 +14,10 @@ sealed class QuizUIState {
         val answers: List<AnswerViewEntity>
     ) : QuizUIState()
 
-    data class AnswerFilled(val answers: List<AnswerViewEntity>) : QuizUIState()
+    data class AnswerFilled(
+        val quiz: QuizViewEntity,
+        val answers: List<AnswerViewEntity>
+    ) : QuizUIState()
     data class QuizFinished(
         val summary: QuizSummaryViewEntity,
         val answers: List<AnswerViewEntity>

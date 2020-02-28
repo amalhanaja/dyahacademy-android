@@ -61,7 +61,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 is QuizUIState.Initial -> onInitialState()
                 is QuizUIState.Error -> onErrorState(it.throwable)
                 is QuizUIState.HasData -> onHasDataState(it.quiz, it.answers)
-                is QuizUIState.AnswerFilled -> onAnswerFilledState(it.answers)
+                is QuizUIState.AnswerFilled -> onAnswerFilledState(it.quiz, it.answers)
                 is QuizUIState.QuizFinished -> onQuizFinishedState(it)
                 is QuizUIState.AnswersChecked -> onAnswerCheckedState(it.quiz, it.answers)
             }
@@ -84,7 +84,12 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         findNavController().navigate(direction)
     }
 
-    private fun onAnswerFilledState(answers: List<AnswerViewEntity>) {
+    private fun onAnswerFilledState(
+        quiz: QuizViewEntity,
+        answers: List<AnswerViewEntity>
+    ) {
+        cg_content?.isVisible = true
+        showQuizAndAnswersHolder(quiz, answers)
         updateConfirmationDialogViewEntity(answers)
         answerAdapter.submitList(answers)
     }

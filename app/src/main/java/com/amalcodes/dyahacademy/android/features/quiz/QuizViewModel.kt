@@ -39,7 +39,12 @@ class QuizViewModel : ViewModel() {
     fun fillAnswer(answerMark: String) {
         val currentIndexValue = currentIndex.value ?: 0
         quizzes[currentIndexValue].answer = answerMark
-        _uiState.postValue(QuizUIState.AnswerFilled(quizzes.toListOfAnswerViewEntity()))
+        _uiState.postValue(
+            QuizUIState.AnswerFilled(
+                quizzes[currentIndexValue],
+                quizzes.toListOfAnswerViewEntity()
+            )
+        )
     }
 
     fun setCurrentIndex(index: Int) {
