@@ -3,7 +3,7 @@ package com.amalcodes.dyahacademy.android.features.course
 import com.amalcodes.dyahacademy.android.GetAllCoursesQuery
 import com.amalcodes.dyahacademy.android.GetCourseByIdQuery
 import com.amalcodes.dyahacademy.android.core.Injector
-import com.amalcodes.dyahacademy.android.data.asFlow
+import com.amalcodes.dyahacademy.android.data.graphql.asFlow
 import com.apollographql.apollo.ApolloClient
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

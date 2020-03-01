@@ -1,6 +1,7 @@
 package com.amalcodes.dyahacademy.android.features.course
 
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.domain.model.Course
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 
 /**
@@ -9,12 +10,7 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
  */
 
 
-data class CourseViewEntity(
-    val id: String,
-    val title: String,
-    val thumbnailUrl: String,
-    val createdBy: String
-) : ItemEntity {
+data class CourseViewEntity(val course: Course) : ItemEntity {
     override val layoutRes: Int
         get() = R.layout.item_course
 }

@@ -1,5 +1,6 @@
 package com.amalcodes.dyahacademy.android.features.course
 
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,27 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.dyahacademy.android.R
-import com.amalcodes.dyahacademy.android.core.Failure
-import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
-import com.amalcodes.dyahacademy.android.core.MultiAdapter
-import com.amalcodes.dyahacademy.android.core.autoCleared
+import com.amalcodes.dyahacademy.android.core.*
 import com.amalcodes.dyahacademy.android.databinding.FragmentCourseListBinding
+import com.amalcodes.dyahacademy.android.domain.model.Failure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
+import org.koin.core.context.loadKoinModules
 
 class CourseListFragment : Fragment() {
 
-    private val viewModel: CourseListViewModel by viewModels(
-        ownerProducer = { this },
-        factoryProducer = { CourseListViewModel.Factory }
-    )
+    private val viewModel: CourseListViewModel by koinViewModel()
 
     private val adapter by autoCleared { MultiAdapter() }
     private var binding: FragmentCourseListBinding by autoCleared()
+
+    override fun onAttach(context: Context) {
+        loadKoinModules(courseModule)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,12 +42,13 @@ class CourseListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.pbCourseList.isVisible = it is CourseListUIState.Loading
-            binding.globalMessage.root.isVisible = it is CourseListUIState.Error
+            binding.pbCourseList.isVisible = it is UIState.Loading
+            binding.globalMessage.root.isVisible = it is UIState.Failed
+            binding.rvCourseList.isVisible = it is CourseListUIState
             when (it) {
-                is CourseListUIState.Initial -> onInitialState()
-                is CourseListUIState.HasData -> onHasDataState(it.data)
-                is CourseListUIState.Error -> onErrorState(it.failure)
+                is UIState.Initial -> onInitialState()
+                is UIState.Failed -> onErrorState(it.failure)
+                is CourseListUIState -> onCourseListState(it.list)
             }
         }
     }
@@ -79,9 +80,9 @@ class CourseListFragment : Fragment() {
                     require(item is CourseViewEntity)
                     val direction = CourseListFragmentDirections
                         .actionCourseListFragmentToCourseDetailFragment(
-                            item.id,
-                            item.title,
-                            item.createdBy
+                            item.course.id,
+                            item.course.title,
+                            item.course.creator
                         )
                     findNavController().navigate(direction)
                 }
@@ -113,8 +114,7 @@ class CourseListFragment : Fragment() {
         }
     }
 
-    private fun onHasDataState(data: List<CourseViewEntity>) {
-        Timber.d(data.joinToString { it.title })
+    private fun onCourseListState(data: List<CourseViewEntity>) {
         adapter.submitList(data)
     }
 

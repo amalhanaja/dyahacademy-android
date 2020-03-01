@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.core
+package com.amalcodes.dyahacademy.android.domain.model
 
 /**
  * @author: AMAL
@@ -6,7 +6,7 @@ package com.amalcodes.dyahacademy.android.core
  */
 
 
-sealed class Failure {
+sealed class Failure : Error() {
     object NoInternet : Failure()
     object Unknown : Failure()
     object NoData : Failure()

@@ -1,6 +1,6 @@
 package com.amalcodes.dyahacademy.android.features.course
 
-import com.amalcodes.dyahacademy.android.core.Failure
+import com.amalcodes.dyahacademy.android.core.UIState
 
 /**
  * @author: AMAL
@@ -8,9 +8,4 @@ import com.amalcodes.dyahacademy.android.core.Failure
  */
 
 
-sealed class CourseListUIState {
-    object Initial : CourseListUIState()
-    object Loading : CourseListUIState()
-    data class HasData(val data: List<CourseViewEntity>) : CourseListUIState()
-    data class Error(val failure: Failure) : CourseListUIState()
-}
+data class CourseListUIState(val list: List<CourseViewEntity>) : UIState.Abstract()

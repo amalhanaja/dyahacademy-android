@@ -18,9 +18,10 @@ class CourseViewHolder(
     private var binding: ItemCourseBinding?
 ) : BaseViewHolder<CourseViewEntity>(requireNotNull(binding?.root)), ViewBindingUninbder {
     override fun onBind(entity: CourseViewEntity) = binding?.run {
-        actvItemCourseTitle.text = entity.title
-        actvItemCourseOwner.text = root.context.getString(R.string.text_By_colon, entity.createdBy)
-        sivItemCourse.load(entity.thumbnailUrl) {
+        actvItemCourseTitle.text = entity.course.title
+        actvItemCourseOwner.text =
+            root.context.getString(R.string.text_By_colon, entity.course.creator)
+        sivItemCourse.load(entity.course.thumbnailUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }

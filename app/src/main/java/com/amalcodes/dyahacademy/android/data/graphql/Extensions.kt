@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.data
+package com.amalcodes.dyahacademy.android.data.graphql
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response

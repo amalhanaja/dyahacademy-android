@@ -2,7 +2,7 @@ package com.amalcodes.dyahacademy.android.features.topic
 
 import com.amalcodes.dyahacademy.android.GetTopicByIdQuery
 import com.amalcodes.dyahacademy.android.core.Injector
-import com.amalcodes.dyahacademy.android.data.asFlow
+import com.amalcodes.dyahacademy.android.data.graphql.asFlow
 import com.apollographql.apollo.ApolloClient
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

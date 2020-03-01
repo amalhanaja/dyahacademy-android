@@ -122,6 +122,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.7.2")
     implementation("com.squareup.retrofit2:converter-moshi:2.7.2")
     implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+    implementation("org.koin:koin-androidx-scope:2.1.1")
+    implementation("org.koin:koin-androidx-viewmodel:2.1.1")
     implementation("com.squareup.moshi:moshi:1.9.2")
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
     implementation("com.google.firebase:firebase-analytics:17.2.2")
