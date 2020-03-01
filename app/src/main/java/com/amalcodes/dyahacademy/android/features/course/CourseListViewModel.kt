@@ -1,6 +1,7 @@
 package com.amalcodes.dyahacademy.android.features.course
 
 import androidx.lifecycle.*
+import com.amalcodes.dyahacademy.android.core.Failure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -27,7 +28,7 @@ class CourseListViewModel : ViewModel() {
             }
             .map { CourseListUIState.HasData(it) }
             .onStart { _uiState.postValue(CourseListUIState.Loading) }
-            .catch { _uiState.postValue(CourseListUIState.Error(it)) }
+            .catch { _uiState.postValue(CourseListUIState.Error(Failure.Unknown)) }
             .onEach { _uiState.postValue(it) }
             .launchIn(viewModelScope)
     }

@@ -2,51 +2,60 @@ package com.amalcodes.dyahacademy.android.features.course
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.core.Failure
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.component_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_course_list.*
+import com.amalcodes.dyahacademy.android.core.autoCleared
+import com.amalcodes.dyahacademy.android.databinding.FragmentCourseListBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 
-class CourseListFragment : Fragment(R.layout.fragment_course_list) {
+class CourseListFragment : Fragment() {
 
     private val viewModel: CourseListViewModel by viewModels(
         ownerProducer = { this },
-        factoryProducer = {
-            CourseListViewModel.Factory
-        }
+        factoryProducer = { CourseListViewModel.Factory }
     )
 
-    private val adapter by lazy {
-        MultiAdapter()
-    }
+    private val adapter by autoCleared { MultiAdapter() }
+    private var binding: FragmentCourseListBinding by autoCleared()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = FragmentCourseListBinding.inflate(inflater, container, false)
+        .also { binding = it }
+        .root
 
     @ExperimentalCoroutinesApi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
-            pb_course_list?.isVisible = it is CourseListUIState.Loading
+            binding.pbCourseList.isVisible = it is CourseListUIState.Loading
+            binding.globalMessage.root.isVisible = it is CourseListUIState.Error
             when (it) {
                 is CourseListUIState.Initial -> onInitialState()
                 is CourseListUIState.HasData -> onHasDataState(it.data)
-                is CourseListUIState.Error -> onErrorState(it.throwable)
+                is CourseListUIState.Error -> onErrorState(it.failure)
             }
         }
     }
 
     private fun setupView() {
-        toolbar_course_list?.mtv_toolbar_title?.text = getString(R.string.app_name)
-        rv_course_list?.adapter = adapter
-        rv_course_list?.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
+        binding.toolbar.mtvToolbarTitle.text = getString(R.string.app_name)
+        binding.rvCourseList.adapter = adapter
+        binding.rvCourseList.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
             val position = viewHolder.adapterPosition
             if (viewHolder is CourseViewHolder) {
                 return@ItemOffsetDecoration Rect().apply {
@@ -81,11 +90,27 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
     }
 
     @ExperimentalCoroutinesApi
-    private fun onErrorState(throwable: Throwable) {
-        Timber.e(throwable)
-        Snackbar.make(parent, R.string.text_error_general, Snackbar.LENGTH_LONG)
-            .setAction(R.string.text_Try_Again) { viewModel.fetch() }
-            .show()
+    private fun onErrorState(failure: Failure) {
+        binding.globalMessage.btnGlobalMessage.isVisible = true
+        binding.globalMessage.btnGlobalMessage.setOnClickListener { viewModel.fetch() }
+        when (failure) {
+            is Failure.Unknown -> {
+                binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
+                binding.globalMessage.tvGlobalMessageTitle.text =
+                    getString(R.string.text_error_general)
+                binding.globalMessage.tvGlobalMessageDescription.text =
+                    getString(R.string.text_error_general_description)
+                binding.globalMessage.ivGlobalMessage.setImageResource(R.drawable.il_unknown_error)
+            }
+            is Failure.NoInternet -> {
+                binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
+                binding.globalMessage.tvGlobalMessageTitle.text =
+                    getString(R.string.text_error_general)
+                binding.globalMessage.tvGlobalMessageDescription.text =
+                    getString(R.string.text_error_general_description)
+                binding.globalMessage.ivGlobalMessage.setImageResource(R.drawable.il_no_internet)
+            }
+        }
     }
 
     private fun onHasDataState(data: List<CourseViewEntity>) {

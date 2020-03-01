@@ -29,7 +29,8 @@ object Injector {
         }).setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
-    val moshi = Moshi.Builder()
+
+    val moshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
@@ -42,6 +43,7 @@ object Injector {
 
     val apolloClient: ApolloClient = ApolloClient.builder()
         .serverUrl("${BuildConfig.BASE_URL}graphql")
+        .okHttpClient(okHttpClient)
         .logger { priority, message, t, args ->
             if (t.isPresent) {
                 Timber.log(priority, t.get(), message, args)

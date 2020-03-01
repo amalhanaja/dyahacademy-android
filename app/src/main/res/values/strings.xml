@@ -20,4 +20,6 @@
     <string name="cd_quiz_question">Question Image</string>
     <string name="text_error_general">Something Bad Happened</string>
     <string name="text_Try_Again">Try Again</string>
+    <string name="text_error_general_description">Report to us so we can fix it as soon as possible</string>
+    <string name="cd_global_message">Message Illustration</string>
 </resources>

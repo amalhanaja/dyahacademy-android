@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.features.videoplayer
+package com.amalcodes.dyahacademy.android.core.manager
 
 import android.content.Context
 import android.net.Uri
@@ -65,7 +65,10 @@ class VideoPlayerManager(
         private var instance: VideoPlayerManager? = null
 
         fun getInstance(context: Context): VideoPlayerManager {
-            return instance ?: VideoPlayerManager(context).also {
+            return instance
+                ?: VideoPlayerManager(
+                    context
+                ).also {
                 instance = it
             }
         }

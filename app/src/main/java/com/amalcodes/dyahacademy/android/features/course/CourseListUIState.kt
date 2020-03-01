@@ -1,5 +1,7 @@
 package com.amalcodes.dyahacademy.android.features.course
 
+import com.amalcodes.dyahacademy.android.core.Failure
+
 /**
  * @author: AMAL
  * Created On : 2020-02-14
@@ -10,5 +12,5 @@ sealed class CourseListUIState {
     object Initial : CourseListUIState()
     object Loading : CourseListUIState()
     data class HasData(val data: List<CourseViewEntity>) : CourseListUIState()
-    data class Error(val throwable: Throwable) : CourseListUIState()
+    data class Error(val failure: Failure) : CourseListUIState()
 }
