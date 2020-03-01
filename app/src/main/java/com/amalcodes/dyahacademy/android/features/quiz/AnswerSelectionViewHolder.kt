@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_answer_selection.view.*
 class AnswerSelectionViewHolder(view: View) : BaseViewHolder<AnswerSelectionViewEntity>(view) {
     override fun onBind(entity: AnswerSelectionViewEntity) = itemView.run {
         mtv_item_answer_selection_text?.text = entity.text
-        mtv_item_answer_selection_mark?.text = entity.answerMark.toString()
+        mtv_item_answer_selection_mark?.text = entity.answerMark
         mtv_item_answer_selection_mark?.setBackgroundResource(entity.markerBackgroundRes)
         mtv_item_answer_selection_mark?.backgroundTintList = entity.markerBackgroundTint?.let {
             ColorStateList.valueOf(ResourcesCompat.getColor(context.resources, it, null))

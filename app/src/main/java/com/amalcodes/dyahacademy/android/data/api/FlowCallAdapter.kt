@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.data
+package com.amalcodes.dyahacademy.android.data.api
 
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.flow.Flow

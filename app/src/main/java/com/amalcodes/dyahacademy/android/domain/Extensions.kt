@@ -12,3 +12,8 @@ inline fun <T, R : Any> List<T>.mapIfNotEmpty(transform: (T) -> R): List<R> {
     if (isEmpty()) throw Failure.NoData
     return mapNotNull(transform)
 }
+
+inline fun <T, R : Any> List<T>.mapIndexedIfNotEmpty(transform: (Int, T) -> R): List<R> {
+    if (isEmpty()) throw Failure.NoData
+    return mapIndexedNotNull(transform)
+}

@@ -1,6 +1,6 @@
 package com.amalcodes.dyahacademy.android.features.topic
 
-import com.amalcodes.dyahacademy.android.features.lesson.LessonEntity
+import com.amalcodes.dyahacademy.android.data.api.response.LessonResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -17,5 +17,5 @@ data class TopicEntity(
     @Json(name = "title")
     val title: String? = null,
     @Json(name = "lessons")
-    val lessons: List<LessonEntity>? = null
+    val lessons: List<LessonResponse>? = null
 )

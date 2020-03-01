@@ -15,7 +15,6 @@ import com.amalcodes.dyahacademy.android.core.*
 import com.amalcodes.dyahacademy.android.databinding.FragmentCourseListBinding
 import com.amalcodes.dyahacademy.android.domain.model.Failure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.core.context.loadKoinModules
 
 class CourseListFragment : Fragment() {
 
@@ -25,7 +24,7 @@ class CourseListFragment : Fragment() {
     private var binding: FragmentCourseListBinding by autoCleared()
 
     override fun onAttach(context: Context) {
-        loadKoinModules(courseModule)
+        injectFeature()
         super.onAttach(context)
     }
 

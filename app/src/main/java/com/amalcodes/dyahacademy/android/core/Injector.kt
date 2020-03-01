@@ -1,7 +1,7 @@
 package com.amalcodes.dyahacademy.android.core
 
 import com.amalcodes.dyahacademy.android.BuildConfig
-import com.amalcodes.dyahacademy.android.data.FlowCallAdapterFactory
+import com.amalcodes.dyahacademy.android.data.api.FlowCallAdapterFactory
 import com.apollographql.apollo.ApolloClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

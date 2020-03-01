@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.features.lesson
+package com.amalcodes.dyahacademy.android.data.api
 
 import com.amalcodes.dyahacademy.android.data.api.response.LessonResponse
 import kotlinx.coroutines.flow.Flow
@@ -7,11 +7,11 @@ import retrofit2.http.Path
 
 /**
  * @author: AMAL
- * Created On : 26/02/20
+ * Created On : 01/03/20
  */
 
 
-interface LessonAPI {
+interface DyahAcademyApi {
     @GET("/lessons/{id}")
-    fun getLessonById(@Path("id") id: String): Flow<LessonResponse>
+    fun getLesson(@Path("id") id: String): Flow<LessonResponse>
 }

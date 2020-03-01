@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.features.quiz
+package com.amalcodes.dyahacademy.android.data.api.response
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -10,7 +10,7 @@ import com.squareup.moshi.JsonClass
 
 
 @JsonClass(generateAdapter = true)
-data class QuizEntity(
+data class QuizResponse(
     @Json(name = "id")
     val id: String? = null,
     @Json(name = "title")
@@ -20,5 +20,5 @@ data class QuizEntity(
     @Json(name = "questionImageUrl")
     val questionImageUrl: String? = null,
     @Json(name = "answers")
-    val answers: List<AnswerEntity>? = null
+    val answers: List<AnswerResponse>? = null
 )

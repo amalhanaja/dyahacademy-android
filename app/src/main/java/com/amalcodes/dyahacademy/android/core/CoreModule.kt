@@ -1,6 +1,7 @@
 package com.amalcodes.dyahacademy.android.core
 
 import com.amalcodes.dyahacademy.android.BuildConfig
+import com.amalcodes.dyahacademy.android.data.api.apiModule
 import com.amalcodes.dyahacademy.android.data.graphql.graphqlModule
 import com.amalcodes.dyahacademy.android.data.repository.repositoryModule
 import okhttp3.OkHttpClient
@@ -17,8 +18,9 @@ import timber.log.Timber
 
 val coreModules = module {
     single { okHttpClient() }
-    single(named("graphqlUrl")) { BuildConfig.BASE_URL + "graphql" }
-} + listOf(graphqlModule, repositoryModule)
+    single(named("baseUrl")) { BuildConfig.BASE_URL }
+    single(named("graphqlUrl")) { get<String>(named("baseUrl")) + "graphql" }
+} + listOf(graphqlModule, repositoryModule, apiModule)
 
 private fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(

@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.data
+package com.amalcodes.dyahacademy.android.data.api
 
 import kotlinx.coroutines.flow.Flow
 import retrofit2.CallAdapter
@@ -16,7 +16,8 @@ import java.lang.reflect.Type
 class FlowCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
     companion object {
-        fun create() = FlowCallAdapterFactory()
+        fun create() =
+            FlowCallAdapterFactory()
     }
 
     override fun get(
@@ -36,9 +37,13 @@ class FlowCallAdapterFactory private constructor() : CallAdapter.Factory() {
                 check(responseType is ParameterizedType) {
                     "Response must be parameterized as Response<Foo> or Response<out Foo>"
                 }
-                FlowResponseCallAdpater<Any>(getParameterUpperBound(0, responseType))
+                FlowResponseCallAdpater<Any>(
+                    getParameterUpperBound(0, responseType)
+                )
             }
-            else -> FlowBodyCallAdapter<Any>(responseType)
+            else -> FlowBodyCallAdapter<Any>(
+                responseType
+            )
         }
     }
 
