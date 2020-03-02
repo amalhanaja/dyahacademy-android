@@ -8,4 +8,10 @@ import com.amalcodes.dyahacademy.android.core.UIState
  */
 
 
-data class CourseListUIState(val list: List<CourseViewEntity>) : UIState.Abstract()
+sealed class CourseListUIState : UIState.Abstract() {
+    data class Content(val list: List<CourseViewEntity>) : CourseListUIState()
+    data class GoToTopics(
+        val stateToRestore: UIState?,
+        val courseViewEntity: CourseViewEntity
+    ) : CourseListUIState()
+}

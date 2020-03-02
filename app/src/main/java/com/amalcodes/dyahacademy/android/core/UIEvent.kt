@@ -18,5 +18,11 @@ sealed class UIEvent {
         )
     }
 
+    data class RestoreUIState(val uiState: UIState?) : UIEvent()
+
     abstract class Abstract : UIEvent()
+
+    fun unhandled(): Nothing {
+        throw IllegalStateException("Unhandled Event: $this")
+    }
 }

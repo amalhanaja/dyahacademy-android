@@ -40,8 +40,5 @@ val isProduction: Boolean
     get() = FLAVOR == "production"
 
 inline fun <reified T> Flow<T>.trackEvent(analytics: Analytics): Flow<T> = onEach {
-    require(it is Event) {
-        "Flow must be parameterized as Event"
-    }
-    analytics.trackEvent(it)
+    if (it is Event) analytics.trackEvent(it)
 }

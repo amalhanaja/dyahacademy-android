@@ -21,7 +21,7 @@ import timber.log.Timber
 class CourseListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
-    private val viewModel: CourseListViewModel by koinViewModel(ownerProducer = { requireActivity() })
+    private val viewModel: CourseListViewModel by koinViewModel()
 
     private val adapter by autoCleared { MultiAdapter() }
     private var binding: FragmentCourseListBinding by autoCleared()
@@ -50,14 +50,35 @@ class CourseListFragment : Fragment(), TrackScreen {
             binding.pbCourseList.isVisible = it is UIState.Loading
             binding.globalMessage.root.isVisible = it is UIState.Failed
             binding.rvCourseList.isVisible = it is CourseListUIState
+
             when (it) {
                 is UIState.Initial -> onInitialState()
                 is UIState.Failed -> onErrorState(it.failure)
-                is CourseListUIState -> onCourseListState(it.list)
+                is CourseListUIState.Content -> onContentState(it.list)
+                is CourseListUIState.GoToTopics -> onGoToTopicsState(
+                    it.stateToRestore,
+                    it.courseViewEntity
+                )
             }
         }
     }
 
+    @ExperimentalCoroutinesApi
+    private fun onGoToTopicsState(
+        stateToRestore: UIState?,
+        courseViewEntity: CourseViewEntity
+    ) {
+        viewModel.dispatch(UIEvent.RestoreUIState(stateToRestore))
+        val direction = CourseListFragmentDirections
+            .actionCourseListFragmentToCourseDetailFragment(
+                courseViewEntity.course.id,
+                courseViewEntity.course.title,
+                ""
+            )
+        findNavController().navigate(direction)
+    }
+
+    @ExperimentalCoroutinesApi
     private fun setupView() {
         binding.toolbar.mtvToolbarTitle.text = getString(R.string.app_name)
         binding.rvCourseList.adapter = adapter
@@ -81,16 +102,9 @@ class CourseListFragment : Fragment(), TrackScreen {
         })
         adapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
-                R.id.cl_item_course_wrapper -> {
-                    require(item is CourseViewEntity)
-                    val direction = CourseListFragmentDirections
-                        .actionCourseListFragmentToCourseDetailFragment(
-                            item.course.id,
-                            item.course.title,
-                            item.course.creator
-                        )
-                    findNavController().navigate(direction)
-                }
+                R.id.cl_item_course_wrapper -> viewModel.dispatch(
+                    CourseListUIEvent.GoToTopics(item as CourseViewEntity)
+                )
             }
         }
     }
@@ -122,7 +136,7 @@ class CourseListFragment : Fragment(), TrackScreen {
         }
     }
 
-    private fun onCourseListState(data: List<CourseViewEntity>) {
+    private fun onContentState(data: List<CourseViewEntity>) {
         adapter.submitList(data)
     }
 

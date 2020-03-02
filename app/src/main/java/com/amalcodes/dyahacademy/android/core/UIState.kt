@@ -13,4 +13,8 @@ sealed class UIState {
     object Loading : UIState()
     data class Failed(val failure: Failure) : UIState()
     abstract class Abstract : UIState()
+
+    var hasBeenHandled = false
+        private set
+
 }
