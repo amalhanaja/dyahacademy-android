@@ -2,18 +2,33 @@ package com.amalcodes.dyahacademy.android.features.quiz
 
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.core.autoCleared
+import com.amalcodes.dyahacademy.android.databinding.FragmentQuizSummaryBinding
 import kotlinx.android.synthetic.main.fragment_quiz_summary.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class QuizSummaryFragment : Fragment(R.layout.fragment_quiz_summary) {
+class QuizSummaryFragment : Fragment() {
 
     private val args: QuizSummaryFragmentArgs by navArgs()
+
+    private var binding: FragmentQuizSummaryBinding by autoCleared()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = FragmentQuizSummaryBinding.inflate(inflater, container, false)
+        .also { binding = it }
+        .root
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -21,25 +36,25 @@ class QuizSummaryFragment : Fragment(R.layout.fragment_quiz_summary) {
     }
 
     private fun setupView() {
-        mtv_quiz_summary_description?.text =
+        binding.mtvQuizSummaryDescription.text =
             getString(R.string.text_quizSummaryDescription, args.lessonTitle)
-        mtv_quiz_summary_score?.text = args.quizSummary.score.toString()
-        mtv_quiz_summary_blank_answer?.text = getString(
+        binding.mtvQuizSummaryScore.text = args.quizSummary.score.toString()
+        binding.mtvQuizSummaryBlankAnswer.text = getString(
             R.string.text_blankAnswerCount,
             args.quizSummary.blankAnswer
         )
-        mtv_quiz_summary_correct_answer?.text = getString(
+        binding.mtvQuizSummaryCorrectAnswer.text = getString(
             R.string.text_correctAnswerCount,
             args.quizSummary.correctAnswer
         )
-        mtv_quiz_summary_wrong_answer?.text = getString(
+        binding.mtvQuizSummaryWrongAnswer.text = getString(
             R.string.text_correctWrongCount,
             args.quizSummary.wrongAnswer
         )
-        mb_quiz_summary_continue_learning?.setOnClickListener {
+        binding.mbQuizSummaryContinueLearning.setOnClickListener {
             findNavController().navigateUp()
         }
-        mb_quiz_summary_show_answer?.setOnClickListener {
+        mb_quiz_summary_continue_learning.setOnClickListener {
             val direction = QuizSummaryFragmentDirections.actionQuizSummaryFragmentToQuizFragment(
                 label = args.lessonTitle,
                 lessonId = args.lessonId,
