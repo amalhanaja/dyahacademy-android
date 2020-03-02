@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.api.load
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.analytics.TrackScreen
 import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewEntity
 import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewModel
 import com.amalcodes.dyahacademy.android.core.*
@@ -31,7 +32,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import timber.log.Timber
 
-class QuizFragment : Fragment(R.layout.fragment_quiz) {
+class QuizFragment : Fragment(), TrackScreen {
 
     private val viewModel: QuizViewModel by koinViewModel()
 
@@ -39,6 +40,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         ConfirmationDialogViewModel.Factory
     }
 
+    override val screenName: String = "QuizFragment"
 
     private val answerSelectionAdapter: MultiAdapter by autoCleared { MultiAdapter() }
 

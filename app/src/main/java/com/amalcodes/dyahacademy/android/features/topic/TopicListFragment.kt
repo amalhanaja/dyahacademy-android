@@ -13,6 +13,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.analytics.TrackScreen
 import com.amalcodes.dyahacademy.android.core.*
 import com.amalcodes.dyahacademy.android.databinding.FragmentTopicListBinding
 import com.amalcodes.dyahacademy.android.domain.model.Failure
@@ -22,7 +23,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
-class TopicListFragment : Fragment() {
+class TopicListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private val viewModel: TopicListViewModel by koinViewModel()
@@ -32,6 +33,8 @@ class TopicListFragment : Fragment() {
     private var binding: FragmentTopicListBinding by autoCleared()
 
     private val args: TopicListFragmentArgs by navArgs()
+
+    override val screenName: String = "TopicListFragment"
 
     @ExperimentalCoroutinesApi
     override fun onAttach(context: Context) {
@@ -73,7 +76,7 @@ class TopicListFragment : Fragment() {
     private fun onGoToLessonsState(stateToRestore: UIState?, topicViewEntity: TopicViewEntity) {
         viewModel.dispatch(UIEvent.RestoreUIState(stateToRestore))
         val direction: NavDirections =
-            TopicListFragmentDirections.actionTopicsFragmentToTopicDetailFragment(
+            TopicListFragmentDirections.goToLessonList(
                 label = topicViewEntity.title,
                 topicId = topicViewEntity.id
             )

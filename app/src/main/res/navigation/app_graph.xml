@@ -24,8 +24,8 @@
             android:name="courseTitle"
             app:argType="string" />
         <action
-            android:id="@+id/action_topicsFragment_to_topicDetailFragment"
-            app:destination="@id/topicDetailFragment" />
+            android:id="@+id/go_to_lesson_list"
+            app:destination="@id/lessonListFragment" />
     </fragment>
     <fragment
         android:id="@+id/youtubeLessonFragment"
@@ -63,10 +63,9 @@
             app:nullable="true" />
     </fragment>
     <fragment
-        android:id="@+id/topicDetailFragment"
-        android:name="com.amalcodes.dyahacademy.android.features.topic.TopicDetailFragment"
-        android:label="fragment_topic_detail"
-        tools:layout="@layout/fragment_topic_detail">
+        android:id="@+id/lessonListFragment"
+        android:name="com.amalcodes.dyahacademy.android.features.lesson.LessonListFragment"
+        tools:layout="@layout/fragment_lesson_list">
         <argument
             android:name="label"
             app:argType="string" />
@@ -74,10 +73,10 @@
             android:name="topicId"
             app:argType="string" />
         <action
-            android:id="@+id/action_topicDetailFragment_to_youtubeLessonFragment"
+            android:id="@+id/go_to_youtube_lesson"
             app:destination="@id/youtubeLessonFragment" />
         <action
-            android:id="@+id/action_topicDetailFragment_to_quizFragment"
+            android:id="@+id/go_to_quiz"
             app:destination="@id/quizFragment" />
     </fragment>
     <dialog

@@ -1,4 +1,4 @@
-package com.amalcodes.dyahacademy.android.features.lesson
+package com.amalcodes.dyahacademy.android.domain.model
 
 /**
  * @author: AMAL

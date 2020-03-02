@@ -3,6 +3,7 @@ package com.amalcodes.dyahacademy.android.features.lesson
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.domain.model.LessonType
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 
 /**
@@ -40,3 +41,10 @@ data class LessonViewEntity(
         }
 
 }
+
+fun LessonViewEntity.eventProperties(): Map<String, Any?> = mapOf(
+    "lesson_id" to id,
+    "lesson_title" to title,
+    "lesson_type" to type,
+    "lesson_youtube_url" to youtubeUrl
+)
