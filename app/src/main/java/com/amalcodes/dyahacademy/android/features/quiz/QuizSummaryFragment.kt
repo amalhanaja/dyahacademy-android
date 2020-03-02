@@ -11,7 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.core.autoCleared
 import com.amalcodes.dyahacademy.android.databinding.FragmentQuizSummaryBinding
-import kotlinx.android.synthetic.main.fragment_quiz_summary.*
 
 /**
  * A simple [Fragment] subclass.
@@ -54,7 +53,7 @@ class QuizSummaryFragment : Fragment() {
         binding.mbQuizSummaryContinueLearning.setOnClickListener {
             findNavController().navigateUp()
         }
-        mb_quiz_summary_continue_learning.setOnClickListener {
+        binding.mbQuizSummaryShowAnswer.setOnClickListener {
             val direction = QuizSummaryFragmentDirections.actionQuizSummaryFragmentToQuizFragment(
                 label = args.lessonTitle,
                 lessonId = args.lessonId,
