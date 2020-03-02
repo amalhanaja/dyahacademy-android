@@ -13,6 +13,7 @@ import org.koin.androidx.viewmodel.koin.getViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.java.KoinJavaComponent.getKoin
+import timber.log.Timber
 
 /**
  * @author: AMAL
@@ -32,9 +33,10 @@ inline fun <reified T : ViewModel> ViewModelStoreOwner.koinViewModel(
     getKoin().getViewModel(ownerProducer(), T::class, qualifier, parameters)
 }
 
-fun Throwable.toUIState(): UIState.Failed = UIState.Failed(
-    if (this is Failure) this else Failure.Unknown()
-)
+fun Throwable.toUIState(): UIState.Failed {
+    Timber.e(this)
+    return UIState.Failed(if (this is Failure) this else Failure.Unknown(this))
+}
 
 val isProduction: Boolean
     get() = FLAVOR == "production"
@@ -42,3 +44,8 @@ val isProduction: Boolean
 inline fun <reified T> Flow<T>.trackEvent(analytics: Analytics): Flow<T> = onEach {
     if (it is Event) analytics.trackEvent(it)
 }
+
+fun Failure.eventProperties(): Map<String, Any?> = mapOf(
+    "failure" to message,
+    "cause" to cause?.message
+)

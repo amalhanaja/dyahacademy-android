@@ -15,7 +15,11 @@ import com.amalcodes.dyahacademy.android.analytics.TrackScreen
 import com.amalcodes.dyahacademy.android.core.*
 import com.amalcodes.dyahacademy.android.databinding.FragmentCourseListBinding
 import com.amalcodes.dyahacademy.android.domain.model.Failure
+import com.amalcodes.dyahacademy.android.features.course.usecase.GetCoursesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import timber.log.Timber
 
 class CourseListFragment : Fragment(), TrackScreen {
@@ -69,13 +73,12 @@ class CourseListFragment : Fragment(), TrackScreen {
         courseViewEntity: CourseViewEntity
     ) {
         viewModel.dispatch(UIEvent.RestoreUIState(stateToRestore))
-        val direction = CourseListFragmentDirections
-            .actionCourseListFragmentToCourseDetailFragment(
-                courseViewEntity.course.id,
-                courseViewEntity.course.title,
-                ""
+        val directions = CourseListFragmentDirections
+            .goToTopicList(
+                courseId = courseViewEntity.course.id,
+                courseTitle = courseViewEntity.course.title
             )
-        findNavController().navigate(direction)
+        findNavController().navigate(directions)
     }
 
     @ExperimentalCoroutinesApi
@@ -113,8 +116,7 @@ class CourseListFragment : Fragment(), TrackScreen {
     private fun onErrorState(failure: Failure) {
         binding.globalMessage.btnGlobalMessage.isVisible = true
         binding.globalMessage.btnGlobalMessage.setOnClickListener {
-            Timber.d("Dispatch: View")
-            viewModel.dispatch(UIEvent.RetryFailure(failure))
+            viewModel.dispatch(CourseListUIEvent.RetryFailure(failure))
         }
         when (failure) {
             is Failure.Unknown -> {
@@ -145,5 +147,18 @@ class CourseListFragment : Fragment(), TrackScreen {
         Timber.d("InitialState")
         viewModel.dispatch(CourseListUIEvent.FetchCourses)
     }
+}
 
+@ExperimentalCoroutinesApi
+private fun injectFeature() = loadFeature
+
+@ExperimentalCoroutinesApi
+private val loadFeature by lazy {
+    loadKoinModules(courseModule)
+}
+
+@ExperimentalCoroutinesApi
+private val courseModule = module {
+    factory { GetCoursesUseCase(get()) }
+    viewModel { CourseListViewModel(get(), get()) }
 }

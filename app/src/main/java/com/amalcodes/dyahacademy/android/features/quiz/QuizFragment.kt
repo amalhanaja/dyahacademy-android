@@ -24,7 +24,11 @@ import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewModel
 import com.amalcodes.dyahacademy.android.core.*
 import com.amalcodes.dyahacademy.android.databinding.FragmentQuizBinding
 import com.amalcodes.dyahacademy.android.domain.model.Failure
+import com.amalcodes.dyahacademy.android.features.quiz.usecase.GetQuizzesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import timber.log.Timber
 
 class QuizFragment : Fragment(R.layout.fragment_quiz) {
@@ -223,4 +227,16 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         binding.ivQuizPrev.setOnClickListener { viewModel.prev() }
     }
 
+}
+
+
+private fun injectFeature() = loadFeature
+
+private val loadFeature by lazy {
+    loadKoinModules(quizModule)
+}
+
+private val quizModule = module {
+    factory { GetQuizzesUseCase(get()) }
+    viewModel { QuizViewModel(get()) }
 }

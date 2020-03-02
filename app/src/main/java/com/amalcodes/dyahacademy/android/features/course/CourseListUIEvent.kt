@@ -2,6 +2,8 @@ package com.amalcodes.dyahacademy.android.features.course
 
 import com.amalcodes.dyahacademy.android.analytics.Event
 import com.amalcodes.dyahacademy.android.core.UIEvent
+import com.amalcodes.dyahacademy.android.core.eventProperties
+import com.amalcodes.dyahacademy.android.domain.model.Failure
 
 /**
  * @author: AMAL
@@ -13,6 +15,11 @@ sealed class CourseListUIEvent : UIEvent.Abstract() {
 
     object FetchCourses : CourseListUIEvent(), Event {
         override val name: String = "fetch_courses"
+    }
+
+    data class RetryFailure(val failure: Failure) : CourseListUIEvent(), Event {
+        override val name: String = "retry_fetch_course"
+        override val properties: Map<String, Any?> = failure.eventProperties()
     }
 
     data class GoToTopics(val courseViewEntity: CourseViewEntity) : CourseListUIEvent(), Event {
