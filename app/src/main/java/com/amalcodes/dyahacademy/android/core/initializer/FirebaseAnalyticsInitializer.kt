@@ -10,8 +10,11 @@ import com.google.firebase.analytics.FirebaseAnalytics
  */
 
 
-class FirebaseAnalyticsInitializer : AppInitializer {
-    override fun initialize(app: Application) = FirebaseAnalytics.getInstance(app).run {
+class FirebaseAnalyticsInitializer(
+    private val firebaseAnalytics: FirebaseAnalytics
+) : AppInitializer {
+
+    override fun initialize(app: Application) = firebaseAnalytics.run {
         setAnalyticsCollectionEnabled(isProduction)
     }
 }

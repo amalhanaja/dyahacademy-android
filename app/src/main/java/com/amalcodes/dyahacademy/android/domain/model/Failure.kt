@@ -6,9 +6,9 @@ package com.amalcodes.dyahacademy.android.domain.model
  */
 
 
-sealed class Failure : Error() {
-    object NoInternet : Failure()
-    object Unknown : Failure()
-    object NoData : Failure()
-    abstract class Feature : Failure()
+sealed class Failure(override val message: String? = null) : Error() {
+    object NoInternet : Failure("no_internet")
+    data class Unknown(override val cause: Throwable? = null) : Failure("unknown")
+    object NoData : Failure("no_data")
+    abstract class Feature(override val message: String? = null) : Failure()
 }

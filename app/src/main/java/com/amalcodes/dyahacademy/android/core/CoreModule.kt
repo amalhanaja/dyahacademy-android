@@ -1,13 +1,13 @@
 package com.amalcodes.dyahacademy.android.core
 
 import com.amalcodes.dyahacademy.android.BuildConfig
-import com.amalcodes.dyahacademy.android.core.initializer.AppInitializers
-import com.amalcodes.dyahacademy.android.core.initializer.FirebaseAnalyticsInitializer
-import com.amalcodes.dyahacademy.android.core.initializer.FirebaseCrashlyticsInitializer
-import com.amalcodes.dyahacademy.android.core.initializer.TimberInitializer
+import com.amalcodes.dyahacademy.android.analytics.Analytics
+import com.amalcodes.dyahacademy.android.analytics.analyticsModule
+import com.amalcodes.dyahacademy.android.core.initializer.*
 import com.amalcodes.dyahacademy.android.data.api.apiModule
 import com.amalcodes.dyahacademy.android.data.graphql.graphqlModule
 import com.amalcodes.dyahacademy.android.data.repository.repositoryModule
+import com.google.firebase.analytics.FirebaseAnalytics
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -24,8 +24,13 @@ val coreModules = module {
     single { okHttpClient() }
     single(named("baseUrl")) { BuildConfig.BASE_URL }
     single(named("graphqlUrl")) { get<String>(named("baseUrl")) + "graphql" }
-    single { appInitializers() }
-} + listOf(graphqlModule, repositoryModule, apiModule)
+    single { appInitializers(get(), get()) }
+} + listOf(
+    graphqlModule,
+    repositoryModule,
+    apiModule,
+    analyticsModule
+)
 
 private fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(
@@ -37,10 +42,14 @@ private fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
     )
     .build()
 
-private fun appInitializers(): AppInitializers = AppInitializers(
+private fun appInitializers(
+    firebaseAnalytics: FirebaseAnalytics,
+    analytics: Analytics
+): AppInitializers = AppInitializers(
     initializers = setOf(
         TimberInitializer(),
         FirebaseCrashlyticsInitializer(),
-        FirebaseAnalyticsInitializer()
+        FirebaseAnalyticsInitializer(firebaseAnalytics),
+        LifecycleCallbackInitializer(analytics)
     )
 )

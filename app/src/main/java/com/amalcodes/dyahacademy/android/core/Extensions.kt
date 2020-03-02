@@ -4,7 +4,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.amalcodes.dyahacademy.android.BuildConfig.FLAVOR
+import com.amalcodes.dyahacademy.android.analytics.Analytics
+import com.amalcodes.dyahacademy.android.analytics.Event
 import com.amalcodes.dyahacademy.android.domain.model.Failure
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.koin.getViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
@@ -29,8 +33,15 @@ inline fun <reified T : ViewModel> ViewModelStoreOwner.koinViewModel(
 }
 
 fun Throwable.toUIState(): UIState.Failed = UIState.Failed(
-    if (this is Failure) this else Failure.Unknown
+    if (this is Failure) this else Failure.Unknown()
 )
 
 val isProduction: Boolean
     get() = FLAVOR == "production"
+
+inline fun <reified T> Flow<T>.trackEvent(analytics: Analytics): Flow<T> = onEach {
+    require(it is Event) {
+        "Flow must be parameterized as Event"
+    }
+    analytics.trackEvent(it)
+}

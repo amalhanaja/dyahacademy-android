@@ -11,18 +11,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.analytics.TrackScreen
 import com.amalcodes.dyahacademy.android.core.*
 import com.amalcodes.dyahacademy.android.databinding.FragmentCourseListBinding
 import com.amalcodes.dyahacademy.android.domain.model.Failure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 
-class CourseListFragment : Fragment() {
+class CourseListFragment : Fragment(), TrackScreen {
 
-    private val viewModel: CourseListViewModel by koinViewModel()
+    @ExperimentalCoroutinesApi
+    private val viewModel: CourseListViewModel by koinViewModel(ownerProducer = { requireActivity() })
 
     private val adapter by autoCleared { MultiAdapter() }
     private var binding: FragmentCourseListBinding by autoCleared()
 
+    override val screenName: String = "CourseListFragment"
+
+    @ExperimentalCoroutinesApi
     override fun onAttach(context: Context) {
         injectFeature()
         super.onAttach(context)
@@ -92,7 +98,10 @@ class CourseListFragment : Fragment() {
     @ExperimentalCoroutinesApi
     private fun onErrorState(failure: Failure) {
         binding.globalMessage.btnGlobalMessage.isVisible = true
-        binding.globalMessage.btnGlobalMessage.setOnClickListener { viewModel.fetch() }
+        binding.globalMessage.btnGlobalMessage.setOnClickListener {
+            Timber.d("Dispatch: View")
+            viewModel.dispatch(UIEvent.RetryFailure(failure))
+        }
         when (failure) {
             is Failure.Unknown -> {
                 binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
@@ -119,8 +128,8 @@ class CourseListFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        viewModel.fetch()
-
+        Timber.d("InitialState")
+        viewModel.dispatch(CourseListUIEvent.FetchCourses)
     }
 
 }
