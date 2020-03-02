@@ -8,7 +8,7 @@
     tools:context="com.amalcodes.dyahacademy.android.features.course.CourseListFragment">
 
     <include
-        android:id="@+id/toolbar_course_list"
+        android:id="@+id/toolbar"
         layout="@layout/component_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_course_list"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:listitem="@layout/item_course" />
 
     <ProgressBar
@@ -34,7 +34,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_course_list"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:visibility="visible" />
+
+
+    <include
+        android:id="@+id/global_message"
+        layout="@layout/component_global_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

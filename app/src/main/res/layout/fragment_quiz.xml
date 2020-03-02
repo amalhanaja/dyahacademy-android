@@ -8,7 +8,7 @@
     tools:context=".features.quiz.QuizFragment">
 
     <include
-        android:id="@+id/toolbar_quiz"
+        android:id="@+id/toolbar"
         layout="@layout/component_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toStartOf="@id/iv_quiz_next"
         app:layout_constraintStart_toEndOf="@id/iv_quiz_prev"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_quiz"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:listitem="@layout/item_answer">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -133,7 +133,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_quiz"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

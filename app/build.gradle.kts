@@ -60,16 +60,16 @@ android {
 
     productFlavors {
         create("development") {
-            versionCode = 2
-            versionName = "1.0.2"
+            versionCode = 3
+            versionName = "1.0.3"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-DEV"
             resValue("string", "app_name", stringProperty("${name}.appName"))
             buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
         create("production") {
-            versionCode = 2
-            versionName = "1.0.2"
+            versionCode = 3
+            versionName = "1.0.3"
             resValue("string", "app_name", stringProperty("${name}.appName"))
             buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
@@ -96,12 +96,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-}
-
-apollo {
-    customTypeMapping.put(
-        "JSON", "org.json.JSONObject"
-    )
+    viewBinding.isEnabled = true
 }
 
 dependencies {
@@ -122,12 +117,13 @@ dependencies {
     implementation("com.google.android.material:material:1.2.0-alpha05")
     implementation("com.jakewharton.timber:timber:4.7.1")
     implementation("com.apollographql.apollo:apollo-runtime:1.3.2")
-    implementation("com.apollographql.apollo:apollo-coroutines-support:1.3.2")
     implementation("com.google.android.exoplayer:exoplayer:2.11.2")
     implementation("com.github.HaarigerHarald:android-youtubeExtractor:2.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.7.2")
     implementation("com.squareup.retrofit2:converter-moshi:2.7.2")
     implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+    implementation("org.koin:koin-androidx-scope:2.1.1")
+    implementation("org.koin:koin-androidx-viewmodel:2.1.1")
     implementation("com.squareup.moshi:moshi:1.9.2")
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
     implementation("com.google.firebase:firebase-analytics:17.2.2")

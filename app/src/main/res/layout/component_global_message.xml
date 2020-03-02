@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_8">
+
+    <ImageView
+        android:id="@+id/iv_global_message"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:contentDescription="@string/cd_global_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/il_no_internet" />
+
+    <TextView
+        android:id="@+id/tv_global_message_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_6"
+        android:textColor="@color/jet"
+        android:textSize="@dimen/font_size_xl"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_global_message"
+        tools:text="No Internet Connection" />
+
+    <TextView
+        android:id="@+id/tv_global_message_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_2"
+        android:gravity="center"
+        android:textAlignment="gravity"
+        android:textColor="@color/outerSpace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_global_message_title"
+        tools:text="Please Connect to the Internet to use this apps asdas asd as das d dasd sa" />
+
+    <Button
+        android:id="@+id/btn_global_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_global_message_description"
+        tools:text="Coba Lagi" />
+</androidx.constraintlayout.widget.ConstraintLayout>

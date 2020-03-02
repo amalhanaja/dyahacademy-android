@@ -14,7 +14,7 @@ import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.amalcodes.dyahacademy.android.R
-import com.amalcodes.dyahacademy.android.features.videoplayer.VideoPlayerManager
+import com.amalcodes.dyahacademy.android.core.manager.VideoPlayerManager
 import com.google.android.exoplayer2.Player
 import kotlinx.android.synthetic.main.exo_controller.*
 import kotlinx.android.synthetic.main.fragment_youtube_lesson.*

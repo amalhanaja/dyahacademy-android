@@ -21,4 +21,6 @@
     <string name="cd_quiz_question">Gambar Pertanyaan</string>
     <string name="text_error_general">Aduhh.. Error</string>
     <string name="text_Try_Again">Coba Lagi</string>
+    <string name="text_error_general_description">Laporkan kepada kami sehingga kami dapat memperbaikinya secepatnya</string>
+    <string name="cd_global_message">Ilustrasi Pesan</string>
 </resources>

@@ -1,12 +1,12 @@
 package com.amalcodes.dyahacademy.android.features.course
 
-import android.view.View
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.core.ViewBindingUninbder
+import com.amalcodes.dyahacademy.android.databinding.ItemCourseBinding
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
-import kotlinx.android.synthetic.main.item_course.view.*
 
 /**
  * @author: AMAL
@@ -14,23 +14,27 @@ import kotlinx.android.synthetic.main.item_course.view.*
  */
 
 
-class CourseViewHolder(view: View) : BaseViewHolder<CourseViewEntity>(view) {
-    override fun onBind(entity: CourseViewEntity) = itemView.run {
-        actv_item_course_title?.text = entity.title
-        actv_item_course_owner?.text = context.getString(R.string.text_By_colon, entity.createdBy)
-        siv_item_course?.load(entity.thumbnailUrl) {
+class CourseViewHolder(
+    private var binding: ItemCourseBinding?
+) : BaseViewHolder<CourseViewEntity>(requireNotNull(binding?.root)), ViewBindingUninbder {
+    override fun onBind(entity: CourseViewEntity) = binding?.run {
+        actvItemCourseTitle.text = entity.course.title
+        actvItemCourseOwner.text =
+            root.context.getString(R.string.text_By_colon, entity.course.creator)
+        sivItemCourse.load(entity.course.thumbnailUrl) {
+            crossfade(true)
             transformations(CircleCropTransformation())
         }
-        Unit
-    }
+    }.let { Unit }
 
     override fun onBindListener(
         entity: CourseViewEntity,
         listener: ViewHolderClickListener
-    ) = itemView.run {
-        cl_item_course_wrapper?.setOnClickListener {
-            listener.onClick(it, entity)
-        }
-        Unit
+    ) = binding?.run {
+        clItemCourseWrapper.setOnClickListener { listener.onClick(it, entity) }
+    }.let { Unit }
+
+    override fun unbind() {
+        binding = null
     }
 }

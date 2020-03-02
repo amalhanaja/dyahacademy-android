@@ -13,9 +13,9 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 
 data class AnswerSelectionViewEntity(
     val text: String,
-    val isSelected: Boolean = false,
-    val isCorrect: Boolean = false,
-    val answerMark: Char,
+    val isSelected: Boolean,
+    val isCorrect: Boolean,
+    val answerMark: String,
     val isCorrectionEnabled: Boolean = false
 ) : ItemEntity {
     override val layoutRes: Int

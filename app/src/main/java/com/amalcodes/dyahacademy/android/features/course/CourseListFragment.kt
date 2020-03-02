@@ -1,52 +1,91 @@
 package com.amalcodes.dyahacademy.android.features.course
 
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.dyahacademy.android.R
-import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
-import com.amalcodes.dyahacademy.android.core.MultiAdapter
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.component_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_course_list.*
+import com.amalcodes.dyahacademy.android.analytics.TrackScreen
+import com.amalcodes.dyahacademy.android.core.*
+import com.amalcodes.dyahacademy.android.databinding.FragmentCourseListBinding
+import com.amalcodes.dyahacademy.android.domain.model.Failure
+import com.amalcodes.dyahacademy.android.features.course.usecase.GetCoursesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import timber.log.Timber
 
-class CourseListFragment : Fragment(R.layout.fragment_course_list) {
+class CourseListFragment : Fragment(), TrackScreen {
 
-    private val viewModel: CourseListViewModel by viewModels(
-        ownerProducer = { this },
-        factoryProducer = {
-            CourseListViewModel.Factory
-        }
-    )
+    @ExperimentalCoroutinesApi
+    private val viewModel: CourseListViewModel by koinViewModel()
 
-    private val adapter by lazy {
-        MultiAdapter()
+    private val adapter by autoCleared { MultiAdapter() }
+    private var binding: FragmentCourseListBinding by autoCleared()
+
+    override val screenName: String = "CourseListFragment"
+
+    @ExperimentalCoroutinesApi
+    override fun onAttach(context: Context) {
+        injectFeature()
+        super.onAttach(context)
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = FragmentCourseListBinding.inflate(inflater, container, false)
+        .also { binding = it }
+        .root
 
     @ExperimentalCoroutinesApi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
-            pb_course_list?.isVisible = it is CourseListUIState.Loading
+            binding.pbCourseList.isVisible = it is UIState.Loading
+            binding.globalMessage.root.isVisible = it is UIState.Failed
+            binding.rvCourseList.isVisible = it is CourseListUIState
+
             when (it) {
-                is CourseListUIState.Initial -> onInitialState()
-                is CourseListUIState.HasData -> onHasDataState(it.data)
-                is CourseListUIState.Error -> onErrorState(it.throwable)
+                is UIState.Initial -> onInitialState()
+                is UIState.Failed -> onErrorState(it.failure)
+                is CourseListUIState.Content -> onContentState(it.list)
+                is CourseListUIState.GoToTopics -> onGoToTopicsState(
+                    it.stateToRestore,
+                    it.courseViewEntity
+                )
             }
         }
     }
 
+    @ExperimentalCoroutinesApi
+    private fun onGoToTopicsState(
+        stateToRestore: UIState?,
+        courseViewEntity: CourseViewEntity
+    ) {
+        viewModel.dispatch(UIEvent.RestoreUIState(stateToRestore))
+        val directions = CourseListFragmentDirections
+            .goToTopicList(
+                courseId = courseViewEntity.course.id,
+                courseTitle = courseViewEntity.course.title
+            )
+        findNavController().navigate(directions)
+    }
+
+    @ExperimentalCoroutinesApi
     private fun setupView() {
-        toolbar_course_list?.mtv_toolbar_title?.text = getString(R.string.app_name)
-        rv_course_list?.adapter = adapter
-        rv_course_list?.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
+        binding.toolbar.mtvToolbarTitle.text = getString(R.string.app_name)
+        binding.rvCourseList.adapter = adapter
+        binding.rvCourseList.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
             val position = viewHolder.adapterPosition
             if (viewHolder is CourseViewHolder) {
                 return@ItemOffsetDecoration Rect().apply {
@@ -66,37 +105,60 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
         })
         adapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
-                R.id.cl_item_course_wrapper -> {
-                    require(item is CourseViewEntity)
-                    val direction = CourseListFragmentDirections
-                        .actionCourseListFragmentToCourseDetailFragment(
-                            item.id,
-                            item.title,
-                            item.createdBy
-                        )
-                    findNavController().navigate(direction)
-                }
+                R.id.cl_item_course_wrapper -> viewModel.dispatch(
+                    CourseListUIEvent.GoToTopics(item as CourseViewEntity)
+                )
             }
         }
     }
 
     @ExperimentalCoroutinesApi
-    private fun onErrorState(throwable: Throwable) {
-        Timber.e(throwable)
-        Snackbar.make(parent, R.string.text_error_general, Snackbar.LENGTH_LONG)
-            .setAction(R.string.text_Try_Again) { viewModel.fetch() }
-            .show()
+    private fun onErrorState(failure: Failure) {
+        binding.globalMessage.btnGlobalMessage.isVisible = true
+        binding.globalMessage.btnGlobalMessage.setOnClickListener {
+            viewModel.dispatch(CourseListUIEvent.RetryFailure(failure))
+        }
+        when (failure) {
+            is Failure.Unknown -> {
+                binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
+                binding.globalMessage.tvGlobalMessageTitle.text =
+                    getString(R.string.text_error_general)
+                binding.globalMessage.tvGlobalMessageDescription.text =
+                    getString(R.string.text_error_general_description)
+                binding.globalMessage.ivGlobalMessage.setImageResource(R.drawable.il_unknown_error)
+            }
+            is Failure.NoInternet -> {
+                binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
+                binding.globalMessage.tvGlobalMessageTitle.text =
+                    getString(R.string.text_error_general)
+                binding.globalMessage.tvGlobalMessageDescription.text =
+                    getString(R.string.text_error_general_description)
+                binding.globalMessage.ivGlobalMessage.setImageResource(R.drawable.il_no_internet)
+            }
+        }
     }
 
-    private fun onHasDataState(data: List<CourseViewEntity>) {
-        Timber.d(data.joinToString { it.title })
+    private fun onContentState(data: List<CourseViewEntity>) {
         adapter.submitList(data)
     }
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        viewModel.fetch()
-
+        Timber.d("InitialState")
+        viewModel.dispatch(CourseListUIEvent.FetchCourses)
     }
+}
 
+@ExperimentalCoroutinesApi
+private fun injectFeature() = loadFeature
+
+@ExperimentalCoroutinesApi
+private val loadFeature by lazy {
+    loadKoinModules(courseModule)
+}
+
+@ExperimentalCoroutinesApi
+private val courseModule = module {
+    factory { GetCoursesUseCase(get()) }
+    viewModel { CourseListViewModel(get(), get()) }
 }
