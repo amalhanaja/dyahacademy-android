@@ -3,7 +3,6 @@ package com.amalcodes.dyahacademy.android.core
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.amalcodes.dyahacademy.android.R
-import com.amalcodes.dyahacademy.android.databinding.ItemCourseBinding
 import com.amalcodes.dyahacademy.android.features.course.CourseViewHolder
 import com.amalcodes.dyahacademy.android.features.lesson.LessonGroupTitleViewHolder
 import com.amalcodes.dyahacademy.android.features.lesson.LessonViewHolder
@@ -24,7 +23,7 @@ class MultiAdapter(data: MutableList<ItemEntity> = mutableListOf()) :
     BaseAdapter<ItemEntity>(data) {
     override fun onCreateBaseViewHolder(view: View, layoutRes: Int): RecyclerView.ViewHolder {
         return when (layoutRes) {
-            R.layout.item_course -> CourseViewHolder(ItemCourseBinding.bind(view))
+            R.layout.item_course -> CourseViewHolder(view)
             R.layout.item_topic -> TopicViewHolder(view)
             R.layout.item_lesson -> LessonViewHolder(view)
             R.layout.item_answer_selection -> AnswerSelectionViewHolder(view)

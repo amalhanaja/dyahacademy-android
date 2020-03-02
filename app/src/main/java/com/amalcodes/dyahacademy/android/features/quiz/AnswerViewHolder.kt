@@ -3,9 +3,10 @@ package com.amalcodes.dyahacademy.android.features.quiz
 import android.content.res.ColorStateList
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import com.amalcodes.dyahacademy.android.core.ViewBindingUninbder
+import com.amalcodes.dyahacademy.android.databinding.ItemAnswerBinding
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
-import kotlinx.android.synthetic.main.item_answer.view.*
 
 /**
  * @author: AMAL
@@ -13,19 +14,21 @@ import kotlinx.android.synthetic.main.item_answer.view.*
  */
 
 
-class AnswerViewHolder(view: View) : BaseViewHolder<AnswerViewEntity>(view) {
-    override fun onBind(entity: AnswerViewEntity) = itemView.run {
+class AnswerViewHolder(view: View) : BaseViewHolder<AnswerViewEntity>(view), ViewBindingUninbder {
+    private var binding: ItemAnswerBinding? = null
+    override fun onBind(entity: AnswerViewEntity) = ItemAnswerBinding.bind(itemView).run {
+        binding = this
         val number = adapterPosition + 1
-        mtv_item_answer_mark?.text = entity.answer
-        mtv_item_answer_number?.text = number.toString()
-        mtv_item_answer_number?.backgroundTintList = ColorStateList.valueOf(
-            ResourcesCompat.getColor(context.resources, entity.numberBackgroundTint, null)
+        mtvItemAnswerMark.text = entity.answer
+        mtvItemAnswerNumber.text = number.toString()
+        mtvItemAnswerNumber.backgroundTintList = ColorStateList.valueOf(
+            ResourcesCompat.getColor(root.context.resources, entity.numberBackgroundTint, null)
         )
-        mtv_item_answer_number?.setTextColor(
-            ResourcesCompat.getColor(context.resources, entity.numberTextColor, null)
+        mtvItemAnswerNumber.setTextColor(
+            ResourcesCompat.getColor(root.context.resources, entity.numberTextColor, null)
         )
-        mtv_item_answer_mark?.setTextColor(
-            ResourcesCompat.getColor(context.resources, entity.answerTextColor, null)
+        mtvItemAnswerMark.setTextColor(
+            ResourcesCompat.getColor(root.context.resources, entity.answerTextColor, null)
         )
         Unit
     }
@@ -33,10 +36,11 @@ class AnswerViewHolder(view: View) : BaseViewHolder<AnswerViewEntity>(view) {
     override fun onBindListener(
         entity: AnswerViewEntity,
         listener: ViewHolderClickListener
-    ) = itemView.run {
-        ll_answer?.setOnClickListener {
-            listener.onClick(it, entity)
-        }
-        Unit
+    ) = requireNotNull(binding).run {
+        llAnswer.setOnClickListener { listener.onClick(it, entity) }
+    }
+
+    override fun unbind() {
+        binding = null
     }
 }
