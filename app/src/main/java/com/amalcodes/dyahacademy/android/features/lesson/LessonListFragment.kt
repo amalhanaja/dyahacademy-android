@@ -57,8 +57,9 @@ class LessonListFragment : Fragment(), TrackScreen {
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.pb.isVisible = it is UIState.Loading
-            binding.rvLessons.isVisible = it is LessonListUIState.Content
+            binding.rvLessons.isVisible = it is LessonListUIState || it is UIState.Refreshing
             binding.globalMessage.root.isVisible = it is UIState.Failed
+            binding.refresh.isRefreshing = it is UIState.Refreshing
             when (it) {
                 is UIState.Initial -> onInitialState()
                 is UIState.Failed -> onFailedState(it.failure)
@@ -74,6 +75,9 @@ class LessonListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private fun setupView() {
+        binding.refresh.setOnRefreshListener {
+            viewModel.dispatch(LessonListUIEvent.Refresh(args.topicId))
+        }
         binding.toolbar.mtvToolbarTitle.text = args.label
         binding.toolbar.ivBack.setOnClickListener {
             findNavController().navigateUp()
@@ -144,7 +148,7 @@ class LessonListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        viewModel.fetch(args.topicId)
+        viewModel.dispatch(LessonListUIEvent.Fetch(args.topicId))
     }
 
     @ExperimentalCoroutinesApi

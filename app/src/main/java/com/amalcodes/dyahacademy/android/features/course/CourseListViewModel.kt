@@ -18,7 +18,9 @@ class CourseListViewModel(
 
     override fun handleEventChanged(event: UIEvent) {
         when (event) {
-            is CourseListUIEvent.FetchCourses, is CourseListUIEvent.RetryFailure -> fetch()
+            is CourseListUIEvent.FetchCourses,
+            is CourseListUIEvent.RetryFailure -> fetch(UIState.Loading)
+            is CourseListUIEvent.Refresh -> fetch(UIState.Refreshing)
             is CourseListUIEvent.GoToTopics -> _uiState.postValue(
                 CourseListUIState.GoToTopics(_uiState.value, event.courseViewEntity)
             )
@@ -28,12 +30,12 @@ class CourseListViewModel(
     }
 
     @ExperimentalCoroutinesApi
-    private fun fetch() {
+    private fun fetch(loadingState: UIState) {
         getCoursesUseCase(Unit)
             .map { list -> list.map { it.toCourseViewEntity() } }
             .map { CourseListUIState.Content(it) as UIState }
             .catch { emit(it.toUIState()) }
-            .onStart { _uiState.postValue(UIState.Loading) }
+            .onStart { _uiState.postValue(loadingState) }
             .onEach { _uiState.postValue(it) }
             .launchIn(viewModelScope)
     }

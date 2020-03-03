@@ -18,8 +18,9 @@ class LessonListViewModel(
 
     override fun handleEventChanged(event: UIEvent) {
         when (event) {
-            is LessonListUIEvent.Fetch -> fetch(event.topicId)
-            is LessonListUIEvent.RetryFailure -> fetch(event.topicId)
+            is LessonListUIEvent.Fetch -> fetch(event.topicId, UIState.Loading)
+            is LessonListUIEvent.RetryFailure -> fetch(event.topicId, UIState.Loading)
+            is LessonListUIEvent.Refresh -> fetch(event.topicId, UIState.Refreshing)
             is LessonListUIEvent.GoToQuiz -> _uiState.postValue(
                 LessonListUIState.GoToQuiz(_uiState.value, event.lessonViewEntity)
             )
@@ -32,12 +33,12 @@ class LessonListViewModel(
     }
 
     @ExperimentalCoroutinesApi
-    fun fetch(topicId: String) {
+    private fun fetch(topicId: String, loadingState: UIState) {
         getLessonsUseCase(GetLessonsUseCase.Input(topicId))
             .map { list -> list.map { it.toLessonViewEntity() } }
             .map { LessonListUIState.Content(it) as UIState }
             .catch { emit(it.toUIState()) }
-            .onStart { _uiState.postValue(UIState.Loading) }
+            .onStart { _uiState.postValue(loadingState) }
             .onEach { _uiState.postValue(it) }
             .launchIn(viewModelScope)
     }

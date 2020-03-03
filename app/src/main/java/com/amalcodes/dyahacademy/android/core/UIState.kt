@@ -11,6 +11,7 @@ import com.amalcodes.dyahacademy.android.domain.model.Failure
 sealed class UIState {
     object Initial : UIState()
     object Loading : UIState()
+    object Refreshing : UIState()
     data class Failed(val failure: Failure) : UIState()
     abstract class Abstract : UIState()
 

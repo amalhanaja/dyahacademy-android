@@ -58,8 +58,9 @@ class TopicListFragment : Fragment(), TrackScreen {
         setupView()
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.globalMessage.root.isVisible = it is UIState.Failed
-            binding.rvTopics.isVisible = it is TopicListUIState.Content
+            binding.rvTopics.isVisible = it is TopicListUIState || it is UIState.Refreshing
             binding.pb.isVisible = it is UIState.Loading
+            binding.refresh.isRefreshing = it is UIState.Refreshing
             when (it) {
                 is UIState.Initial -> onInitialState()
                 is UIState.Failed -> onFailedState(it.failure)
@@ -85,6 +86,9 @@ class TopicListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private fun setupView() {
+        binding.refresh.setOnRefreshListener {
+            viewModel.dispatch(TopicListUIEvent.Refresh(args.courseId))
+        }
         binding.toolbar.ivBack.isVisible = true
         binding.toolbar.ivBack.setOnClickListener {
             findNavController().navigateUp()

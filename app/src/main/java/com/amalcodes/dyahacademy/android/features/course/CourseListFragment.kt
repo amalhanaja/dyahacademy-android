@@ -20,7 +20,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
-import timber.log.Timber
 
 class CourseListFragment : Fragment(), TrackScreen {
 
@@ -53,8 +52,8 @@ class CourseListFragment : Fragment(), TrackScreen {
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.pbCourseList.isVisible = it is UIState.Loading
             binding.globalMessage.root.isVisible = it is UIState.Failed
-            binding.rvCourseList.isVisible = it is CourseListUIState
-
+            binding.rvCourseList.isVisible = it is CourseListUIState || it is UIState.Refreshing
+            binding.refresh.isRefreshing = it is UIState.Refreshing
             when (it) {
                 is UIState.Initial -> onInitialState()
                 is UIState.Failed -> onErrorState(it.failure)
@@ -83,6 +82,7 @@ class CourseListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private fun setupView() {
+        binding.refresh.setOnRefreshListener { viewModel.dispatch(CourseListUIEvent.Refresh) }
         binding.toolbar.mtvToolbarTitle.text = getString(R.string.app_name)
         binding.rvCourseList.adapter = adapter
         binding.rvCourseList.addItemDecoration(ItemOffsetDecoration { viewHolder, count ->
@@ -144,7 +144,6 @@ class CourseListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        Timber.d("InitialState")
         viewModel.dispatch(CourseListUIEvent.FetchCourses)
     }
 }
