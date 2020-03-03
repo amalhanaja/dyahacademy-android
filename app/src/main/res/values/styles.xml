@@ -11,7 +11,7 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:fontFamily">@font/nunito_sans</item>
         <item name="android:font" tools:targetApi="o">@font/nunito_sans</item>
-        <item name="android:windowBackground">@color/snow</item>
+        <item name="android:windowBackground">@color/whiteSmoke</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
         <item name="materialButtonStyle">@style/AppTheme.Button</item>
         <item name="materialButtonOutlinedStyle">@style/AppTheme.Button.OutlinedButton</item>

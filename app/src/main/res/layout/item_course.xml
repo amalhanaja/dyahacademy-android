@@ -5,8 +5,7 @@
     android:id="@+id/cl_item_course_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_round_white_xl"
-    android:elevation="@dimen/elevation_1">
+    android:background="@drawable/shape_round_white_xl">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/siv_item_course"
