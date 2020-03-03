@@ -5,13 +5,15 @@ import android.view.View
 import androidx.core.view.isGone
 import coil.api.load
 import com.amalcodes.dyahacademy.android.R
-import com.amalcodes.dyahacademy.android.core.Injector
 import com.amalcodes.dyahacademy.android.core.ItemOffsetDecoration
 import com.amalcodes.dyahacademy.android.core.MultiAdapter
 import com.amalcodes.dyahacademy.android.core.ViewBindingUninbder
 import com.amalcodes.dyahacademy.android.databinding.ItemQuestionBinding
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
+import io.noties.markwon.Markwon
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 /**
  * @author: AMAL
@@ -21,15 +23,17 @@ import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
 
 class QuestionViewHolder(
     view: View
-) : BaseViewHolder<QuestionViewEntity>(view), ViewBindingUninbder {
+) : BaseViewHolder<QuestionViewEntity>(view), ViewBindingUninbder, KoinComponent {
 
     private var binding: ItemQuestionBinding? = null
 
     private val adapter: MultiAdapter by lazy { MultiAdapter() }
 
+    private val markwon: Markwon by inject()
+
     override fun onBind(entity: QuestionViewEntity) = ItemQuestionBinding.bind(itemView).run {
         binding = this
-        Injector.markwon.setMarkdown(mtvQuizQuestion, entity.question)
+        markwon.setMarkdown(mtvQuizQuestion, entity.question)
         ivQuizQuestion.isGone = entity.questionImageUrl.isNullOrEmpty()
         if (!entity.questionImageUrl.isNullOrEmpty()) ivQuizQuestion.load(entity.questionImageUrl)
         rvAnswerSelection.adapter = adapter
