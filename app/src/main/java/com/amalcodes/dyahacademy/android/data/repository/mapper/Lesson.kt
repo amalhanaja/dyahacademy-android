@@ -14,7 +14,8 @@ fun GetTopicByIdQuery.Lesson.toLessons(): List<Lesson> = listOf(
     Lesson(
         id = id(),
         title = title(),
-        type = LessonType.valueOf(lessonType().rawValue())
+        type = LessonType.valueOf(lessonType().rawValue()),
+        youtubeUrl = youtubeUrl()
     )
 ) + lessons().orEmpty().map { it.toLesson() }
 

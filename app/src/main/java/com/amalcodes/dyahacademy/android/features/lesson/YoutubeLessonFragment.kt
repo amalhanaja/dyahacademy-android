@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.SparseArray
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -14,14 +16,15 @@ import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.amalcodes.dyahacademy.android.R
+import com.amalcodes.dyahacademy.android.core.autoCleared
 import com.amalcodes.dyahacademy.android.core.manager.VideoPlayerManager
+import com.amalcodes.dyahacademy.android.databinding.FragmentYoutubeLessonBinding
 import com.google.android.exoplayer2.Player
 import kotlinx.android.synthetic.main.exo_controller.*
-import kotlinx.android.synthetic.main.fragment_youtube_lesson.*
 import timber.log.Timber
 
 
-class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
+class YoutubeLessonFragment : Fragment() {
 
     private val videoPlayerManager: VideoPlayerManager by lazy {
         VideoPlayerManager.getInstance(requireContext())
@@ -29,37 +32,55 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
 
     private val args: YoutubeLessonFragmentArgs by navArgs()
 
+    private var binding: FragmentYoutubeLessonBinding by autoCleared()
+
+    private var startPosition = 0L
+
+    private val videoListener = object : Player.EventListener {
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            super.onIsPlayingChanged(isPlaying)
+            if (!isStartPositionSeeked) {
+                videoPlayerManager.player.seekTo(startPosition)
+                isStartPositionSeeked = true
+            }
+        }
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) {
+                Player.STATE_BUFFERING -> binding.videoView.hideController()
+                else -> {
+                }
+            }
+        }
+    }
+
     private var isStartPositionSeeked = false
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return FragmentYoutubeLessonBinding.inflate(inflater, container, false).also {
+            binding = it
+        }.root
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val startPosition = savedInstanceState?.getLong("POSITION") ?: 0L
-        videoPlayerManager.addEventListener(object : Player.EventListener {
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                super.onIsPlayingChanged(isPlaying)
-                if (!isStartPositionSeeked) {
-                    videoPlayerManager.player.seekTo(startPosition)
-                    isStartPositionSeeked = true
-                }
-            }
-
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                when (playbackState) {
-                    Player.STATE_BUFFERING -> {
-                        video_view?.hideController()
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-        })
+        startPosition = savedInstanceState?.getLong("POSITION") ?: 0L
+        videoPlayerManager.addEventListener(videoListener)
         setupView()
         extractYoutubeUrl(args.youtubeUrl)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        videoPlayerManager.removeEventListener(videoListener)
+    }
+
     private fun setupView() {
-        actv_youtube_lesson_title?.text = args.label
+        binding.actvYoutubeLessonTitle.text = args.label
         iv_back?.setOnClickListener {
             onBackPress()
         }
@@ -71,7 +92,7 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
         btn_full?.setOnClickListener {
             changeScreenOrientation()
         }
-        video_view?.player = videoPlayerManager.player
+        binding.videoView.player = videoPlayerManager.player
     }
 
     private fun changeScreenOrientation() {
@@ -93,18 +114,18 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
     }
 
     private fun exitFullScreen() {
-        val params = video_view.layoutParams as ConstraintLayout.LayoutParams
+        val params = binding.videoView.layoutParams as ConstraintLayout.LayoutParams
         params.width = ConstraintLayout.LayoutParams.MATCH_PARENT
         params.height = resources.getDimensionPixelSize(R.dimen.video_size)
-        video_view.layoutParams = params
+        binding.videoView.layoutParams = params
         btn_full?.setImageResource(R.drawable.ic_maximize)
     }
 
     private fun enterFullScreen() {
-        val params = video_view.layoutParams as ConstraintLayout.LayoutParams
+        val params = binding.videoView.layoutParams as ConstraintLayout.LayoutParams
         params.width = ConstraintLayout.LayoutParams.MATCH_PARENT
         params.height = ConstraintLayout.LayoutParams.MATCH_PARENT
-        video_view.layoutParams = params
+        binding.videoView.layoutParams = params
         btn_full?.setImageResource(R.drawable.ic_minimize)
         hideSystemUI()
     }
@@ -115,7 +136,7 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
     }
 
     private fun hideSystemUI() {
-        video_view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+        binding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -126,6 +147,7 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
     private fun extractYoutubeUrl(url: String) {
         YoutubeExtractor(requireContext()) { ytFiles, videoMeta ->
             if (ytFiles != null) {
+                println(ytFiles)
                 ytFiles.get(22)?.let { ytFile720 ->
                     videoPlayerManager.playStream(ytFile720.url)
                 } ?: ytFiles.get(135)?.let { ytFile480 ->
@@ -133,7 +155,6 @@ class YoutubeLessonFragment : Fragment(R.layout.fragment_youtube_lesson) {
                 }
             }
             Timber.d(ytFiles.toString())
-            Timber.d(videoMeta?.toString())
         }.extract(url, true, true)
     }
 
