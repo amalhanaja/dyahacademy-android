@@ -10,12 +10,11 @@ import com.amalcodes.dyahacademy.android.domain.model.Quiz
  */
 
 
-fun Quiz.toQuizViewEntity(answer: String, index: Int, showCorrection: Boolean): QuizViewEntity =
-    QuizViewEntity(
+fun Quiz.toQuizViewEntity(answer: String, showCorrection: Boolean): QuestionViewEntity =
+    QuestionViewEntity(
         question = question,
         questionImageUrl = questionImageUrl,
         answer = answer,
-        currentIndex = index,
         answerSelections = answers.mapIfNotEmpty { answerItem ->
             answerItem.toAnswerSelectionViewEntity(
                 isSelected = answer == answerItem.mark,

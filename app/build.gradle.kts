@@ -128,6 +128,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
     implementation("com.google.firebase:firebase-analytics:17.2.2")
     implementation("com.google.firebase:firebase-crashlytics:17.0.0-beta01")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     implementation("io.noties.markwon:core:4.2.1")
     implementation("io.noties.markwon:image-coil:4.2.1")
