@@ -19,6 +19,13 @@ sealed class LessonListUIEvent : UIEvent.Abstract() {
         )
     }
 
+    data class Refresh(val topicId: String) : LessonListUIEvent(), Event {
+        override val name: String = "refresh_lessons"
+        override val properties: Map<String, Any?> = mapOf(
+            "topic_id" to topicId
+        )
+    }
+
     data class RetryFailure(val topicId: String, val failure: Failure) : LessonListUIEvent(),
         Event {
         override val name: String = "retry_fetch_lessons"

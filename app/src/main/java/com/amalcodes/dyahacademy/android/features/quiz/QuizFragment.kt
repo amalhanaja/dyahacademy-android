@@ -17,7 +17,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.api.load
+import androidx.viewpager2.widget.ViewPager2
 import com.amalcodes.dyahacademy.android.R
 import com.amalcodes.dyahacademy.android.analytics.TrackScreen
 import com.amalcodes.dyahacademy.android.component.ConfirmationDialogViewEntity
@@ -30,10 +30,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
-import timber.log.Timber
 
 class QuizFragment : Fragment(), TrackScreen {
 
+    @ExperimentalCoroutinesApi
     private val viewModel: QuizViewModel by koinViewModel()
 
     private val confirmationDialogViewModel: ConfirmationDialogViewModel by activityViewModels {
@@ -42,7 +42,7 @@ class QuizFragment : Fragment(), TrackScreen {
 
     override val screenName: String = "QuizFragment"
 
-    private val answerSelectionAdapter: MultiAdapter by autoCleared { MultiAdapter() }
+    private val questionAdapter: MultiAdapter by autoCleared { MultiAdapter() }
 
     private val answerAdapter: MultiAdapter by autoCleared { MultiAdapter() }
 
@@ -50,6 +50,7 @@ class QuizFragment : Fragment(), TrackScreen {
 
     private val args: QuizFragmentArgs by navArgs()
 
+    @ExperimentalCoroutinesApi
     override fun onAttach(context: Context) {
         injectFeature()
         super.onAttach(context)
@@ -72,19 +73,19 @@ class QuizFragment : Fragment(), TrackScreen {
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.pb.isVisible = it is UIState.Loading
             binding.cgContent.isVisible = it is QuizUIState
+            binding.globalMessage.root.isVisible = it is UIState.Failed
             when (it) {
                 is UIState.Initial -> onInitialState()
-                is UIState.Failed -> onErrorState(it.failure)
-                is QuizUIState.Default -> onHasDataState(it.quiz, it.answers)
-                is QuizUIState.Correction -> onAnswerFilledState(it.quiz, it.answers)
+                is UIState.Failed -> onFailedState(it.failure)
+                is QuizUIState.Content -> onContentState(
+                    it.question,
+                    it.answers,
+                    it.position,
+                    it.isCorrection
+                )
                 is QuizUIState.Finished -> onQuizFinishedState(it)
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        confirmationDialogViewModel.viewEntity = null
     }
 
     private fun onQuizFinishedState(uiState: QuizUIState.Finished) {
@@ -98,66 +99,56 @@ class QuizFragment : Fragment(), TrackScreen {
         findNavController().navigate(direction)
     }
 
-    private fun onAnswerFilledState(
-        quiz: QuizViewEntity,
-        answers: List<AnswerViewEntity>
+    @ExperimentalCoroutinesApi
+    private fun onContentState(
+        question: List<QuestionViewEntity>,
+        answers: List<AnswerViewEntity>,
+        position: Int,
+        isCorrection: Boolean
     ) {
-        showQuizAndAnswersHolder(quiz, answers)
-        updateConfirmationDialogViewEntity(answers)
+        binding.toolbar.ivMenu.isVisible = !isCorrection
+        questionAdapter.submitList(question)
         answerAdapter.submitList(answers)
-    }
-
-    private fun onHasDataState(
-        quiz: QuizViewEntity,
-        answers: List<AnswerViewEntity>
-    ) {
-        binding.toolbar.ivMenu.isVisible = true
-        showQuizAndAnswersHolder(quiz, answers)
-        answerSelectionAdapter.submitList(quiz.answerSelections.map {
-            it.copy(isSelected = it.answerMark == answers[quiz.currentIndex].answer)
+        binding.ivQuizNext.setOnClickListener {
+            viewModel.dispatch(QuizUIEvent.SetCurrentItem(position + 1))
+        }
+        binding.ivQuizPrev.setOnClickListener {
+            viewModel.dispatch(QuizUIEvent.SetCurrentItem(position - 1))
+        }
+        answerAdapter.submitList(answers.mapIndexed { index, answerViewEntity ->
+            answerViewEntity.copy(isCurrent = index == position)
         })
-        answerSelectionAdapter.setOnViewHolderClickListener { view, item ->
-            when (view.id) {
-                R.id.cl_item_answer -> {
-                    require(item is AnswerSelectionViewEntity)
-                    val newAnswer = quiz.answerSelections.map {
-                        it.copy(isSelected = item == it)
+        binding.rvAnswers.smoothScrollToPosition(position)
+        if (binding.pager.currentItem != position) {
+            binding.pager.currentItem = position
+        }
+        if (!isCorrection) {
+            questionAdapter.setOnViewHolderClickListener { view, item ->
+                when (view.id) {
+                    R.id.cl_item_answer -> {
+                        require(item is AnswerSelectionViewEntity)
+                        val newAnswer = question[position].answerSelections.find {
+                            item == it
+                        }?.answerMark.orEmpty()
+                        viewModel.dispatch(QuizUIEvent.FillAnswer(newAnswer, position))
                     }
-                    viewModel.fillAnswer(newAnswer.find {
-                        it.isSelected
-                    }?.answerMark.orEmpty())
-                    answerSelectionAdapter.submitList(newAnswer)
                 }
             }
         }
-        updateConfirmationDialogViewEntity(answers)
-    }
-
-    private fun showQuizAndAnswersHolder(
-        quiz: QuizViewEntity,
-        answers: List<AnswerViewEntity>
-    ) {
-        Injector.markwon.setMarkdown(binding.mtvQuizQuestion, quiz.question)
-        binding.ivQuizQuestion.isGone = quiz.questionImageUrl.isNullOrEmpty()
-        answerSelectionAdapter.submitList(quiz.answerSelections.map {
-            it.copy(isSelected = it.answerMark == answers[quiz.currentIndex].answer)
-        })
-        if (!quiz.questionImageUrl.isNullOrEmpty()) {
-            binding.ivQuizQuestion.load(requireNotNull(quiz.questionImageUrl))
-        }
-        answerAdapter.submitList(answers)
-        val index = answers.indexOfFirst { it.isCurrent }
-        binding.rvAnswers.scrollToPosition(index)
         answerAdapter.setOnViewHolderClickListener { view, item ->
             when (view.id) {
                 R.id.ll_answer -> {
                     require(item is AnswerViewEntity)
-                    viewModel.setCurrentIndex(answers.indexOf(item))
+                    if (!item.isCurrent) {
+                        viewModel.dispatch(QuizUIEvent.SetCurrentItem(answers.indexOf(item)))
+                    }
                 }
             }
         }
+        updateConfirmationDialogViewEntity(answers)
     }
 
+    @ExperimentalCoroutinesApi
     private fun updateConfirmationDialogViewEntity(answers: List<AnswerViewEntity>) {
         val blankAnswerCount = answers.count { it.answer.isEmpty() }
         confirmationDialogViewModel.viewEntity = ConfirmationDialogViewEntity(
@@ -168,21 +159,49 @@ class QuizFragment : Fragment(), TrackScreen {
                 }
             }.append(" ").append(getString(R.string.text_finish_quiz_confirmation_dialog_description_blank_answer)),
             cancelButton = getString(R.string.text_No) to { _ -> Unit },
-            confirmButton = getString(R.string.text_Sure) to { _ -> viewModel.finishQuiz() },
+            confirmButton = getString(R.string.text_Sure) to { _ -> viewModel.dispatch(QuizUIEvent.Finish) },
             drawableRes = R.drawable.ic_check_circle
         )
     }
 
     @ExperimentalCoroutinesApi
-    private fun onErrorState(failure: Failure) {
-        Timber.e(failure)
+    private fun onFailedState(failure: Failure) {
+        binding.globalMessage.btnGlobalMessage.isVisible = true
+        binding.globalMessage.btnGlobalMessage.setOnClickListener {
+            viewModel.dispatch(
+                QuizUIEvent.RetryFailure(
+                    lessonId = args.lessonId,
+                    initialAnswer = args.answers?.toList(),
+                    failure = failure
+                )
+            )
+        }
+        when (failure) {
+            is Failure.Unknown -> {
+                binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
+                binding.globalMessage.tvGlobalMessageTitle.text =
+                    getString(R.string.text_error_general)
+                binding.globalMessage.tvGlobalMessageDescription.text =
+                    getString(R.string.text_error_general_description)
+                binding.globalMessage.ivGlobalMessage.setImageResource(R.drawable.il_unknown_error)
+            }
+            is Failure.NoInternet -> {
+                binding.globalMessage.btnGlobalMessage.text = getString(R.string.text_Try_Again)
+                binding.globalMessage.tvGlobalMessageTitle.text =
+                    getString(R.string.text_error_general)
+                binding.globalMessage.tvGlobalMessageDescription.text =
+                    getString(R.string.text_error_general_description)
+                binding.globalMessage.ivGlobalMessage.setImageResource(R.drawable.il_no_internet)
+            }
+        }
     }
 
     @ExperimentalCoroutinesApi
     private fun onInitialState() {
-        viewModel.fetch(args.lessonId, args.answers?.toList())
+        viewModel.dispatch(QuizUIEvent.Fetch(args.lessonId, args.answers?.toList()))
     }
 
+    @ExperimentalCoroutinesApi
     private fun setupView() {
         val itemOffsetDecoration = ItemOffsetDecoration { viewHolder, count ->
             val position = viewHolder.adapterPosition
@@ -220,25 +239,29 @@ class QuizFragment : Fragment(), TrackScreen {
             findNavController().navigate(direction)
         }
         binding.toolbar.mtvToolbarTitle.text = args.label
-        binding.rvAnswerSelection.isNestedScrollingEnabled = false
-        binding.rvAnswerSelection.adapter = answerSelectionAdapter
-        binding.rvAnswerSelection.addItemDecoration(itemOffsetDecoration)
         binding.rvAnswers.adapter = answerAdapter
         binding.rvAnswers.addItemDecoration(itemOffsetDecoration)
-        binding.ivQuizNext.setOnClickListener { viewModel.next() }
-        binding.ivQuizPrev.setOnClickListener { viewModel.prev() }
+        binding.pager.adapter = questionAdapter
+        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(pos: Int) {
+                viewModel.dispatch(QuizUIEvent.SetCurrentItem(pos))
+            }
+        })
     }
 
 }
 
 
+@ExperimentalCoroutinesApi
 private fun injectFeature() = loadFeature
 
+@ExperimentalCoroutinesApi
 private val loadFeature by lazy {
     loadKoinModules(quizModule)
 }
 
+@ExperimentalCoroutinesApi
 private val quizModule = module {
     factory { GetQuizzesUseCase(get()) }
-    viewModel { QuizViewModel(get()) }
+    viewModel { QuizViewModel(get(), get()) }
 }

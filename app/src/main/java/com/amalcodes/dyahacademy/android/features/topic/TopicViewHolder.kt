@@ -1,9 +1,10 @@
 package com.amalcodes.dyahacademy.android.features.topic
 
 import android.view.View
+import com.amalcodes.dyahacademy.android.core.ViewBindingUninbder
+import com.amalcodes.dyahacademy.android.databinding.ItemTopicBinding
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
-import kotlinx.android.synthetic.main.item_topic.view.*
 
 /**
  * @author: AMAL
@@ -11,20 +12,23 @@ import kotlinx.android.synthetic.main.item_topic.view.*
  */
 
 
-class TopicViewHolder(view: View) : BaseViewHolder<TopicViewEntity>(view) {
+class TopicViewHolder(view: View) : BaseViewHolder<TopicViewEntity>(view), ViewBindingUninbder {
 
-    override fun onBind(entity: TopicViewEntity) = itemView.run {
-        tv_item_topic_title?.text = entity.title
+    private var binding: ItemTopicBinding? = null
+
+    override fun onBind(entity: TopicViewEntity) = ItemTopicBinding.bind(itemView).run {
+        binding = this
+        tvItemTopicTitle.text = entity.title
     }
 
     override fun onBindListener(
         entity: TopicViewEntity,
         listener: ViewHolderClickListener
-    ) = itemView.run {
-        fl_item_topic?.setOnClickListener {
-            listener.onClick(it, entity)
-        }
-        Unit
-    }
+    ) = binding?.run {
+        flItemTopic.setOnClickListener { listener.onClick(it, entity) }
+    }.let { Unit }
 
+    override fun unbind() {
+        binding = null
+    }
 }

@@ -17,6 +17,10 @@ sealed class CourseListUIEvent : UIEvent.Abstract() {
         override val name: String = "fetch_courses"
     }
 
+    object Refresh : CourseListUIEvent(), Event {
+        override val name: String = "refresh_courses"
+    }
+
     data class RetryFailure(val failure: Failure) : CourseListUIEvent(), Event {
         override val name: String = "retry_fetch_course"
         override val properties: Map<String, Any?> = failure.eventProperties()

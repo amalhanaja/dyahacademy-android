@@ -46,6 +46,10 @@ class VideoPlayerManager(
         player.addListener(listener)
     }
 
+    fun removeEventListener(listener: Player.EventListener) {
+        player.removeListener(listener)
+    }
+
     fun playStream(vararg urls: String) {
         val sources = urls.map {
             val uri = Uri.parse(it)

@@ -1,9 +1,10 @@
 package com.amalcodes.dyahacademy.android.features.lesson
 
 import android.view.View
+import com.amalcodes.dyahacademy.android.core.ViewBindingUninbder
+import com.amalcodes.dyahacademy.android.databinding.ItemLessonBinding
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
-import kotlinx.android.synthetic.main.item_lesson.view.*
 
 /**
  * @author: AMAL
@@ -11,22 +12,25 @@ import kotlinx.android.synthetic.main.item_lesson.view.*
  */
 
 
-class LessonViewHolder(view: View) : BaseViewHolder<LessonViewEntity>(view) {
+class LessonViewHolder(view: View) : BaseViewHolder<LessonViewEntity>(view), ViewBindingUninbder {
 
-    override fun onBind(entity: LessonViewEntity) = itemView.run {
-        actv_item_lesson_title?.text = entity.title
-        iv_item_lesson_type?.setImageResource(entity.typeIconRes)
-        actv_item_lesson_type?.text = context.getString(entity.typeNameStringRes)
-        Unit
+    private var binding: ItemLessonBinding? = null
+
+    override fun onBind(entity: LessonViewEntity) = ItemLessonBinding.bind(itemView).run {
+        binding = this
+        actvItemLessonTitle.text = entity.title
+        ivItemLessonType.setImageResource(entity.typeIconRes)
+        actvItemLessonType.text = root.context.getString(entity.typeNameStringRes)
     }
 
     override fun onBindListener(
         entity: LessonViewEntity,
         listener: ViewHolderClickListener
-    ) = itemView.run {
-        cl_item_lesson?.setOnClickListener {
-            listener.onClick(it, entity)
-        }
-        Unit
+    ) = binding?.run {
+        clItemLesson.setOnClickListener { listener.onClick(it, entity) }
+    }.let { Unit }
+
+    override fun unbind() {
+        binding = null
     }
 }

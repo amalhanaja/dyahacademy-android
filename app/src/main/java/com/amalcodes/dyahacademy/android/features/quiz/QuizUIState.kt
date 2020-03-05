@@ -9,18 +9,16 @@ import com.amalcodes.dyahacademy.android.core.UIState
 
 
 sealed class QuizUIState : UIState.Abstract() {
-    data class Default(
-        val quiz: QuizViewEntity,
-        val answers: List<AnswerViewEntity>
+
+    data class Content(
+        val question: List<QuestionViewEntity>,
+        val answers: List<AnswerViewEntity>,
+        val position: Int,
+        val isCorrection: Boolean
     ) : QuizUIState()
 
     data class Finished(
         val summary: QuizSummaryViewEntity,
-        val answers: List<AnswerViewEntity>
-    ) : QuizUIState()
-
-    data class Correction(
-        val quiz: QuizViewEntity,
         val answers: List<AnswerViewEntity>
     ) : QuizUIState()
 }

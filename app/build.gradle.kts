@@ -60,16 +60,16 @@ android {
 
     productFlavors {
         create("development") {
-            versionCode = 3
-            versionName = "1.0.3"
+            versionCode = 4
+            versionName = "1.0.4"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-DEV"
             resValue("string", "app_name", stringProperty("${name}.appName"))
             buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
         create("production") {
-            versionCode = 3
-            versionName = "1.0.3"
+            versionCode = 4
+            versionName = "1.0.4"
             resValue("string", "app_name", stringProperty("${name}.appName"))
             buildConfigField("String", "BASE_URL", stringProperty("${name}.baseUrl"))
         }
@@ -128,9 +128,13 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
     implementation("com.google.firebase:firebase-analytics:17.2.2")
     implementation("com.google.firebase:firebase-crashlytics:17.0.0-beta01")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     implementation("io.noties.markwon:core:4.2.1")
     implementation("io.noties.markwon:image-coil:4.2.1")
+    implementation("io.noties.markwon:ext-latex:4.2.1")
+    implementation("io.noties.markwon:html:4.2.1")
+    implementation("io.noties.markwon:linkify:4.2.1")
     implementation("io.coil-kt:coil:0.9.5")
     debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")

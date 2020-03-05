@@ -1,5 +1,6 @@
 package com.amalcodes.dyahacademy.android.features.course
 
+import android.view.View
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.amalcodes.dyahacademy.android.R
@@ -14,10 +15,12 @@ import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
  */
 
 
-class CourseViewHolder(
-    private var binding: ItemCourseBinding?
-) : BaseViewHolder<CourseViewEntity>(requireNotNull(binding?.root)), ViewBindingUninbder {
-    override fun onBind(entity: CourseViewEntity) = binding?.run {
+class CourseViewHolder(view: View) : BaseViewHolder<CourseViewEntity>(view), ViewBindingUninbder {
+
+    private var binding: ItemCourseBinding? = null
+
+    override fun onBind(entity: CourseViewEntity) = ItemCourseBinding.bind(itemView).run {
+        binding = this
         actvItemCourseTitle.text = entity.course.title
         actvItemCourseOwner.text =
             root.context.getString(R.string.text_By_colon, entity.course.creator)

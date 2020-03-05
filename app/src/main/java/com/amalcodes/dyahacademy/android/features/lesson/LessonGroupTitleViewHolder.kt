@@ -1,9 +1,10 @@
 package com.amalcodes.dyahacademy.android.features.lesson
 
 import android.view.View
+import com.amalcodes.dyahacademy.android.core.ViewBindingUninbder
+import com.amalcodes.dyahacademy.android.databinding.ItemLessonGroupTitleBinding
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
-import kotlinx.android.synthetic.main.item_lesson_group_title.view.*
 
 /**
  * @author: AMAL
@@ -13,15 +14,22 @@ import kotlinx.android.synthetic.main.item_lesson_group_title.view.*
 
 class LessonGroupTitleViewHolder(
     view: View
-) : BaseViewHolder<LessonViewEntity>(view) {
+) : BaseViewHolder<LessonViewEntity>(view), ViewBindingUninbder {
 
-    override fun onBind(entity: LessonViewEntity) = itemView.run {
-        actv_item_lesson_group_title?.text = entity.title
-    }
+    private var binding: ItemLessonGroupTitleBinding? = null
+
+    override fun onBind(entity: LessonViewEntity) = ItemLessonGroupTitleBinding.bind(itemView)
+        .run {
+            binding = this
+            actvItemLessonGroupTitle.text = entity.title
+        }
 
     override fun onBindListener(
         entity: LessonViewEntity,
         listener: ViewHolderClickListener
-    ) {
+    ) = Unit
+
+    override fun unbind() {
+        binding = null
     }
 }
