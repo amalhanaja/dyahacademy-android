@@ -28,7 +28,7 @@ data class LessonViewEntity(
         @DrawableRes
         get() = when (type) {
             LessonType.YOUTUBE -> R.drawable.ic_youtube
-            LessonType.QUIZ -> R.drawable.ic_help_circle
+            LessonType.QUIZ, LessonType.TEST -> R.drawable.ic_help_circle
             else -> throw IllegalStateException("Unexpected LessonType: $type")
         }
 
@@ -37,6 +37,7 @@ data class LessonViewEntity(
         get() = when (type) {
             LessonType.QUIZ -> R.string.text_Quiz
             LessonType.YOUTUBE -> R.string.text_Video
+            LessonType.TEST -> R.string.text_Test
             else -> throw IllegalStateException("Unexpected LessonType: $type")
         }
 

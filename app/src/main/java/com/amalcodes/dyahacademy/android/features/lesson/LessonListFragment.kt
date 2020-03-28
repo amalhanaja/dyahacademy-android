@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -23,6 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
+import timber.log.Timber
 
 class LessonListFragment : Fragment(), TrackScreen {
 
@@ -113,7 +115,7 @@ class LessonListFragment : Fragment(), TrackScreen {
                         LessonType.YOUTUBE -> viewModel.dispatch(
                             LessonListUIEvent.GoToYoutube(item)
                         )
-                        LessonType.QUIZ -> viewModel.dispatch(
+                        LessonType.QUIZ, LessonType.TEST -> viewModel.dispatch(
                             LessonListUIEvent.GoToQuiz(item)
                         )
                         else -> throw IllegalStateException("unexpected LessonType: ${item.type}")
@@ -141,7 +143,8 @@ class LessonListFragment : Fragment(), TrackScreen {
             .goToQuiz(
                 label = lessonViewEntity.title,
                 lessonId = lessonViewEntity.id,
-                answers = null
+                answers = null,
+                showCorrection = lessonViewEntity.type == LessonType.QUIZ
             )
         findNavController().navigate(direction)
     }
@@ -153,6 +156,7 @@ class LessonListFragment : Fragment(), TrackScreen {
 
     @ExperimentalCoroutinesApi
     private fun onFailedState(failure: Failure) {
+        Toast.makeText(requireContext(), failure.cause?.message, Toast.LENGTH_SHORT).show()
         binding.globalMessage.btnGlobalMessage.isVisible = true
         binding.globalMessage.btnGlobalMessage.setOnClickListener {
             viewModel.dispatch(LessonListUIEvent.RetryFailure(args.topicId, failure))
