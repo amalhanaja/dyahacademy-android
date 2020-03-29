@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -53,11 +54,13 @@ class QuizSummaryFragment : Fragment() {
         binding.mbQuizSummaryContinueLearning.setOnClickListener {
             findNavController().navigateUp()
         }
+        binding.mbQuizSummaryShowAnswer.isVisible = args.showCorrection
         binding.mbQuizSummaryShowAnswer.setOnClickListener {
             val direction = QuizSummaryFragmentDirections.actionQuizSummaryFragmentToQuizFragment(
                 label = args.lessonTitle,
                 lessonId = args.lessonId,
-                answers = args.answers
+                answers = args.answers,
+                showCorrection = args.showCorrection
             )
             findNavController().navigate(direction)
         }

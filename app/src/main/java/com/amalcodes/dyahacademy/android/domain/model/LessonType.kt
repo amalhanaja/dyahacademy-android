@@ -9,5 +9,6 @@ package com.amalcodes.dyahacademy.android.domain.model
 enum class LessonType {
     YOUTUBE,
     QUIZ,
-    LESSON_GROUP
+    LESSON_GROUP,
+    TEST
 }

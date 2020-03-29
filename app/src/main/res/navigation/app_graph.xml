@@ -61,6 +61,9 @@
             android:defaultValue="@null"
             app:argType="com.amalcodes.dyahacademy.android.features.quiz.AnswerViewEntity[]"
             app:nullable="true" />
+        <argument
+            android:name="showCorrection"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/lessonListFragment"
@@ -109,5 +112,8 @@
         <argument
             android:name="lessonTitle"
             app:argType="string" />
+        <argument
+            android:name="showCorrection"
+            app:argType="boolean" />
     </fragment>
 </navigation>

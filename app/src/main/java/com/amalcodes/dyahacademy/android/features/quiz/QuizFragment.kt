@@ -94,7 +94,8 @@ class QuizFragment : Fragment(), TrackScreen {
             lessonId = args.lessonId,
             quizSummary = uiState.summary,
             answers = uiState.answers.toTypedArray(),
-            lessonTitle = args.label
+            lessonTitle = args.label,
+            showCorrection = args.showCorrection
         )
         findNavController().navigate(direction)
     }

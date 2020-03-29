@@ -21,7 +21,7 @@ class QuizDataRepository(
 ) : QuizRepository {
     override fun listByLessonId(lessonId: String): Flow<List<Quiz>> {
         return dyahAcademyApi.getLesson(lessonId)
-            .filter { it.lessonType == LessonType.QUIZ.name }
+            .filter { it.lessonType in listOf(LessonType.QUIZ.name, LessonType.TEST.name) }
             .map { lesson -> lesson.quizzes.orEmpty().mapIfNotEmpty { it.toQuiz() } }
     }
 }
